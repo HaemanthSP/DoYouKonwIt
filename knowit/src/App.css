@@ -3,7 +3,9 @@
 }
 
 .App-logo {
+  animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
+  pointer-events: none;
 }
 
 .App-header {
@@ -18,5 +20,90 @@
 }
 
 .App-link {
-  color: #09d3ac;
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cicleActive {
+  fill: orange;
+}
+
+.button {
+    background: linear-gradient(45deg, #337ab7, transparent);
+    border: none;
+    text-align: center;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    /* font-size: 19px; */
+    margin: 15px 35px;
+    padding: 15px 40px;
+    min-width: 150px;
+    border-radius: 20px;
+    /* min-height: 150px; */
+    color: #fff;
+    cursor: pointer;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+	display: table-cell;
+}
+
+.button .round {
+  border-radius: 10px;
+
+}
+
+.blue {
+  background: #0943c5
+}
+
+.red{
+  background: #c51a09;
+}
+
+
+.green {
+  background: #01a22b
+}
+
+.card_ctr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+}
+
+.card_content {
+  margin-top: -35px;
+  text-align: center;
+  padding: 0 20px;
+  padding-bottom: 40px;
+  transition: all .3s;
+}
+
+
+#progressbar {
+  background: linear-gradient(45deg, #f5525252, #33ff8e3d);
+  border-radius: 5px;
+}
+
+#progressbar>div {
+/*  background-color: orange; */
+  height: 20px;
+  border-radius: 10px;
+}
+
+.word {
+  text-align: center;
+  font-size: 135px;
+  margin: 100px;
 }

@@ -1,26 +1,34 @@
-import React from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends Component {
+     constructor(props) {
+        super(props);
+        this.state = {
+            wordlist: [],
+            word: "Word",
+        }
+   }
+
+  render() {
+    return (
+        <div className= "container">
+        <div id="progressbar" style={{marginTop: "50px"}}>
+          <div style={{ width: "100%" }}></div>
+        </div>
+        <h1 className="word"> Word </h1>
+        <div className="col-md-12">
+          <div className="row card_ctr">
+            <button className="button green" onClick={() => {this.setState({activePage: "words"})}}> Yes </button>
+            <button className="button red" onClick={() => {this.setState({activePage: "words"})}}> No </button>
+          </div>
+        </div>
+        </div>
+    );
+  }
+
 }
 
 export default App;
