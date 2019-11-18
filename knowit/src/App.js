@@ -35,10 +35,10 @@ class App extends Component {
 
   componentWillMount() {
     this.getWordList();
-    document.addEventListener("keydown", this.handleKeyDown.bind(this))
+    document.addEventListener("keyup", this.handleKeyPress.bind(this));
   }
 
-  handleKeyDown (e) {
+  handleKeyPress (e) {
     if (e.which === 89) {
        this.selection("yes")
     }
