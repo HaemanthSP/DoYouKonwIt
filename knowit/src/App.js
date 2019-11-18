@@ -16,7 +16,6 @@ class App extends Component {
         }
    }
 
-
   getWordList = (event) => {
     let stateData = this.state;
     this.setState({ isLoading: true })
@@ -25,7 +24,20 @@ class App extends Component {
     };
     let config = { "Content-Type": "application/json" };
     axios.post('http://localhost:8000/api/v1/getwordlist', user, config)
-      .then(response => {this.setState({wordList: response.data.wordList})})
+      .then(response => {
+        this.setState({
+          wordList: response.data.wordList,
+          activeWordIndex: 0,
+          selections: []
+        })
+      })
+  }
+
+  selection (choice) {
+    this.setState({
+        selection: choice,
+        activeWordIndex: this.state.activeWordIndex + 1
+    })
   }
 
   render() {
@@ -38,8 +50,8 @@ class App extends Component {
         <h1 className="word"> {this.state.wordList[this.state.activeWordIndex]} </h1>
         <div className="col-md-12">
           <div className="row card_ctr">
-            <button className="button green" onClick={() => {this.setState({selection: "yes"})}}> Yes </button>
-            <button className="button red" onClick={() => {this.setState({selection: "no"})}}> No </button>
+            <button className="button green" onClick={() => {this.selection("yes")}}> Yes </button>
+            <button className="button red" onClick={() => {this.selection("no")}}> No </button>
           </div>
         </div>
         </div>
