@@ -45,7 +45,7 @@ class App extends Component {
         <div className= "container">
         <button onClick={() => {this.getWordList()}} > load </button>
         <div id="progressbar" style={{marginTop: "50px"}}>
-          <div style={{ width: (this.state.wordList.length - this.state.activeWordIndex) * 5 + "%" }}></div>
+          <div style={{ width: (this.state.activeWordIndex / this.state.wordList.length) * 100 + "%" }}></div>
         </div>
         <h1 className="word"> {this.state.wordList[this.state.activeWordIndex]} </h1>
         <div className="col-md-12">

@@ -97,7 +97,7 @@
 }
 
 #progressbar>div {
-/*  background-color: orange; */
+  background-color: #ffe007;
   height: 20px;
   border-radius: 10px;
 }
