@@ -33,6 +33,11 @@ class App extends Component {
       })
   }
 
+  componentWillMount() {
+    this.getWordList();
+    // document.addEventListener("keydown", this.handleKeyDown.bind(this))
+  }
+
   selection (choice) {
     this.setState({
         selection: choice,
@@ -43,7 +48,6 @@ class App extends Component {
   render() {
     return (
         <div className= "container">
-        <button onClick={() => {this.getWordList()}} > load </button>
         <div id="progressbar" style={{marginTop: "50px"}}>
           <div style={{ width: (this.state.activeWordIndex / this.state.wordList.length) * 100 + "%" }}></div>
         </div>
