@@ -12,7 +12,7 @@ def get_wordlist(book_path):
     with open(book_path, 'rb') as book:
         text = book.read()
 
-    nlp = spacy.load("en_core_web_sm")
+    nlp = spacy.load("en_core_web_sm", disable=['parser', 'ner', 'print_info'])
     word_list = []
     for word in tqdm(nlp(str(text))):
         if word.pos_ in ['PUNCT', 'SYM', 'SPACE']:
@@ -23,4 +23,4 @@ def get_wordlist(book_path):
     counts = Counter(word_list)
     print(len(counts.keys()))
 
-    return random.choices(list(counts.keys()), k=100)
+    return random.choices(list(counts.keys()), k=20)
