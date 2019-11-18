@@ -9,10 +9,13 @@ from rest_framework.response import Response
 from rest_framework.generics import ListCreateAPIView
 import base64
 
+from doyou import tokens
+
 
 class GetWordList(APIView):
         def post(self, req):
-            data = {"wordList": ['Quickly', 'Happy', 'new', 'winter']}
+            data = {"wordList": tokens.get_wordlist("./data/hp.txt")}
+            # data = {"wordList": ['Quickly', 'Happy', 'new', 'winter']}
             return Response(data=data, status=status.HTTP_200_OK)
 
 
