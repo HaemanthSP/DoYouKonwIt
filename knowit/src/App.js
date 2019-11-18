@@ -13,8 +13,16 @@ class App extends Component {
             activeWordIndex: 0,
             selection: "",
             selections: [],
+
+            // UI Handling
             isLoading: true,
-        }
+            activePage: "activity",
+        };
+       this.pages = {
+         "activity": this.renderActivity.bind(this),
+         "report": this.renderReport.bind(this)
+       };
+
    }
 
   getWordList = (event) => {
@@ -31,6 +39,7 @@ class App extends Component {
           activeWordIndex: 0,
           selections: [],
           isLoading: false,
+          activePage: "activity",
         })
       })
   }
@@ -50,15 +59,22 @@ class App extends Component {
   }
 
   selection (choice) {
+    var joined = this.state.selections.concat(choice);
+    var page = "activity"
+    if(joined.length >= this.state.wordList.length) {
+       page = "report"
+    }
     this.setState({
         selection: choice,
-        activeWordIndex: this.state.activeWordIndex + 1
+        activeWordIndex: this.state.activeWordIndex + 1,
+        selections: joined,
+        activePage: page
     })
   }
 
-  render() {
+  renderActivity() {
     return (
-        <div className= "container">
+      <div>
         <div id="progressbar" style={{marginTop: "50px"}}>
           <div style={{ width: (this.state.activeWordIndex / this.state.wordList.length) * 100 + "%" }}></div>
         </div>
@@ -69,6 +85,33 @@ class App extends Component {
             <button className="button red" onClick={() => {this.selection("no")}}> No </button>
           </div>
         </div>
+      </div>
+    );
+  }
+
+  renderReport() {
+    return (
+      <div>
+        <h1> Report </h1>
+        <div className="row">
+        {this.state.wordList.map((value, index) => {
+          return (
+            <div className="column col-md-2" key={index}>
+              <div className="card" style={this.state.selections[index] === "yes" ? {background: "#01a22b88"} : {background: "#c51a0988"}}>
+                <h4 style={{textAlign: "center"}}>{value}</h4>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+        <div className= "container">
+        {this.pages[this.state.activePage]()}
         {this.state.isLoading ?
           <div className="overlay">
             <div className="lds-roller">
