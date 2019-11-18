@@ -13,6 +13,7 @@ class App extends Component {
             activeWordIndex: 0,
             selection: "",
             selections: [],
+            isLoading: true,
         }
    }
 
@@ -28,7 +29,8 @@ class App extends Component {
         this.setState({
           wordList: response.data.wordList,
           activeWordIndex: 0,
-          selections: []
+          selections: [],
+          isLoading: false,
         })
       })
   }
@@ -67,6 +69,17 @@ class App extends Component {
             <button className="button red" onClick={() => {this.selection("no")}}> No </button>
           </div>
         </div>
+        {this.state.isLoading ?
+          <div className="overlay">
+            <div className="lds-roller">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div> : null
+        }
         </div>
     );
   }
