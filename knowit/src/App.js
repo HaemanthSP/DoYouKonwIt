@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+var HOST = '192.168.3.184'
 
 class App extends Component {
      constructor(props) {
@@ -32,7 +33,7 @@ class App extends Component {
       username: stateData.user,
     };
     let config = { "Content-Type": "application/json" };
-    axios.post('http://localhost:8000/api/v1/getwordlist', user, config)
+    axios.post('http://' + HOST + ':8000/api/v1/getwordlist', user, config)
       .then(response => {
         this.setState({
           wordList: response.data.wordList,
@@ -81,8 +82,8 @@ class App extends Component {
         <h1 className="word"> {this.state.wordList[this.state.activeWordIndex]} </h1>
         <div className="col-md-12">
           <div className="row card_ctr">
-            <button className="button green" onClick={() => {this.selection("yes")}}> Yes </button>
-            <button className="button red" onClick={() => {this.selection("no")}}> No </button>
+            <button className="button green" onClick={() => {this.selection("yes")}}> Bekannt (Y) </button>
+            <button className="button red" onClick={() => {this.selection("no")}}> Unbakannt (N) </button>
           </div>
         </div>
       </div>
