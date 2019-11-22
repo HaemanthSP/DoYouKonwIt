@@ -20,5 +20,6 @@ from doyou import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^api/v1/getwordlist$', views.GetWordList.as_view(), name='get words list'),
+    url(r'^api/v1/getwordlist$', views.GetWordList.as_view(), name='get word list'),
+    url(r'^api/v1/getlevels$', views.GetLevels.as_view(), name='get levels'),
 ]
