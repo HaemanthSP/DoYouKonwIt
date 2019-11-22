@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-var HOST = '192.168.3.184'
+var HOST = '192.168.23.222'
 
 class App extends Component {
      constructor(props) {
@@ -14,17 +14,37 @@ class App extends Component {
             activeWordIndex: 0,
             selection: "",
             selections: [],
+            levels: [],
 
             // UI Handling
             isLoading: true,
-            activePage: "activity",
+            activePage: "index",
         };
        this.pages = {
          "activity": this.renderActivity.bind(this),
+         "index": this.renderIndex.bind(this),
+         "level": this.renderLevel.bind(this),
          "report": this.renderReport.bind(this)
        };
 
    }
+
+  getLevels = (event) => {
+    let stateData = this.state;
+    this.setState({ isLoading: true })
+    const user = {
+      username: stateData.user,
+    };
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + ':8000/api/v1/getlevels', user, config)
+      .then(response => {
+        this.setState({
+          levels: response.data.levels,
+          isLoading: false,
+          activePage: "index",
+        })
+      })
+  }
 
   getWordList = (event) => {
     let stateData = this.state;
@@ -46,7 +66,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.getWordList();
+    this.getLevels();
     document.addEventListener("keyup", this.handleKeyPress.bind(this));
   }
 
@@ -87,6 +107,48 @@ class App extends Component {
           </div>
         </div>
       </div>
+    );
+  }
+
+  renderIndex() {
+    return(
+        <div>
+		<h1 style={{ marginBottom: 30 }}> Levels </h1>
+	  	<br />
+	  	<br />
+        <div className="row">
+          {this.state.levels.map((value, index) => {
+            return (
+              <div className="column" key={index}>
+                <div className="card" style={{borderRadius: 10}}>
+                  <button onClick={() => {this.setState({testsets: value['testsets'], activePage: 'level'})}}>{value['level']}</button>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+	 </div>
+    );
+  }
+
+  renderLevel() {
+    return(
+      <div>
+		<h1 style={{ marginBottom: 30 }}> Testsets </h1>
+	  	<br />
+	  	<br />
+        <div className="row">
+          {this.state.testsets.map((value, index) => {
+            return (
+              <div className="column" key={index}>
+                <div className="card" style={{borderRadius: 10}}>
+                  <button onClick={() => {this.setState({wordList: value['tokens'], activePage: 'activity'})}}>{value['test_code']}</button>
+                </div>
+              </div>
+            )
+          })}
+      </div>
+	</div>
     );
   }
 
