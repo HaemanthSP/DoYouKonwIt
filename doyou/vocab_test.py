@@ -23,7 +23,8 @@ def parse_vocab_test(text):
      ..
     ]
     """
-    text = re.sub(' ?\d+ \xef\x81\xb1 ', '\n', text)
+    text = re.sub(' ?\d+ \xef\x81\xb1 ?', '\n', text)
+    text = re.sub(' ?\d+   ?', '\n', text)
     text = re.sub('\n\n', '\n', text).strip()
     tokens = text.split('\n')
     return tokens
@@ -48,6 +49,7 @@ def build_dataset(data_dir, vocab_test_name):
         for test_code in level_content:
             data_path = os.path.join(level_path, test_code)
             test_code = re.sub("_", " ", test_code)
+            test_code = re.sub(".txt", "", test_code)
             print(test_code)
             with open(data_path) as tf:
                 text = tf.read()
