@@ -102,8 +102,8 @@ class App extends Component {
         <h1 className="word"> {this.state.wordList[this.state.activeWordIndex]} </h1>
         <div className="col-md-12">
           <div className="row card_ctr">
-            <button className="button green" onClick={() => {this.selection("yes")}}> Bekannt (Y) </button>
-            <button className="button red" onClick={() => {this.selection("no")}}> Unbakannt (N) </button>
+            <button className="button option green" onClick={() => {this.selection("yes")}}> Bekannt (Y) </button>
+            <button className="button option red" onClick={() => {this.selection("no")}}> Unbakannt (N) </button>
           </div>
         </div>
       </div>
@@ -113,6 +113,8 @@ class App extends Component {
   renderIndex() {
     return(
         <div>
+	  	<br />
+	  	<br />
 		<h1 style={{ marginBottom: 30 }}> Levels </h1>
 	  	<br />
 	  	<br />
@@ -120,8 +122,8 @@ class App extends Component {
           {this.state.levels.map((value, index) => {
             return (
               <div className="column" key={index}>
-                <div className="card" style={{borderRadius: 10}}>
-                  <button onClick={() => {this.setState({testsets: value['testsets'], activePage: 'level'})}}>{value['level']}</button>
+                <div className="card level_card" style={{borderRadius: 10}} onClick={() => {this.setState({testsets: value['testsets'], activePage: 'level'})}}>
+                  {value['level']}
                 </div>
               </div>
             )
@@ -134,6 +136,8 @@ class App extends Component {
   renderLevel() {
     return(
       <div>
+	  	<br />
+	  	<br />
 		<h1 style={{ marginBottom: 30 }}> Testsets </h1>
 	  	<br />
 	  	<br />
@@ -141,13 +145,19 @@ class App extends Component {
           {this.state.testsets.map((value, index) => {
             return (
               <div className="column" key={index}>
-                <div className="card" style={{borderRadius: 10}}>
-                  <button onClick={() => {this.setState({wordList: value['tokens'], activePage: 'activity'})}}>{value['test_code']}</button>
+                <div className="card testset_card" style={{borderRadius: 10}} onClick={() => {this.setState({wordList: value['tokens'], activePage: 'activity'})}}> {value['test_code']}
                 </div>
               </div>
             )
           })}
       </div>
+	  <br />
+	  <br />
+	  <br />
+	  <br />
+	  <div className='row'>
+	  <button className='button' onClick={() => {this.setState({activePage: 'index'})}}> Back </button>
+	  </div>
 	</div>
     );
   }
@@ -155,13 +165,17 @@ class App extends Component {
   renderReport() {
     return (
       <div>
+	  	<br />
+	  	<br />
         <h1> Report </h1>
+	  	<br />
+	  	<br />
         <div className="row">
         {this.state.wordList.map((value, index) => {
           return (
-            <div className="column col-md-2" key={index}>
-              <div className="card" style={this.state.selections[index] === "yes" ? {background: "#01a22b88"} : {background: "#c51a0988"}}>
-                <h4 style={{textAlign: "center"}}>{value}</h4>
+            <div className="column col-md-3 col-sm-4" key={index}>
+              <div className="card report_card" style={this.state.selections[index] === "yes" ? {background: "#01a22b88"} : {background: "#c51a0988"}}>
+                <h4 style={{textAlign: "center", display: "table-cell"}}>{value}</h4>
               </div>
             </div>
           )
