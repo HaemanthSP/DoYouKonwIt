@@ -33,8 +33,7 @@ def parse_vocab_test(text):
 def build_dataset(data_dir, vocab_test_name):
     """
     """
-    # answers = parse_answer_codes(answer_file)
-    answers = defaultdict(list)
+    answers = parse_answer_codes()
     vocab_test = []
     dir_content = sorted(list(os.listdir(data_dir)))
     for level in dir_content:
@@ -64,8 +63,17 @@ def build_dataset(data_dir, vocab_test_name):
         pickle.dump(vocab_test, vocab_test_file)
 
 
-def parse_answer_codes(text):
+def parse_answer_codes():
     """
+    Parse the improper word indices and create a map to each test case
     """
-    improper_words_idx = {}
-    return improper_words_idx
+    with open('data/raw_data/improper_indices') as tf:
+        text = tf.readlines()
+
+    improper_word_ids = {}
+    for i in range(0, len(text), 2):
+        test_code = text[i].strip()
+        test_code = re.sub(" code ", " ", test_code)
+        improper_word_ids[test_code] = text[i+1].strip().split()
+
+    return improper_word_ids
