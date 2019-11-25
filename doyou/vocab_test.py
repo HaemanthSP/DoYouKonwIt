@@ -56,7 +56,7 @@ def build_dataset(data_dir, vocab_test_name):
             testsets.append({
                 "test_code": test_code,
                 "tokens": tokens,
-                "answers": answers[test_code]})
+                "improper_Ids": answers[test_code]})
         vocab_test.append({'level': level_name, 'testsets': testsets})
 
     with open('data/vocab_tests/' + vocab_test_name + '.p', 'wb') as vocab_test_file:
@@ -74,6 +74,6 @@ def parse_answer_codes():
     for i in range(0, len(text), 2):
         test_code = text[i].strip()
         test_code = re.sub(" code ", " ", test_code)
-        improper_word_ids[test_code] = text[i+1].strip().split()
+        improper_word_ids[test_code] = list(map(int, text[i+1].strip().split()))
 
     return improper_word_ids

@@ -15,6 +15,9 @@ class App extends Component {
             selection: "",
             selections: [],
             levels: [],
+			hits: 0,
+			falseHits: 0,
+			improperIds: [],
 
             // UI Handling
             isLoading: true,
@@ -61,6 +64,8 @@ class App extends Component {
           selections: [],
           isLoading: false,
           activePage: "activity",
+          hits: 0,
+          falseHits: 0
         })
       })
   }
@@ -71,7 +76,7 @@ class App extends Component {
   }
 
   handleKeyPress (e) {
-    if (e.which === 89) {
+    if (e.which === 89) { 
        this.selection("yes")
     }
     else if (e.which === 78) {
@@ -80,17 +85,37 @@ class App extends Component {
   }
 
   selection (choice) {
+
+	if (this.state.activeWordIndex + 1 <= this.state.wordList.length) {
+	// Handle true and false hits	
+	var hitBuffer = 0;
+	var falseHitBuffer = 0;
+	if (choice === 'yes') {
+        debugger;
+		if (this.state.improperIds.indexOf(this.state.activeWordIndex + 1) >= 0) {
+			falseHitBuffer = 1;
+			choice = 'wrong';
+		}
+		else {
+			hitBuffer = 1
+		}
+	}
+
     var joined = this.state.selections.concat(choice);
-    var page = "activity"
-    if(joined.length >= this.state.wordList.length) {
+    var page = this.state.activePage
+    if(joined.length >= this.state.wordList.length && this.state.wordList.length > 0) {
        page = "report"
     }
+
     this.setState({
         selection: choice,
         activeWordIndex: this.state.activeWordIndex + 1,
+		falseHits: this.state.falseHits + falseHitBuffer,
+		hits: this.state.hits + hitBuffer,
         selections: joined,
         activePage: page
     })
+   } 
   }
 
   renderActivity() {
@@ -145,7 +170,7 @@ class App extends Component {
           {this.state.testsets.map((value, index) => {
             return (
               <div className="column" key={index}>
-                <div className="card testset_card" style={{borderRadius: 10}} onClick={() => {this.setState({wordList: value['tokens'], activePage: 'activity'})}}> {value['test_code']}
+                <div className="card testset_card" style={{borderRadius: 10}} onClick={() => {this.setState({wordList: value['tokens'], improperIds: value['improper_Ids'], activePage: 'activity'})}}> {value['test_code']}
                 </div>
               </div>
             )
@@ -168,21 +193,52 @@ class App extends Component {
 	  	<br />
 	  	<br />
         <h1> Report </h1>
-	  	<br />
-	  	<br />
+		<div className="row">
+			<div className="column">
+			  <div className="card" style={{borderRadius: 10 }}>
+			    <h4>Hits</h4><br />
+			    <h2>{this.state.hits}</h2>
+			  </div>
+			</div>
+			<div className="column">
+			  <div className="card" style={{borderRadius: 10 }}>
+			    <h4>False Hits</h4><br />
+			    <h2>{this.state.falseHits}</h2>
+			  </div>
+			</div>
+		</div>
         <div className="row">
         {this.state.wordList.map((value, index) => {
           return (
             <div className="column col-md-3 col-sm-4" key={index}>
-              <div className="card report_card" style={this.state.selections[index] === "yes" ? {background: "#01a22b88"} : {background: "#c51a0988"}}>
-                <h4 style={{textAlign: "center", display: "table-cell"}}>{value}</h4>
-              </div>
+			  {this.renderReportCard(index, value)}
             </div>
           )
         })}
       </div>
+	  <br />
+	  <br />
       </div>
     );
+  }
+
+  renderReportCard (index, value) {
+    var selection = this.state.selections[index];
+	var bgColor;
+	var textColor = "black";
+	if (selection === "yes") {
+		bgColor = "#01a22b88";
+	} else if (selection === "wrong") {
+		bgColor = "#c51a0988";
+	} else {
+		bgColor = "grey";
+		textColor = "white";
+	}
+	return (
+    	<div className="card report_card" style={{color: textColor, background: bgColor}}>
+    	  <h4 style={{textAlign: "center", display: "table-cell"}}>{value}</h4>
+    	</div>
+	 );
   }
 
   render() {
