@@ -10,7 +10,7 @@ DATAPATH = "./data/users"
 
 
 class Name:
-    def __init__(self, first_name, middle_name, last_name, salutation):
+    def __init__(self, first_name, middle_name, last_name, salutation=""):
         self.fname = first_name
         self.mname = middle_name
         self.lname = last_name
@@ -53,7 +53,7 @@ class Student(User):
         super().__init__(name, password)
         self.results = defaultdict(dict)
         self.active_test = None
-        self.role = 'Teacher'
+        self.role = 'Student'
 
     def add_result(self, test_code, result):
         timestamp = datetime.datetime.now().timestamp()
@@ -64,3 +64,15 @@ class Teacher(User):
     def __init__(self, name, password):
         super().__init__(name, password)
         self.role = 'Teacher'
+
+
+class Admin(User):
+    def __init__(self, name, password):
+        super().__init__(name, password)
+        self.role = 'Admin'
+
+
+class SuperUser(User):
+    def __init__(self, name, password):
+        super().__init__(name, password)
+        self.role = 'Super'

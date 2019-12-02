@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api/v1/getwordlist$', views.GetWordList.as_view(), name='get word list'),
     url(r'^api/v1/getlevels$', views.GetLevels.as_view(), name='get levels'),
+    url(r'^api/v1/signup$', views.SignUp.as_view(), name='post signup'),
 ]

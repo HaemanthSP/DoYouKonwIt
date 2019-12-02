@@ -22,6 +22,15 @@ class App extends Component {
             // UI Handling
             // isLoading: true,
             activePage: "login",
+
+            // Login details
+
+            firstName: "",
+            lastName: "",
+            middleName: "",
+            role: "",
+            email: "",
+            password: "",
         };
        this.pages = {
          "login": this.renderLogin.bind(this),
@@ -154,7 +163,8 @@ class App extends Component {
                       <input className="loginfield" type="text" onChange={this.handleChange} name="firstName" placeholder="First Name" required /> <br />
                       <input className="loginfield" type="text" onChange={this.handleChange} name="middleName" placeholder="Middle Name (Optional)" /><br />
                       <input className="loginfield" type="text" onChange={this.handleChange} name="lastName" placeholder="Last Name" required /><br />
-                      <select className="loginfield" name="role">
+                      <select className="loginfield" name="role"onChange={this.handleChange} placholder="role">
+                        <option></option> 
                         <option value="student" required>Student</option>
                         <option value="teacher" required>Teacher</option>
                       </select><br />
