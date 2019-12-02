@@ -157,22 +157,38 @@ class App extends Component {
   renderLogin() {
     return (
               <div className="container">
-                <section className="login">
-                  <form onSubmit={this.signup}>
-                    <h1>Login</h1>
-                      <input className="loginfield" type="text" onChange={this.handleChange} name="firstName" placeholder="First Name" required /> <br />
-                      <input className="loginfield" type="text" onChange={this.handleChange} name="middleName" placeholder="Middle Name (Optional)" /><br />
-                      <input className="loginfield" type="text" onChange={this.handleChange} name="lastName" placeholder="Last Name" required /><br />
-                      <select className="loginfield" name="role"onChange={this.handleChange} placholder="role">
-                        <option></option> 
-                        <option value="student" required>Student</option>
-                        <option value="teacher" required>Teacher</option>
-                      </select><br />
-                      <input className="loginfield" type="text" onChange={this.handleChange} name="email" placeholder="Email id (Optional)" /><br />
-                      <input className="loginfield" type="text" className="password" onChange={this.handleChange} name="password" placeholder="password" required /><br />
-                      <input className="loginfield" type="submit" value="Submit" />
-                  </form>
-                </section>
+				<div className="render-list clearfix">
+                <ul className="tab-header nav nav-tabs">
+                    <li className="active">Login
+                     
+					  <form id="signup" onSubmit={this.signup}>
+                        <h1>Sign up</h1>
+                          <input className="loginfield" type="text" onChange={this.handleChange} name="firstName" placeholder="First Name" required /> <br />
+                          <input className="loginfield" type="text" onChange={this.handleChange} name="middleName" placeholder="Middle Name (Optional)" /><br />
+                          <input className="loginfield" type="text" onChange={this.handleChange} name="lastName" placeholder="Last Name" required /><br />
+                          <select className="loginfield" name="role"onChange={this.handleChange} placholder="role">
+                            <option></option> 
+                            <option value="student" required>Student</option>
+                            <option value="teacher" required>Teacher</option>
+                          </select><br />
+                          <input className="loginfield" type="text" onChange={this.handleChange} name="email" placeholder="Email id (Optional)" /><br />
+                          <input className="loginfield" type="text" className="password" onChange={this.handleChange} name="password" placeholder="password" required /><br />
+                          <input className="loginfield" type="submit" value="Submit" />
+                      </form>
+
+   				  </li>
+                    <li>Sign up
+                      <form id="login">
+                        <h1>Login</h1>
+                          <input className="loginfield" type="text" onChange={this.handleChange} name="firstName" placeholder="First Name" required /> <br />
+                          <input className="loginfield" type="text" onChange={this.handleChange} name="middleName" placeholder="Middle Name (Optional)" /><br />
+                          <input className="loginfield" type="text" onChange={this.handleChange} name="lastName" placeholder="Last Name" required /><br />
+                          <input className="loginfield" type="text" className="password" onChange={this.handleChange} name="password" placeholder="password" required /><br />
+                          <input className="loginfield" type="submit" value="Submit" />
+                      </form>
+					</li>
+                </ul>
+			</div>
       </div>
     );
   }
