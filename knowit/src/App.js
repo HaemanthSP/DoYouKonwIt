@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-var HOST = '192.168.23.222'
+var HOST = '192.168.43.119'
 
 class App extends Component {
      constructor(props) {
@@ -20,10 +20,11 @@ class App extends Component {
 			improperIds: [],
 
             // UI Handling
-            isLoading: true,
-            activePage: "index",
+            // isLoading: true,
+            activePage: "login",
         };
        this.pages = {
+         "login": this.renderLogin.bind(this),
          "activity": this.renderActivity.bind(this),
          "index": this.renderIndex.bind(this),
          "level": this.renderLevel.bind(this),
@@ -31,6 +32,27 @@ class App extends Component {
        };
 
    }
+
+
+  signup = event => {
+    event.preventDefault();
+    let stateData = this.state;
+    const user = {
+      firstname: stateData.firstName,
+      lastname: stateData.lastName,
+      middlename: stateData.middleName,
+      role: stateData.role,
+      email: stateData.email,
+      password: stateData.password
+    };
+    this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + ':8000/api/v1/signup', user, config)
+      .then(response => {
+        this.setState({activePage: "stats",
+                       isLoading: false})
+      })
+  }
 
   getLevels = (event) => {
     let stateData = this.state;
@@ -71,7 +93,8 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.getLevels();
+    // this.getLevels();
+    this.setState({activePage: 'login'});
     document.addEventListener("keyup", this.handleKeyPress.bind(this));
   }
 
@@ -82,6 +105,10 @@ class App extends Component {
     else if (e.which === 78) {
        this.selection("no")
     }
+  }
+
+  handleChange = evt => {
+    this.setState({ [evt.target.name]: evt.target.value });
   }
 
   selection (choice) {
@@ -116,6 +143,28 @@ class App extends Component {
         activePage: page
     })
    } 
+  }
+
+  renderLogin() {
+    return (
+              <div className="container">
+                <section className="login">
+                  <form onSubmit={this.signup}>
+                    <h1>Login</h1>
+                      <input className="loginfield" type="text" onChange={this.handleChange} name="firstName" placeholder="First Name" required /> <br />
+                      <input className="loginfield" type="text" onChange={this.handleChange} name="middleName" placeholder="Middle Name (Optional)" /><br />
+                      <input className="loginfield" type="text" onChange={this.handleChange} name="lastName" placeholder="Last Name" required /><br />
+                      <select className="loginfield" name="role">
+                        <option value="student" required>Student</option>
+                        <option value="teacher" required>Teacher</option>
+                      </select><br />
+                      <input className="loginfield" type="text" onChange={this.handleChange} name="email" placeholder="Email id (Optional)" /><br />
+                      <input className="loginfield" type="text" className="password" onChange={this.handleChange} name="password" placeholder="password" required /><br />
+                      <input className="loginfield" type="submit" value="Submit" />
+                  </form>
+                </section>
+      </div>
+    );
   }
 
   renderActivity() {
