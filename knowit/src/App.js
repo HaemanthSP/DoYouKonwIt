@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-var HOST = '192.168.43.119'
+var HOST = '192.168.24.89'
 
 class App extends Component {
      constructor(props) {
@@ -31,9 +31,11 @@ class App extends Component {
             role: "",
             email: "",
             password: "",
+			message: "",
         };
        this.pages = {
          "login": this.renderLogin.bind(this),
+         "signup": this.renderSignup.bind(this),
          "activity": this.renderActivity.bind(this),
          "index": this.renderIndex.bind(this),
          "level": this.renderLevel.bind(this),
@@ -58,11 +60,30 @@ class App extends Component {
     let config = { "Content-Type": "application/json" };
     axios.post('http://' + HOST + ':8000/api/v1/signup', user, config)
       .then(response => {
-        this.setState({activePage: "stats",
+        this.setState({activePage: response.data.isSuccess ? "index" : 'signup',
+					   message: response.data.message,
                        isLoading: false})
       })
   }
 
+  login = event => {
+    event.preventDefault();
+    let stateData = this.state;
+    const user = {
+      firstname: stateData.firstName,
+      lastname: stateData.lastName,
+      middlename: stateData.middleName,
+      password: stateData.password
+    };
+    this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + ':8000/api/v1/login', user, config)
+      .then(response => {
+        this.setState({activePage: response.data.isSuccess ? "index" : 'login',
+					   message: response.data.message,
+                       isLoading: false})
+      })
+  }
   getLevels = (event) => {
     let stateData = this.state;
     this.setState({ isLoading: true })
@@ -158,9 +179,35 @@ class App extends Component {
     return (
               <div className="container">
 				<div className="render-list clearfix">
-                <ul className="tab-header nav nav-tabs">
-                    <li className="active">Login
-                     
+					  <div>
+					  <button onClick={() => {this.setState({activePage: 'signup'})}}>Signup</button>
+					  </div>
+					  <div>
+    					  <h1 className='alert'>{this.state.message}</h1>
+					  </div>
+                      <form id="login" onSubmit={this.login}>
+                        <h1>Login</h1>
+                          <input className="loginfield" type="text" onChange={this.handleChange} name="firstName" placeholder="First Name" required /> <br />
+                          <input className="loginfield" type="text" onChange={this.handleChange} name="middleName" placeholder="Middle Name (Optional)" /><br />
+                          <input className="loginfield" type="text" onChange={this.handleChange} name="lastName" placeholder="Last Name" required /><br />
+                          <input className="loginfield" type="text" className="password" onChange={this.handleChange} name="password" placeholder="password" required /><br />
+                          <input className="loginfield" type="submit" value="Submit" />
+                      </form>
+			</div>
+      </div>
+    );
+  }
+
+  renderSignup() {
+	return (
+              <div className="container">
+				<div className="render-list clearfix">
+					  <div>
+					  <button onClick={() => {this.setState({activePage: 'login'})}}>Login</button>
+					  </div>
+					  <div>
+    					  <h1 className='alert'>{this.state.message}</h1>
+					  </div>
 					  <form id="signup" onSubmit={this.signup}>
                         <h1>Sign up</h1>
                           <input className="loginfield" type="text" onChange={this.handleChange} name="firstName" placeholder="First Name" required /> <br />
@@ -175,22 +222,9 @@ class App extends Component {
                           <input className="loginfield" type="text" className="password" onChange={this.handleChange} name="password" placeholder="password" required /><br />
                           <input className="loginfield" type="submit" value="Submit" />
                       </form>
-
-   				  </li>
-                    <li>Sign up
-                      <form id="login">
-                        <h1>Login</h1>
-                          <input className="loginfield" type="text" onChange={this.handleChange} name="firstName" placeholder="First Name" required /> <br />
-                          <input className="loginfield" type="text" onChange={this.handleChange} name="middleName" placeholder="Middle Name (Optional)" /><br />
-                          <input className="loginfield" type="text" onChange={this.handleChange} name="lastName" placeholder="Last Name" required /><br />
-                          <input className="loginfield" type="text" className="password" onChange={this.handleChange} name="password" placeholder="password" required /><br />
-                          <input className="loginfield" type="submit" value="Submit" />
-                      </form>
-					</li>
-                </ul>
 			</div>
       </div>
-    );
+	);
   }
 
   renderActivity() {

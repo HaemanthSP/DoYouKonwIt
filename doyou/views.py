@@ -53,3 +53,21 @@ class SignUp(APIView):
         this_user.save()
         data = {"status": "Success"}
         return Response(data=data, status=status.HTTP_200_OK)
+
+
+class Login(APIView):
+    def post(self, req):
+        firstname = json.loads(req.body)['firstname']
+        lastname = json.loads(req.body)['lastname']
+        middlename = json.loads(req.body)['middlename']
+        password = json.loads(req.body)['password']
+
+        name = user.Name(firstname, middlename, lastname)
+        password = user.Password(password)
+
+        is_valid = True
+        message = ''
+        if not is_valid:
+            message = 'Invalid username or password'
+        data = {"isValid": is_valid, 'message': message}
+        return Response(data=data, status=status.HTTP_200_OK)
