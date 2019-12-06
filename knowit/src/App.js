@@ -2,8 +2,19 @@ import axios from 'axios';
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {Paper, withStyles, Grid, TextField, Button, FormControlLabel, Checkbox, Select, FormControl, InputLabel, MenuItem} from '@material-ui/core';
+import { Face, Fingerprint } from '@material-ui/icons'
 
-var HOST = '192.168.24.89'
+const styles = theme => ({
+    margin: {
+        margin: theme.spacing.unit * 2,
+    },
+    padding: {
+        padding: theme.spacing.unit
+    }
+});
+
+var HOST = '192.168.28.224'
 
 class App extends Component {
      constructor(props) {
@@ -21,7 +32,7 @@ class App extends Component {
 
             // UI Handling
             // isLoading: true,
-            activePage: "login",
+            activePage: "signup",
 
             // Login details
 
@@ -124,7 +135,7 @@ class App extends Component {
 
   componentWillMount() {
     // this.getLevels();
-    this.setState({activePage: 'login'});
+    this.setState({activePage: 'signup'});
     document.addEventListener("keyup", this.handleKeyPress.bind(this));
   }
 
@@ -176,54 +187,120 @@ class App extends Component {
   }
 
   renderLogin() {
-    return (
-              <div className="container">
-				<div className="render-list clearfix">
-					  <div>
-					  <button onClick={() => {this.setState({activePage: 'signup'})}}>Signup</button>
-					  </div>
+        const { classes } = this.props;
+    return ( 
+			 <Paper className="login_card">
+			   <div className="switch_container">
+			     <div className="login_switch" style={{background: "#47d836"}} onClick={() => {this.setState({activePage: 'signup'})}}>
+			     Signup 
+			     </div>
+			   </div>
+
+			   <h1>Login</h1>
+			   <form  onSubmit={this.login}>
 					  <div>
     					  <h1 className='alert'>{this.state.message}</h1>
 					  </div>
-                      <form id="login" onSubmit={this.login}>
-                        <h1>Login</h1>
-                          <input className="loginfield" type="text" onChange={this.handleChange} name="firstName" placeholder="First Name" required /> <br />
-                          <input className="loginfield" type="text" onChange={this.handleChange} name="middleName" placeholder="Middle Name (Optional)" /><br />
-                          <input className="loginfield" type="text" onChange={this.handleChange} name="lastName" placeholder="Last Name" required /><br />
-                          <input className="loginfield" type="text" className="password" onChange={this.handleChange} name="password" placeholder="password" required /><br />
-                          <input className="loginfield" type="submit" value="Submit" />
-                      </form>
-			</div>
-      </div>
+                <div>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="firstName" label="First Name" type="text" fullWidth autoFocus required />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="middleName" label="Middle Name" type="text" fullWidth autoFocus/>
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="lastName" label="Last Name" type="text" fullWidth autoFocus required />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="password" label="Password" type="password" fullWidth required />
+                        </Grid>
+                    </Grid>
+                    <Grid container alignItems="center" justify="space-between">
+                        <Grid item>
+                            <FormControlLabel control={
+                                <Checkbox
+                                    color="primary"
+                                />
+                            } label="Remember me" />
+                        </Grid>
+                        <Grid item>
+                            <Button disableFocusRipple disableRipple style={{ textTransform: "none" }} variant="text" color="primary">Forgot password ?</Button>
+                        </Grid>
+                    </Grid>
+                    <Grid container justify="center" style={{ marginTop: '25px' }}>
+                        <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Login</Button>
+                    </Grid>
+                </div>
+			  </form>
+            </Paper>
     );
   }
 
   renderSignup() {
 	return (
-              <div className="container">
-				<div className="render-list clearfix">
-					  <div>
-					  <button onClick={() => {this.setState({activePage: 'login'})}}>Login</button>
+			 <Paper className="login_card">
+				<div className="switch_container">
+					  <div className="login_switch" onClick={() => {this.setState({activePage: 'login'})}}>
+					  Login
 					  </div>
+				</div>
+			   <h1>Signup</h1>
+			   <form  onSubmit={this.signup}>
+
 					  <div>
     					  <h1 className='alert'>{this.state.message}</h1>
 					  </div>
-					  <form id="signup" onSubmit={this.signup}>
-                        <h1>Sign up</h1>
-                          <input className="loginfield" type="text" onChange={this.handleChange} name="firstName" placeholder="First Name" required /> <br />
-                          <input className="loginfield" type="text" onChange={this.handleChange} name="middleName" placeholder="Middle Name (Optional)" /><br />
-                          <input className="loginfield" type="text" onChange={this.handleChange} name="lastName" placeholder="Last Name" required /><br />
-                          <select className="loginfield" name="role"onChange={this.handleChange} placholder="role">
-                            <option></option> 
-                            <option value="student" required>Student</option>
-                            <option value="teacher" required>Teacher</option>
-                          </select><br />
-                          <input className="loginfield" type="text" onChange={this.handleChange} name="email" placeholder="Email id (Optional)" /><br />
-                          <input className="loginfield" type="text" className="password" onChange={this.handleChange} name="password" placeholder="password" required /><br />
-                          <input className="loginfield" type="submit" value="Submit" />
-                      </form>
-			</div>
-      </div>
+                <div>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="firstName" label="First Name" type="text" fullWidth autoFocus required onChange={this.handleChange}/>
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="middleName" label="Middle Name" type="text" fullWidth autoFocus onChange={this.handleChange}/>
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="lastName" label="Last Name" type="text" fullWidth autoFocus required onChange={this.handleChange}/>
+                        </Grid>
+                    </Grid>
+					<Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+						<FormControl fullWidth required>	
+							<InputLabel id="rolelist">Age</InputLabel>
+							<Select labelId="rolelist" name="role" value={this.state.role} onChange={this.handleChange}>
+							  <MenuItem value=""><em>None</em></MenuItem>
+							  <MenuItem value="student">Student</MenuItem>
+							  <MenuItem value="teacher">Teacher</MenuItem>
+							</Select>
+                        </FormControl>
+						 </Grid>
+			        </Grid>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="email" label="E-mail" type="email" fullWidth autoFocus onChange={this.handleChange} />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="password" label="Password" type="password" fullWidth required onChange={this.handleChange}/>
+                        </Grid>
+                    </Grid>
+                    <Grid container justify="center" style={{ marginTop: '20px' }}>
+                        <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Sign up</Button>
+                    </Grid>
+                </div>
+			  </form>
+            </Paper>
 	);
   }
 

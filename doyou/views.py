@@ -44,6 +44,7 @@ class SignUp(APIView):
         email = json.loads(req.body)['email']
         password = json.loads(req.body)['password']
 
+        print("Details:\n%s\n%s\n%s\n%s\n " % (firstname, lastname, email, password))
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password)
 
