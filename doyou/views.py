@@ -37,7 +37,7 @@ class PostActivity(APIView):
 
 class SignUp(APIView):
     def post(self, req):
-        admin = user.load('virtual_admin.p')
+        admin = user.User.load('5debd5d026dcce24267fe859')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
@@ -63,7 +63,7 @@ class SignUp(APIView):
 
 class Login(APIView):
     def post(self, req):
-        admin = user.User.load('virtual_admin.p')
+        admin = user.User.load('5debd5d026dcce24267fe859')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
