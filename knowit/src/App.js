@@ -51,8 +51,7 @@ class App extends Component {
          "index": this.renderIndex.bind(this),
          "level": this.renderLevel.bind(this),
          "report": this.renderReport.bind(this)
-       };
-
+       }; 
    }
 
 
@@ -71,7 +70,7 @@ class App extends Component {
     let config = { "Content-Type": "application/json" };
     axios.post('http://' + HOST + ':8000/api/v1/signup', user, config)
       .then(response => {
-        this.setState({activePage: response.data.isSuccess ? "index" : 'signup',
+        this.setState({activePage: response.data.isValid ? "login" : 'signup',
 					   message: response.data.message,
                        isLoading: false})
       })
@@ -90,9 +89,14 @@ class App extends Component {
     let config = { "Content-Type": "application/json" };
     axios.post('http://' + HOST + ':8000/api/v1/login', user, config)
       .then(response => {
-        this.setState({activePage: response.data.isSuccess ? "index" : 'login',
+		if (response.data.isValid) {
+			this.getLevels();
+		}
+		else {
+        this.setState({activePage: 'login',
 					   message: response.data.message,
-                       isLoading: false})
+                       isLoading: false});
+		}
       })
   }
   getLevels = (event) => {
@@ -203,22 +207,22 @@ class App extends Component {
                 <div>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="firstName" label="First Name" type="text" fullWidth autoFocus required />
+                            <TextField name="firstName" label="First Name" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="middleName" label="Middle Name" type="text" fullWidth autoFocus/>
+                            <TextField name="middleName" label="Middle Name" type="text" fullWidth autoFocus onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="lastName" label="Last Name" type="text" fullWidth autoFocus required />
+                            <TextField name="lastName" label="Last Name" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="password" label="Password" type="password" fullWidth required />
+                            <TextField name="password" label="Password" type="password" fullWidth required  onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
                     <Grid container alignItems="center" justify="space-between">
@@ -442,7 +446,7 @@ class App extends Component {
           </div> : null
         }
         </div>
-    );
+    ); 
   }
 
 }

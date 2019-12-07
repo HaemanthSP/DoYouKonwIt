@@ -37,7 +37,7 @@ class PostActivity(APIView):
 
 class SignUp(APIView):
     def post(self, req):
-        admin = user.User.load('5dec1a3926dcce24267fe85e')
+        admin = user.User.load('5dec206426dcce24267fe860')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
@@ -57,13 +57,13 @@ class SignUp(APIView):
             is_valid = False
             message = "Sorry, your already has an account, Please Login"
         print("Message:", message)
-        data = {"status": is_valid, "message": message}
+        data = {"isValid": is_valid, "message": message}
         return Response(data=data, status=status.HTTP_200_OK)
 
 
 class Login(APIView):
     def post(self, req):
-        admin = user.User.load('5dec1a3926dcce24267fe85e')
+        admin = user.User.load('5dec206426dcce24267fe860')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
@@ -73,8 +73,12 @@ class Login(APIView):
         password = user.Password(password)
 
         is_valid = admin.validate_user(name, password)
-        message = 'Welcome %s' % (name.greet())
+        print("valid:", is_valid)
+        print("Name:", str(name))
+        print("Password:", password.password)
+        message = 'Welcome, %s' % (name.greet())
         if not is_valid:
             message = 'Invalid username or password'
+        print(message)
         data = {"isValid": is_valid, 'message': message}
         return Response(data=data, status=status.HTTP_200_OK)
