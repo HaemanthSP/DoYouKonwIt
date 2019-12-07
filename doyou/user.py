@@ -39,6 +39,7 @@ class User:
         self.name = name
         self.password = password
         self.uid = str(bson.objectid.ObjectId())
+        self.update_index()
 
     @staticmethod
     def load(uid):
@@ -48,7 +49,7 @@ class User:
 
     @staticmethod
     def get_index():
-        with open(os.path.join(DATAPATH, 'user_index.p')) as df:
+        with open(os.path.join(DATAPATH, 'user_index.p'), 'rb') as df:
             user_index = pickle.load(df)
         return user_index
 
@@ -59,7 +60,7 @@ class User:
     def update_index(self):
         user_index = User.get_index()
         user_index.update({str(self.name): self.uid})
-        with open(os.path.join(DATAPATH, 'user_index.p')) as df:
+        with open(os.path.join(DATAPATH, 'user_index.p'), 'wb') as df:
             pickle.dump(user_index, df)
 
     def save(self):
