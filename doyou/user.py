@@ -19,6 +19,9 @@ class Name:
     def greet(self):
         return self.fname
 
+    def __str__(self):
+        return ' '.join([self.fname, self.mname, self.lname])
+
 
 class Password:
     def __init__(self, password):
@@ -42,6 +45,22 @@ class User:
         with open(os.path.join(DATAPATH, uid + '.p'), 'rb') as df:
             teacher = pickle.load(df)
         return teacher
+
+    @staticmethod
+    def get_index():
+        with open(os.path.join(DATAPATH, 'user_index.p')) as df:
+            user_index = pickle.load(df)
+        return user_index
+
+    @staticmethod
+    def remove_user(uid):
+        raise NotImplementedError
+
+    def update_index(self):
+        user_index = User.get_index()
+        user_index.update({str(self.name): self.uid})
+        with open(os.path.join(DATAPATH, 'user_index.p')) as df:
+            pickle.dump(user_index, df)
 
     def save(self):
         with open(os.path.join(DATAPATH, self.uid + '.p'), 'wb') as df:
@@ -70,6 +89,8 @@ class Admin(User):
     def __init__(self, name, password):
         super().__init__(name, password)
         self.role = 'Admin'
+    
+    def 
 
 
 class SuperUser(User):
