@@ -74,6 +74,7 @@ class Student(User):
         self.results = defaultdict(dict)
         self.active_test = None
         self.role = 'Student'
+        self.save()
 
     def add_result(self, test_code, result):
         timestamp = datetime.datetime.now().timestamp()
@@ -84,12 +85,18 @@ class Teacher(User):
     def __init__(self, name, password):
         super().__init__(name, password)
         self.role = 'Teacher'
+        self.name = name
+        self.password = password
+        self.save()
 
 
 class Admin(User):
     def __init__(self, name, password):
         super().__init__(name, password)
         self.role = 'Admin'
+        self.name = name
+        self.password = password
+        self.save()
 
     def get_user(self, name):
         user_index = User.get_index()

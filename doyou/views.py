@@ -37,7 +37,7 @@ class PostActivity(APIView):
 
 class SignUp(APIView):
     def post(self, req):
-        admin = user.User.load('5debd85a26dcce24267fe85b')
+        admin = user.User.load('5debdb4626dcce24267fe85c')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
@@ -52,18 +52,18 @@ class SignUp(APIView):
             this_user = admin.add_user(name, password)
             is_valid = True
             message = "Congratulations, Your account has been created"
+            print(this_user.uid)
         else:
             is_valid = False
             message = "Sorry, your already has an account, Please Login"
-        print(this_user.uid)
-        this_user.save()
+        print("Message:", message)
         data = {"status": is_valid, "message": message}
         return Response(data=data, status=status.HTTP_200_OK)
 
 
 class Login(APIView):
     def post(self, req):
-        admin = user.User.load('5debd85a26dcce24267fe85b')
+        admin = user.User.load('5debdb4626dcce24267fe85c')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']

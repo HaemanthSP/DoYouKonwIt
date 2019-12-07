@@ -198,7 +198,7 @@ class App extends Component {
 			   <h1>Login</h1>
 			   <form  onSubmit={this.login}>
 					  <div>
-    					  <h1 className='alert'>{this.state.message}</h1>
+    					  <div className='authAlert' style={{color: 'red'}}>{this.state.message}</div>
 					  </div>
                 <div>
                     <Grid container spacing={8} alignItems="flex-end">
@@ -254,7 +254,7 @@ class App extends Component {
 			   <form  onSubmit={this.signup}>
 
 					  <div>
-    					  <h1 className='alert'>{this.state.message}</h1>
+    					  <div className='authAlert'>{this.state.message}</div>
 					  </div>
                 <div>
                     <Grid container spacing={8} alignItems="flex-end">
