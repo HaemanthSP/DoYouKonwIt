@@ -90,7 +90,7 @@ class Admin(User):
         super().__init__(name, password)
         self.role = 'Admin'
 
-    def get_user(self, name, role):
+    def get_user(self, name):
         user_index = User.get_index()
         uid = user_index.get(str(name), None)
         if uid:
@@ -104,6 +104,13 @@ class Admin(User):
 
     def remove_user(self, uid):
         raise NotImplementedError
+
+    def validate_user(self, name, password):
+        user = self.get_user(name)
+        if user:
+            return user.passwrod == password
+        else:
+            return False
 
 
 class SuperUser(User):

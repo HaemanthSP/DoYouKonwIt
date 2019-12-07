@@ -37,6 +37,7 @@ class PostActivity(APIView):
 
 class SignUp(APIView):
     def post(self, req):
+        admin = user.load('virtual_admin.p')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
@@ -47,17 +48,22 @@ class SignUp(APIView):
         print("Details:\n%s\n%s\n%s\n%s\n " % (firstname, lastname, email, password))
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password)
-
-        choose_role = {'student': user.Student, 'teacher': user.Teacher}
-        this_user = choose_role[role](name, password)
+        if admin.get_user(name):
+            this_user = admin.add_user(name, password)
+            is_valid = True
+            message = "Congratulations, Your account has been created"
+        else:
+            is_valid = False
+            message = "Sorry, your already has an account, Please Login"
         print(this_user.uid)
         this_user.save()
-        data = {"status": "Success"}
+        data = {"status": is_valid, "message": message}
         return Response(data=data, status=status.HTTP_200_OK)
 
 
 class Login(APIView):
     def post(self, req):
+        admin = user.User.load('virtual_admin.p')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
@@ -66,8 +72,8 @@ class Login(APIView):
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password)
 
-        is_valid = True
-        message = ''
+        is_valid = admin.validate_user(name, password)
+        message = 'Welcome %s' % (name.greet())
         if not is_valid:
             message = 'Invalid username or password'
         data = {"isValid": is_valid, 'message': message}

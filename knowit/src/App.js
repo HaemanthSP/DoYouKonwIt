@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.28.224'
+var HOST = '192.168.31.54'
 
 class App extends Component {
      constructor(props) {
@@ -153,7 +153,6 @@ class App extends Component {
   }
 
   selection (choice) {
-
 	if (this.state.activeWordIndex + 1 <= this.state.wordList.length) {
 	// Handle true and false hits	
 	var hitBuffer = 0;
@@ -276,7 +275,7 @@ class App extends Component {
 					<Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
 						<FormControl fullWidth required>	
-							<InputLabel id="rolelist">Age</InputLabel>
+							<InputLabel id="rolelist">Role</InputLabel>
 							<Select labelId="rolelist" name="role" value={this.state.role} onChange={this.handleChange}>
 							  <MenuItem value=""><em>None</em></MenuItem>
 							  <MenuItem value="student">Student</MenuItem>
