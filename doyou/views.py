@@ -37,7 +37,7 @@ class PostActivity(APIView):
 
 class SignUp(APIView):
     def post(self, req):
-        admin = user.User.load('5debdb4626dcce24267fe85c')
+        admin = user.User.load('5dec1a3926dcce24267fe85e')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
@@ -48,8 +48,8 @@ class SignUp(APIView):
         print("Details:\n%s\n%s\n%s\n%s\n " % (firstname, lastname, email, password))
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password)
-        if admin.get_user(name):
-            this_user = admin.add_user(name, password)
+        if not admin.get_user(name):
+            this_user = admin.add_user(name, password, role)
             is_valid = True
             message = "Congratulations, Your account has been created"
             print(this_user.uid)
@@ -63,7 +63,7 @@ class SignUp(APIView):
 
 class Login(APIView):
     def post(self, req):
-        admin = user.User.load('5debdb4626dcce24267fe85c')
+        admin = user.User.load('5dec1a3926dcce24267fe85e')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']

@@ -25,10 +25,13 @@ class Name:
 
 class Password:
     def __init__(self, password):
-        password = password
+        self.password = password
 
-    def validate(self, password):
-        raise NotImplementedError
+    def __eq__(self, other):
+        if isinstance(other, Password):
+            return self.password == other.password
+        elif type(other) == str:
+            return self.password == other
 
     def encrypt(self, password):
         raise NotImplementedError
@@ -107,8 +110,8 @@ class Admin(User):
             return None
 
     def add_user(self, name, password, role):
-        user_type = {'student': User.Student, 'teacher': User.Teacher}
-        return user_type[role](name, password, role)
+        user_type = {'student': Student, 'teacher': Teacher}
+        return user_type[role](name, password)
 
     def remove_user(self, uid):
         raise NotImplementedError
@@ -116,7 +119,7 @@ class Admin(User):
     def validate_user(self, name, password):
         user = self.get_user(name)
         if user:
-            return user.passwrod == password
+            return user.password == password
         else:
             return False
 

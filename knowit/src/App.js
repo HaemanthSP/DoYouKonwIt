@@ -190,7 +190,7 @@ class App extends Component {
     return ( 
 			 <Paper className="login_card">
 			   <div className="switch_container">
-			     <div className="login_switch" style={{background: "#47d836"}} onClick={() => {this.setState({activePage: 'signup'})}}>
+			     <div className="login_switch" style={{background: "#47d836"}} onClick={() => {this.setState({activePage: 'signup', message:""})}}>
 			     Signup 
 			     </div>
 			   </div>
@@ -246,7 +246,7 @@ class App extends Component {
 	return (
 			 <Paper className="login_card">
 				<div className="switch_container">
-					  <div className="login_switch" onClick={() => {this.setState({activePage: 'login'})}}>
+					  <div className="login_switch" onClick={() => {this.setState({activePage: 'login', message: ""})}}>
 					  Login
 					  </div>
 				</div>
@@ -254,7 +254,7 @@ class App extends Component {
 			   <form  onSubmit={this.signup}>
 
 					  <div>
-    					  <div className='authAlert'>{this.state.message}</div>
+    					  <div className='authAlert' style={{color: 'red'}} >{this.state.message}</div>
 					  </div>
                 <div>
                     <Grid container spacing={8} alignItems="flex-end">
