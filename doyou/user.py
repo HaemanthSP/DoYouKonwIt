@@ -89,8 +89,21 @@ class Admin(User):
     def __init__(self, name, password):
         super().__init__(name, password)
         self.role = 'Admin'
-    
-    def 
+
+    def get_user(self, name, role):
+        user_index = User.get_index()
+        uid = user_index.get(str(name), None)
+        if uid:
+            return User.load(uid)
+        else:
+            return None
+
+    def add_user(self, name, password, role):
+        user_type = {'student': User.Student, 'teacher': User.Teacher}
+        return user_type[role](name, password, role)
+
+    def remove_user(self, uid):
+        raise NotImplementedError
 
 
 class SuperUser(User):
