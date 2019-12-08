@@ -47,6 +47,7 @@ class App extends Component {
        this.pages = {
          "login": this.renderLogin.bind(this),
          "signup": this.renderSignup.bind(this),
+		 "landing": this.renderDashboard.bind(this),
          "activity": this.renderActivity.bind(this),
          "index": this.renderIndex.bind(this),
          "level": this.renderLevel.bind(this),
@@ -89,14 +90,15 @@ class App extends Component {
     let config = { "Content-Type": "application/json" };
     axios.post('http://' + HOST + ':8000/api/v1/login', user, config)
       .then(response => {
-		if (response.data.isValid) {
-			this.getLevels();
-		}
-		else {
-        this.setState({activePage: 'login',
-					   message: response.data.message,
-                       isLoading: false});
-		}
+	//	if (response.data.isValid) {
+	//		this.getLevels();
+	//	}
+	//	else {
+        this.setState({
+			activePage: response.data.isValid ? 'landing': 'login',
+			message: response.data.message,
+            isLoading: false});
+//		}
       })
   }
   getLevels = (event) => {
@@ -200,7 +202,7 @@ class App extends Component {
 			   </div>
 
 			   <h1>Login</h1>
-			   <form  onSubmit={this.login}>
+			   <form  onSubmit={this.login} style={{marginTop:"30px"}}>
 					  <div>
     					  <div className='authAlert' style={{color: 'red'}}>{this.state.message}</div>
 					  </div>
@@ -212,12 +214,12 @@ class App extends Component {
                     </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="middleName" label="Middle Name" type="text" fullWidth autoFocus onChange={this.handleChange}/>
+                            <TextField name="middleName" label="Middle Name" type="text" fullWidth onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="lastName" label="Last Name" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
+                            <TextField name="lastName" label="Last Name" type="text" fullWidth required  onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
@@ -255,7 +257,7 @@ class App extends Component {
 					  </div>
 				</div>
 			   <h1>Signup</h1>
-			   <form  onSubmit={this.signup}>
+			   <form  onSubmit={this.signup} style={{marginTop:"30px"}}>
 
 					  <div>
     					  <div className='authAlert' style={{color: 'red'}} >{this.state.message}</div>
@@ -268,12 +270,12 @@ class App extends Component {
                     </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="middleName" label="Middle Name" type="text" fullWidth autoFocus onChange={this.handleChange}/>
+                            <TextField name="middleName" label="Middle Name" type="text" fullWidth onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="lastName" label="Last Name" type="text" fullWidth autoFocus required onChange={this.handleChange}/>
+                            <TextField name="lastName" label="Last Name" type="text" fullWidth required onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
 					<Grid container spacing={8} alignItems="flex-end">
@@ -290,7 +292,7 @@ class App extends Component {
 			        </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="email" label="E-mail" type="email" fullWidth autoFocus onChange={this.handleChange} />
+                            <TextField name="email" label="E-mail" type="email" fullWidth onChange={this.handleChange} />
                         </Grid>
                     </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
@@ -304,6 +306,31 @@ class App extends Component {
                 </div>
 			  </form>
             </Paper>
+	);
+  }
+
+  renderHeader() {
+  	return (
+		<div>
+			<div className='header'>
+				<div>
+					<div className='AppName'>Name</div>
+					<div className='username'>{this.state.firstName}</div>
+				</div>
+			</div>
+		</div>
+	);
+  }
+
+
+ renderDashboard() {
+  	return (
+		<div className="canvas">
+			{this.renderHeader()}
+			<div className="content">
+			<div className="dashboardCard" onClick={this.getLevels}>Vocabulary test </div>
+			</div>
+		</div>
 	);
   }
 
@@ -326,12 +353,8 @@ class App extends Component {
 
   renderIndex() {
     return(
-        <div>
-	  	<br />
-	  	<br />
+        <div className="canvas">
 		<h1 style={{ marginBottom: 30 }}> Levels </h1>
-	  	<br />
-	  	<br />
         <div className="row">
           {this.state.levels.map((value, index) => {
             return (

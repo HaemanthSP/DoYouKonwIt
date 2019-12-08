@@ -217,3 +217,43 @@
 .switch_container {
   margin-left: 117%;
 }
+
+.canvas {
+  height: 100vh;
+}
+
+.AppName {
+  float: left;
+  font-size: 2em
+}
+
+.username {
+  float: right;
+  font-size: 1.25em;
+}
+
+.header {
+  padding: 2%;
+  height: 100px; 
+}
+
+.content {
+  padding: 2%;
+  margin-top: 100px;
+}
+
+.dashboardCard {
+    width: 150px;
+    height: 150px;
+    box-shadow: 8px 11px 4px 0px;
+    /* border: none; */
+    border-radius: 10px;
+    border: none;
+    background: linear-gradient(45deg, #da89e8, #132eea6b);
+    color: white;
+    font-weight: 800;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    padding: 10px;
+}
