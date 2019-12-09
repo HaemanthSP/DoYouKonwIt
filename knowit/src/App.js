@@ -165,7 +165,6 @@ class App extends Component {
 	var hitBuffer = 0;
 	var falseHitBuffer = 0;
 	if (choice === 'yes') {
-        debugger;
 		if (this.state.improperIds.indexOf(this.state.activeWordIndex + 1) >= 0) {
 			falseHitBuffer = 1;
 			choice = 'wrong';

@@ -77,11 +77,40 @@ class Student(User):
         self.results = defaultdict(dict)
         self.active_test = None
         self.role = 'Student'
+        self.session = None
+        self.logs = []
+        self.tests = []
+        self.active_test = ''
+        self.responses = []
         self.save()
 
     def add_result(self, test_code, result):
         timestamp = datetime.datetime.now().timestamp()
         self.results[test_code][timestamp] = result
+
+    def get_test(self):
+        if self.session:
+            # TODO: Threshold for time difference for valid session
+            return self.tests
+
+        else:
+            # TODO: Implement experiment class to define experiments
+            # exp = Experiment.load_recent()
+            # self.tests = exp.get_tests()
+            self.tests = [load_test(code)
+                          for code in ['test_101', 'test_201', 'test_102']]
+            self.active_test = self.tests[0]['code']
+            return self.tests
+
+    def update_response(self, test_code, response):
+        assert self.active_test == test_code
+        timestamp = datetime.datetime.now().timestamp()
+        self.log.append({"time": timestamp, "response": response})
+        self.response.append(response)
+
+    def evaluate(self, test_code):
+        assert self.active_test == test_code
+        assert self.tests[0]["code"] == test_code
 
 
 class Teacher(User):
