@@ -224,17 +224,27 @@
 
 .AppName {
   float: left;
-  font-size: 2em
+  font-size: 2.5em;
+  font-family: cursive;
+  color: yellowgreen;
+  background: radial-gradient(#ccff0066, transparent);
+  cursor: pointer;
 }
 
 .username {
   float: right;
   font-size: 1.25em;
+  cursor: pointer;
+  margin-top: 30px;
+  color: dimgrey;
 }
 
 .header {
   padding: 2%;
   height: 100px; 
+  border-bottom-style: solid;
+  border-bottom-width: medium;
+  border-bottom-color: #a9a9a91f;
 }
 
 .content {
@@ -256,4 +266,5 @@
     text-align: center;
     vertical-align: middle;
     padding: 10px;
+    cursor: pointer;
 }

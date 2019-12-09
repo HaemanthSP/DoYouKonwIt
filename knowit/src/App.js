@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.31.54'
+var HOST = '192.168.44.160'
 
 class App extends Component {
      constructor(props) {
@@ -314,7 +314,7 @@ class App extends Component {
 		<div>
 			<div className='header'>
 				<div>
-					<div className='AppName'>Name</div>
+					<div className='AppName' onClick={()=>{this.setState({activePage: "landing"})}}>HomeWork</div>
 					<div className='username'>{this.state.firstName}</div>
 				</div>
 			</div>
@@ -336,7 +336,9 @@ class App extends Component {
 
   renderActivity() {
     return (
-      <div>
+      <div className="canvas">
+		{this.renderHeader()}
+		<div className="content">
         <div id="progressbar" style={{marginTop: "50px"}}>
           <div style={{ width: (this.state.activeWordIndex / this.state.wordList.length) * 100 + "%" }}></div>
         </div>
@@ -347,13 +349,16 @@ class App extends Component {
             <button className="button option red" onClick={() => {this.selection("no")}}> Unbakannt (N) </button>
           </div>
         </div>
+        </div>
       </div>
     );
   }
 
   renderIndex() {
     return(
-        <div className="canvas">
+      	<div className="canvas">
+			{this.renderHeader()}
+		<div className="content">
 		<h1 style={{ marginBottom: 30 }}> Levels </h1>
         <div className="row">
           {this.state.levels.map((value, index) => {
@@ -366,15 +371,16 @@ class App extends Component {
             )
           })}
         </div>
+	  </div>
 	 </div>
     );
   }
 
   renderLevel() {
     return(
-      <div>
-	  	<br />
-	  	<br />
+      	<div className="canvas">
+			{this.renderHeader()}
+      <div className="content">
 		<h1 style={{ marginBottom: 30 }}> Testsets </h1>
 	  	<br />
 	  	<br />
@@ -395,6 +401,7 @@ class App extends Component {
 	  <div className='row'>
 	  <button className='button' onClick={() => {this.setState({activePage: 'index'})}}> Back </button>
 	  </div>
+	</div>
 	</div>
     );
   }
