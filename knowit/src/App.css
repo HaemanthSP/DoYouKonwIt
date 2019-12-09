@@ -259,7 +259,7 @@
     /* border: none; */
     border-radius: 10px;
     border: none;
-    background: linear-gradient(45deg, #da89e8, #132eea6b);
+    background: linear-gradient(45deg, #00ea89, #be21ff);
     color: white;
     font-weight: 800;
     display: table-cell;
@@ -267,4 +267,5 @@
     vertical-align: middle;
     padding: 10px;
     cursor: pointer;
+    margin: 10px;
 }

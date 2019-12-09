@@ -328,7 +328,11 @@ class App extends Component {
 		<div className="canvas">
 			{this.renderHeader()}
 			<div className="content">
-			<div className="dashboardCard" onClick={this.getLevels}>Vocabulary test </div>
+			<div className="row">
+			<button className="dashboardCard" onClick={this.getLevels}>English vocabulary test </button>
+			<button className="dashboardCard" style={{background: "linear-gradient(45deg, rgb(98, 255, 0), rgba(0, 0, 0, 0.79))"}}>Science MCQs</button>
+			<button className="dashboardCard" style={{background: "linear-gradient(45deg, rgba(224, 106, 23, 0.92), rgba(6, 3, 222, 0.79))"}}>Maths Assignment 01</button>
+			</div>
 			</div>
 		</div>
 	);
@@ -339,7 +343,7 @@ class App extends Component {
       <div className="canvas">
 		{this.renderHeader()}
 		<div className="content">
-        <div id="progressbar" style={{marginTop: "50px"}}>
+        <div id="progressbar">
           <div style={{ width: (this.state.activeWordIndex / this.state.wordList.length) * 100 + "%" }}></div>
         </div>
         <h1 className="word"> {this.state.wordList[this.state.activeWordIndex]} </h1>
@@ -382,8 +386,6 @@ class App extends Component {
 			{this.renderHeader()}
       <div className="content">
 		<h1 style={{ marginBottom: 30 }}> Testsets </h1>
-	  	<br />
-	  	<br />
         <div className="row">
           {this.state.testsets.map((value, index) => {
             return (
