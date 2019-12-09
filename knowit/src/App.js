@@ -39,7 +39,8 @@ class App extends Component {
             firstName: "",
             lastName: "",
             middleName: "",
-            role: "",
+			role: "student",
+            teacher: "",
             email: "",
             password: "",
 			message: "",
@@ -212,7 +213,7 @@ class App extends Component {
                             <TextField name="firstName" label="First Name" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
-                    <Grid container spacing={8} alignItems="flex-end">
+                    <Grid container spacing={8} alignItems="flex-end" style={{display: "none"}}>
                         <Grid item md={true} sm={true} xs={true}>
                             <TextField name="middleName" label="Middle Name" type="text" fullWidth onChange={this.handleChange}/>
                         </Grid>
@@ -268,7 +269,7 @@ class App extends Component {
                             <TextField name="firstName" label="First Name" type="text" fullWidth autoFocus required onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
-                    <Grid container spacing={8} alignItems="flex-end">
+                    <Grid container spacing={8} alignItems="flex-end" style={{display: "none"}}>
                         <Grid item md={true} sm={true} xs={true}>
                             <TextField name="middleName" label="Middle Name" type="text" fullWidth onChange={this.handleChange}/>
                         </Grid>
@@ -281,16 +282,18 @@ class App extends Component {
 					<Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
 						<FormControl fullWidth required>	
-							<InputLabel id="rolelist">Role</InputLabel>
-							<Select labelId="rolelist" name="role" value={this.state.role} onChange={this.handleChange}>
+							<InputLabel id="rolelist">Teacher</InputLabel>
+							<Select labelId="rolelist" name="teacher" value={this.state.teacher} onChange={this.handleChange}>
 							  <MenuItem value=""><em>None</em></MenuItem>
-							  <MenuItem value="student">Student</MenuItem>
-							  <MenuItem value="teacher">Teacher</MenuItem>
+							  <MenuItem value="teacher1">Detmar</MenuItem>
+							  <MenuItem value="teacher2">Christoph</MenuItem>
+							  <MenuItem value="teacher3">Nicholas</MenuItem>
+							  <MenuItem value="teacher4">Joerg</MenuItem>
 							</Select>
                         </FormControl>
 						 </Grid>
 			        </Grid>
-                    <Grid container spacing={8} alignItems="flex-end">
+                    <Grid container spacing={8} alignItems="flex-end" style={{display: "none"}}>
                         <Grid item md={true} sm={true} xs={true}>
                             <TextField name="email" label="E-mail" type="email" fullWidth onChange={this.handleChange} />
                         </Grid>
