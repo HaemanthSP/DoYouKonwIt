@@ -80,6 +80,7 @@ class Student(User):
         self.session = None
         self.logs = []
         self.tests = []
+        self.results = []
         self.active_test = ''
         self.responses = []
         self.save()
@@ -89,24 +90,25 @@ class Student(User):
         self.results[test_code][timestamp] = result
 
     def get_test(self):
-        if self.session:
+        if self.tests:
             # TODO: Threshold for time difference for valid session
             return self.tests
 
         else:
             # TODO: Implement experiment class to define experiments
-            # exp = Experiment.load_recent()
-            # self.tests = exp.get_tests()
-            self.tests = [load_test(code)
-                          for code in ['test_101', 'test_201', 'test_102']]
+            exp = Experiment.load_recent()
+            self.tests = exp.get_tests()
             self.active_test = self.tests[0]['code']
             return self.tests
 
     def update_response(self, test_code, response):
-        assert self.active_test == test_code
-        timestamp = datetime.datetime.now().timestamp()
-        self.log.append({"time": timestamp, "response": response})
-        self.response.append(response)
+        if self.active_test == test_code:
+            timestamp = datetime.datetime.now().timestamp()
+            self.log.append({"time": timestamp, "response": response})
+            self.response = response
+            return True
+        else:
+            return False
 
     def evaluate(self, test_code):
         assert self.active_test == test_code
@@ -157,3 +159,13 @@ class SuperUser(User):
     def __init__(self, name, password):
         super().__init__(name, password)
         self.role = 'Super'
+
+
+class Experiment():
+    def __init__(self, exp_id):
+        self.exp_id = exp_id
+
+    def get_tests(self):
+        vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
+        tests = vocab_test[0]['testsets'][:3]
+        return tests

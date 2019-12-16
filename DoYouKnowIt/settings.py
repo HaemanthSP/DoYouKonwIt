@@ -58,10 +58,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 #CORS_ORIGIN_WHITELIST = (
 #    'http://localhost:3000',
 #    'http://localhost:8000',
-#    'http://192.168.3.184:3000',
-#    'http://192.168.3.184:8000',
-#    'http://192.168.24.206:3000',
-#    'http://192.168.24.206:8000',
 #)
 
 ROOT_URLCONF = 'DoYouKnowIt.urls'

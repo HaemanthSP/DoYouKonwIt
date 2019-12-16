@@ -58,7 +58,7 @@ class SignUp(APIView):
             message = "Sorry, your already has an account, Please Login"
         print("Message:", message)
         data = {"isValid": is_valid, "message": message}
-        return Response(data=data, status=status.HTTP_200_OK)
+         return Response(data=data, status=status.HTTP_200_OK)
 
 
 class Login(APIView):
@@ -88,4 +88,24 @@ class GetTests(APIView):
     def post(self, req):
         vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
         data = {"tests": vocab_test[0]['testsets'][:3]}
+        return Response(data=data, status=status.HTTP_200_OK)
+
+
+class UpdateResult(APIView):
+    def post(self, req):
+        firstname = json.loads(req.body)['firstname']
+        lastname = json.loads(req.body)['lastname']
+        middlename = json.loads(req.body)['middlename']
+        password = json.loads(req.body)['password']
+        test_code = json.loads(req.body)['testcode']
+        selections = json.loads(req.body)['selections']
+
+        name = user.Name(firstname, middlename, lastname)
+        password = user.Password(password)
+
+        student = user.load(name, password)
+        is_valid = student.update_response(test_code, selections)
+
+        # TODO: Capture collision (due to two active sessions of same user)
+        data = {"isValid": is_valid, 'message': "Success" if is_valid else "Collision"}
         return Response(data=data, status=status.HTTP_200_OK)

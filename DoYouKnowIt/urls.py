@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^api/v1/getwordlist$', views.GetWordList.as_view(), name='get word list'),
     url(r'^api/v1/getlevels$', views.GetLevels.as_view(), name='get levels'),
     url(r'^api/v1/gettests$', views.GetTests.as_view(), name='get tests'),
+    url(r'^api/v1/updateresult$', views.UpdateResult.as_view(), name='update result'),
     url(r'^api/v1/signup$', views.SignUp.as_view(), name='post signup'),
     url(r'^api/v1/login$', views.Login.as_view(), name='post Login'),
 ]

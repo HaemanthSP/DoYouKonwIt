@@ -109,6 +109,29 @@ class App extends Component {
 	    }
       })
   }
+
+  update = event => {
+    event.preventDefault();
+    let stateData = this.state;
+    const user = {
+      firstname: stateData.firstName,
+      lastname: stateData.lastName,
+      middlename: stateData.middleName,
+      role: stateData.role,
+      email: stateData.email,
+      password: stateData.password,
+      testcode: this.state.tests[this.state.activeTestIndex]['test_code'],
+      selections: this.state.selections
+    };
+    // this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + ':8000/api/v1/updateresult', user, config)
+      .then(response => {
+        this.setState({message: response.data.message
+                       })
+      })
+  }
+
   getLevels = (event) => {
     let stateData = this.state;
     this.setState({ isLoading: true })
@@ -134,10 +157,10 @@ class App extends Component {
       username: stateData.user,
     };
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/getTests', user, config)
+    axios.post('http://' + HOST + ':8000/api/v1/gettests', user, config)
       .then(response => {
         this.setState({
-          getTests: response.data.tests,
+          tests: response.data.tests,
           isLoading: false,
           wordList: response.data.tests[0]['tokens'],
           improperIds: response.data.tests[0]['improper_Ids'],
@@ -439,19 +462,17 @@ class App extends Component {
 
   nextTest() {
     var testIndex = this.state.activeTestIndex + 1;
-    return (
-        this.setState({
-          activeTestIndex: testIndex,
-          wordList: this.state.tests[testIndex]['tokens'],
-          improperIds: this.state.tests[testIndex]['improper_Ids'],
-          activeWordIndex: 0,
-          selection: "",
-          selections: [],
-          levels: [],
-		  hits: 0,
-		  falseHits: 0,
-          activePage: 'activity'})
-    );
+    this.setState({
+      activeTestIndex: testIndex,
+      wordList: this.state.tests[testIndex]['tokens'],
+      improperIds: this.state.tests[testIndex]['improper_Ids'],
+      activeWordIndex: 0,
+      selection: "",
+      selections: [],
+      levels: [],
+	  hits: 0,
+	  falseHits: 0,
+      activePage: 'activity'})
   }
 
   renderReport() {
@@ -510,7 +531,7 @@ class App extends Component {
 			</div>
 		</div>
         <div className="row">
-           <button style={{borderRadius: 10}} onClick={this.nextTest} > Next {this.state.activeTestIndex + 1} </button>
+           <button style={{borderRadius: 10}} onClick={() => {this.nextTest()}} > Next {this.state.activeTestIndex + 1} </button>
         </div>
       </div>
     );
