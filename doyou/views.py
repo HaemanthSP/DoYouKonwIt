@@ -86,8 +86,19 @@ class Login(APIView):
 
 class GetTests(APIView):
     def post(self, req):
-        vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
-        data = {"tests": vocab_test[0]['testsets'][:3]}
+        admin = user.User.load('5dec206426dcce24267fe860')
+
+        firstname = json.loads(req.body)['firstname']
+        lastname = json.loads(req.body)['lastname']
+        middlename = json.loads(req.body)['middlename']
+        password = json.loads(req.body)['password']
+
+        name = user.Name(firstname, middlename, lastname)
+        password = user.Password(password)
+
+        student = admin.get_user(name)
+        data = {"tests": student.get_test(), "index": student.active_test_index}
+        student.save()
         return Response(data=data, status=status.HTTP_200_OK)
 
 

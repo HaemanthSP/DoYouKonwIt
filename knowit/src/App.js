@@ -24,7 +24,7 @@ class App extends Component {
 
             // Test session
             tests: [],
-            activeTestIndex: 0,
+            activeTestIndex: '',
 
             // For each test
             wordList: [],
@@ -110,7 +110,7 @@ class App extends Component {
       })
   }
 
-  update() {
+  update(selections) {
     let stateData = this.state;
     const user = {
       firstname: stateData.firstName,
@@ -120,7 +120,7 @@ class App extends Component {
       email: stateData.email,
       password: stateData.password,
       testcode: this.state.tests[this.state.activeTestIndex]['test_code'],
-      selections: this.state.selections
+      selections: selections
     };
     // this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
@@ -153,6 +153,12 @@ class App extends Component {
     let stateData = this.state;
     this.setState({ isLoading: true })
     const user = {
+      firstname: stateData.firstName,
+      lastname: stateData.lastName,
+      middlename: stateData.middleName,
+      role: stateData.role,
+      email: stateData.email,
+      password: stateData.password,
       username: stateData.user,
     };
     let config = { "Content-Type": "application/json" };
@@ -161,8 +167,9 @@ class App extends Component {
         this.setState({
           tests: response.data.tests,
           isLoading: false,
-          wordList: response.data.tests[0]['tokens'],
-          improperIds: response.data.tests[0]['improper_Ids'],
+          activeTestIndex: response.data.index,
+          wordList: response.data.tests[response.data.index]['tokens'],
+          improperIds: response.data.tests[response.data.index]['improper_Ids'],
           activePage: "activity"
         })
       })
@@ -226,7 +233,7 @@ class App extends Component {
     var page = this.state.activePage
     if(joined.length >= this.state.wordList.length && this.state.wordList.length > 0) {
        // page = "report"
-       this.update()
+       this.update(joined)
        page = "minireport"
     }
 

@@ -81,7 +81,7 @@ class Student(User):
         self.logs = []
         self.tests = []
         self.results = []
-        self.active_test = ''
+        self.active_test_index = 0
         self.responses = []
         self.save()
 
@@ -96,18 +96,28 @@ class Student(User):
 
         else:
             # TODO: Implement experiment class to define experiments
-            exp = Experiment.load_recent()
-            self.tests = exp.get_tests()
-            self.active_test = self.tests[0]['code']
+            # exp = Experiment.load_recent()
+            # self.tests = exp.get_tests()
+            vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
+            self.tests = vocab_test[0]['testsets'][:3]
+            self.active_test_index = 0
             return self.tests
 
-    def update_response(self, test_code, response):
-        if self.active_test == test_code:
+    def update_response(self, test_code, responses):
+        if self.tests[self.active_test_index]['test_code'] == test_code:
             timestamp = datetime.datetime.now().timestamp()
-            self.log.append({"time": timestamp, "response": response})
-            self.response = response
+            self.logs.append({"time": timestamp, "test_code": self.tests[self.active_test_index]['test_code'], "response": responses})
+            self.responses = responses
+
+            # TODO: Handle the rest transition differently + pack responses after test
+            print("Len of response, tokens %s" % (len(responses)))
+            if len(responses) == len(self.tests[self.active_test_index]['tokens']):
+                print("Moving on to Next test")
+                self.active_test_index += 1
             return True
         else:
+            print("Test Code: %s" % (test_code))
+            assert False
             return False
 
     def evaluate(self, test_code):
