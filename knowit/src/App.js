@@ -110,8 +110,7 @@ class App extends Component {
       })
   }
 
-  update = event => {
-    event.preventDefault();
+  update() {
     let stateData = this.state;
     const user = {
       firstname: stateData.firstName,
@@ -227,6 +226,7 @@ class App extends Component {
     var page = this.state.activePage
     if(joined.length >= this.state.wordList.length && this.state.wordList.length > 0) {
        // page = "report"
+       this.update()
        page = "minireport"
     }
 

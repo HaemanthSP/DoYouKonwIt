@@ -58,7 +58,7 @@ class SignUp(APIView):
             message = "Sorry, your already has an account, Please Login"
         print("Message:", message)
         data = {"isValid": is_valid, "message": message}
-         return Response(data=data, status=status.HTTP_200_OK)
+        return Response(data=data, status=status.HTTP_200_OK)
 
 
 class Login(APIView):
@@ -93,6 +93,8 @@ class GetTests(APIView):
 
 class UpdateResult(APIView):
     def post(self, req):
+        admin = user.User.load('5dec206426dcce24267fe860')
+
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
@@ -103,8 +105,9 @@ class UpdateResult(APIView):
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password)
 
-        student = user.load(name, password)
+        student = admin.get_user(name)
         is_valid = student.update_response(test_code, selections)
+        student.save()
 
         # TODO: Capture collision (due to two active sessions of same user)
         data = {"isValid": is_valid, 'message': "Success" if is_valid else "Collision"}
