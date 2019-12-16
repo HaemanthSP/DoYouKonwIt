@@ -14,13 +14,19 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.44.160'
+var HOST = '192.168.41.147'
 
 class App extends Component {
      constructor(props) {
         super(props);
         this.state = {
             user: "Me",
+
+            // Test session
+            tests = [],
+            activeTestIndex: 0,
+
+            // For each test
             wordList: [],
             activeWordIndex: 0,
             selection: "",
@@ -31,11 +37,10 @@ class App extends Component {
 			improperIds: [],
 
             // UI Handling
-            // isLoading: true,
+            isLoading: false,
             activePage: "signup",
 
             // Login details
-
             firstName: "",
             lastName: "",
             middleName: "",
@@ -53,6 +58,7 @@ class App extends Component {
          "index": this.renderIndex.bind(this),
          "level": this.renderLevel.bind(this),
          "report": this.renderReport.bind(this)
+         "minireport": this.renderMiniReport.bind(this)
        }; 
    }
 
@@ -177,7 +183,8 @@ class App extends Component {
     var joined = this.state.selections.concat(choice);
     var page = this.state.activePage
     if(joined.length >= this.state.wordList.length && this.state.wordList.length > 0) {
-       page = "report"
+       // page = "report"
+       page = "minireport"
     }
 
     this.setState({
@@ -410,6 +417,23 @@ class App extends Component {
     );
   }
 
+  nextTest() {
+    return (
+        var testIndex = this.state.activeTestIndex + 1;
+        this.setState({
+          activeTestIndex: testIndex
+          wordList: tests[testIndex]['tokens'],
+          improperIds: tests[testIndex]['improper_Ids'],
+          activeWordIndex: 0,
+          selection: "",
+          selections: [],
+          levels: [],
+		  hits: 0,
+		  falseHits: 0,
+          activePage: 'activity'});
+    );
+  }
+
   renderReport() {
     return (
       <div>
@@ -436,6 +460,38 @@ class App extends Component {
             <div className="column col-md-3 col-sm-4" key={index}>
 			  {this.renderReportCard(index, value)}
             </div>
+          )
+        })}
+      </div>
+	  <br />
+	  <br />
+      </div>
+    );
+  }
+
+  renderMiniReport() {
+    return ( 
+      <div>
+	  	<br />
+	  	<br />
+        <h1> Report </h1>
+		<div className="row">
+			<div className="column">
+			  <div className="card" style={{borderRadius: 10 }}>
+			    <h4>Hits</h4><br />
+			    <h2>{this.state.hits}</h2>
+			  </div>
+			</div>
+			<div className="column">
+			  <div className="card" style={{borderRadius: 10 }}>
+			    <h4>False Hits</h4><br />
+			    <h2>{this.state.falseHits}</h2>
+			  </div>
+			</div>
+		</div>
+        <div className="row">
+           <button style={{borderRadius: 10}} onClick={this.nextTest} > Next {this.state.activeTestIndex + 1} </button>
+        </div>
           )
         })}
       </div>
