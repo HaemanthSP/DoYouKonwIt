@@ -82,3 +82,10 @@ class Login(APIView):
         print(message)
         data = {"isValid": is_valid, 'message': message}
         return Response(data=data, status=status.HTTP_200_OK)
+
+
+class GetTests(APIView):
+    def post(self, req):
+        vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
+        data = {"tests": vocab_test[0]['testsets'][:3]}
+        return Response(data=data, status=status.HTTP_200_OK)

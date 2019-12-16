@@ -23,7 +23,7 @@ class App extends Component {
             user: "Me",
 
             // Test session
-            tests = [],
+            tests: [],
             activeTestIndex: 0,
 
             // For each test
@@ -57,8 +57,8 @@ class App extends Component {
          "activity": this.renderActivity.bind(this),
          "index": this.renderIndex.bind(this),
          "level": this.renderLevel.bind(this),
-         "report": this.renderReport.bind(this)
-         "minireport": this.renderMiniReport.bind(this)
+         "report": this.renderReport.bind(this),
+         "minireport": this.renderMiniReport.bind(this),
        }; 
    }
 
@@ -97,15 +97,16 @@ class App extends Component {
     let config = { "Content-Type": "application/json" };
     axios.post('http://' + HOST + ':8000/api/v1/login', user, config)
       .then(response => {
-	//	if (response.data.isValid) {
-	//		this.getLevels();
-	//	}
-	//	else {
+	   if (response.data.isValid) {
+	  	  this.getTests();
+		}
+	  else {
         this.setState({
-			activePage: response.data.isValid ? 'landing': 'login',
+			// activePage: response.data.isValid ? 'activity': 'login',
+			activePage: 'login',
 			message: response.data.message,
             isLoading: false});
-//		}
+	    }
       })
   }
   getLevels = (event) => {
@@ -121,6 +122,26 @@ class App extends Component {
           levels: response.data.levels,
           isLoading: false,
           activePage: "index",
+        })
+      })
+  }
+
+
+  getTests = (event) => {
+    let stateData = this.state;
+    this.setState({ isLoading: true })
+    const user = {
+      username: stateData.user,
+    };
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + ':8000/api/v1/getTests', user, config)
+      .then(response => {
+        this.setState({
+          getTests: response.data.tests,
+          isLoading: false,
+          wordList: response.data.tests[0]['tokens'],
+          improperIds: response.data.tests[0]['improper_Ids'],
+          activePage: "activity"
         })
       })
   }
@@ -147,7 +168,6 @@ class App extends Component {
   }
 
   componentWillMount() {
-    // this.getLevels();
     this.setState({activePage: 'signup'});
     document.addEventListener("keyup", this.handleKeyPress.bind(this));
   }
@@ -418,19 +438,19 @@ class App extends Component {
   }
 
   nextTest() {
+    var testIndex = this.state.activeTestIndex + 1;
     return (
-        var testIndex = this.state.activeTestIndex + 1;
         this.setState({
-          activeTestIndex: testIndex
-          wordList: tests[testIndex]['tokens'],
-          improperIds: tests[testIndex]['improper_Ids'],
+          activeTestIndex: testIndex,
+          wordList: this.state.tests[testIndex]['tokens'],
+          improperIds: this.state.tests[testIndex]['improper_Ids'],
           activeWordIndex: 0,
           selection: "",
           selections: [],
           levels: [],
 		  hits: 0,
 		  falseHits: 0,
-          activePage: 'activity'});
+          activePage: 'activity'})
     );
   }
 
@@ -492,11 +512,6 @@ class App extends Component {
         <div className="row">
            <button style={{borderRadius: 10}} onClick={this.nextTest} > Next {this.state.activeTestIndex + 1} </button>
         </div>
-          )
-        })}
-      </div>
-	  <br />
-	  <br />
       </div>
     );
   }
