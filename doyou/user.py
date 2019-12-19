@@ -77,13 +77,28 @@ class Student(User):
         self.results = defaultdict(dict)
         self.active_test = None
         self.role = 'Student'
+        self.save()
+
+
+class TestHanlde:
+    def __init__(self, student):
+        self.tests = self.get_test()
         self.session = None
         self.logs = []
         self.tests = []
         self.results = []
         self.active_test_index = 0
         self.responses = []
-        self.save()
+
+    def get_tests(self):
+        # TODO: Implement experiment class to define experiments
+        # maybe a look up of experiments to specific to student
+        # exp = Experiment.load_recent()
+        # self.tests = exp.get_tests()
+        vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
+        self.tests = vocab_test[0]['testsets'][:3]
+        self.active_test_index = 0
+        return self.tests
 
     def add_result(self, test_code, result):
         timestamp = datetime.datetime.now().timestamp()
@@ -92,15 +107,6 @@ class Student(User):
     def get_test(self):
         if self.tests:
             # TODO: Threshold for time difference for valid session
-            return self.tests
-
-        else:
-            # TODO: Implement experiment class to define experiments
-            # exp = Experiment.load_recent()
-            # self.tests = exp.get_tests()
-            vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
-            self.tests = vocab_test[0]['testsets'][:3]
-            self.active_test_index = 0
             return self.tests
 
     def update_response(self, test_code, responses):
