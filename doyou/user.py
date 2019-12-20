@@ -76,14 +76,15 @@ class Student(User):
         super().__init__(name, password)
         self.role = 'Student'
         self.experiments = []
-        self.active_exp = []
+        self.active_exp = None
         self.save()
 
     def take_test(self):
         """
         """
         if not self.active_exp:
-            self.test = TestHanlde(len(self.experiments), self)
+            self.active_exp = TestHanlde(len(self.experiments), self)
+        return self.active_exp
 
     def close_exp(self, exp_id):
         """
@@ -97,11 +98,10 @@ class TestHanlde:
     def __init__(self, exp_id, student):
         self.id = exp_id
         self.student = student
-        self.tests = self.load_tests()
         self.logs = []
-        self.tests = []
-        self.active_test = []
-        self.active_test_index = 0
+        self.active_test = None
+        self.active_index = 0
+        self.tests = self.load_tests()
 
     def load_tests(self):
         # TODO: Implement experiment class to define experiments
@@ -110,8 +110,8 @@ class TestHanlde:
         # self.tests = exp.get_tests()
         vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
         self.tests = vocab_test[0]['testsets'][:3]
-        self.active_test_index = 0
-        self.active_test = self.tests[self.active_test_index]
+        self.active_index = 0
+        self.active_test = self.tests[self.active_index]
         return self.tests
 
     def update_response(self, test_code, responses):
@@ -130,20 +130,21 @@ class TestHanlde:
             if response == 'yes':
                 if response in self.active_test['improper_Ids']:
                     false_hits += 1
-
-                hits += 1
+                else:
+                    hits += 1
         result = {'false_hits': false_hits, 'hits': hits}
-        self.active_test["results"] = result
+        self.active_test["result"] = result
         self.move_on()
 
     def move_on(self):
         self.tests[self.active_index] = self.active_test
-        self.active_test_index += 1
-        if self.active_test_index < len(self.tests):
+        self.active_index += 1
+        if self.active_index < len(self.tests):
             print("Moving on to Next test")
-            self.active_test = self.tests[self.active_test_index]
+            self.active_test = self.tests[self.active_index]
         else:
             print("Finished all tests")
+            self.student.close_exp(self.id)
             self.active_test = None
 
 

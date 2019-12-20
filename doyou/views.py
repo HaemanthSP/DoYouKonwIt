@@ -97,7 +97,9 @@ class GetTests(APIView):
         password = user.Password(password)
 
         student = admin.get_user(name)
-        data = {"tests": student.get_test(), "index": student.active_test_index}
+        active_exp = student.take_test()
+
+        data = {"tests": active_exp.tests, "index": active_exp.active_index}
         student.save()
         return Response(data=data, status=status.HTTP_200_OK)
 
@@ -117,7 +119,8 @@ class UpdateResult(APIView):
         password = user.Password(password)
 
         student = admin.get_user(name)
-        is_valid = student.update_response(test_code, selections)
+        active_exp = student.active_exp
+        is_valid = active_exp.update_response(test_code, selections)
         student.save()
 
         # TODO: Capture collision (due to two active sessions of same user)
