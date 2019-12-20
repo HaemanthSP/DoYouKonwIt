@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.41.147'
+var HOST = '192.168.52.151'
 
 class App extends Component {
      constructor(props) {
@@ -32,9 +32,7 @@ class App extends Component {
             selection: "",
             selections: [],
             levels: [],
-			hits: 0,
-			falseHits: 0,
-			improperIds: [],
+            result: {},
 
             // UI Handling
             isLoading: false,
@@ -124,10 +122,32 @@ class App extends Component {
     };
     // this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/updateresult', user, config)
+    axios.post('http://' + HOST + ':8000/api/v1/updateresponse', user, config)
       .then(response => {
         this.setState({message: response.data.message
                        })
+      })
+  }
+
+  report(page) {
+    let stateData = this.state;
+    const user = {
+      firstname: stateData.firstName,
+      lastname: stateData.lastName,
+      middlename: stateData.middleName,
+      role: stateData.role,
+      email: stateData.email,
+      password: stateData.password,
+      testcode: this.state.tests[this.state.activeTestIndex]['test_code'],
+    };
+    // this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + ':8000/api/v1/getresult', user, config)
+      .then(response => {
+        this.setState({message: response.data.message,
+                       result: response.data.result,
+                       activePage: page
+            })
       })
   }
 
@@ -169,7 +189,6 @@ class App extends Component {
           isLoading: false,
           activeTestIndex: response.data.index,
           wordList: response.data.tests[response.data.index]['tokens'],
-          improperIds: response.data.tests[response.data.index]['improper_Ids'],
           activePage: "activity"
         })
       })
@@ -190,8 +209,7 @@ class App extends Component {
           selections: [],
           isLoading: false,
           activePage: "activity",
-          hits: 0,
-          falseHits: 0
+          result: {}
         })
       })
   }
@@ -216,32 +234,18 @@ class App extends Component {
 
   selection (choice) {
 	if (this.state.activeWordIndex + 1 <= this.state.wordList.length) {
-	// Handle true and false hits	
-	var hitBuffer = 0;
-	var falseHitBuffer = 0;
-	if (choice === 'yes') {
-		if (this.state.improperIds.indexOf(this.state.activeWordIndex + 1) >= 0) {
-			falseHitBuffer = 1;
-			choice = 'wrong';
-		}
-		else {
-			hitBuffer = 1
-		}
-	}
-
     var joined = this.state.selections.concat(choice);
     var page = this.state.activePage
     if(joined.length >= this.state.wordList.length && this.state.wordList.length > 0) {
-       // page = "report"
        this.update(joined)
        page = "minireport"
+       // page = "report"
+       this.report(page)
     }
 
     this.setState({
         selection: choice,
         activeWordIndex: this.state.activeWordIndex + 1,
-		falseHits: this.state.falseHits + falseHitBuffer,
-		hits: this.state.hits + hitBuffer,
         selections: joined,
         activePage: page
     })
@@ -449,7 +453,7 @@ class App extends Component {
           {this.state.testsets.map((value, index) => {
             return (
               <div className="column" key={index}>
-                <div className="card testset_card" style={{borderRadius: 10}} onClick={() => {this.setState({wordList: value['tokens'], improperIds: value['improper_Ids'], activePage: 'activity'})}}> {value['test_code']}
+                <div className="card testset_card" style={{borderRadius: 10}} onClick={() => {this.setState({wordList: value['tokens'], activePage: 'activity'})}}> {value['test_code']}
                 </div>
               </div>
             )
@@ -472,13 +476,11 @@ class App extends Component {
     this.setState({
       activeTestIndex: testIndex,
       wordList: this.state.tests[testIndex]['tokens'],
-      improperIds: this.state.tests[testIndex]['improper_Ids'],
       activeWordIndex: 0,
       selection: "",
       selections: [],
       levels: [],
-	  hits: 0,
-	  falseHits: 0,
+      result: {},
       activePage: 'activity'})
   }
 
@@ -492,13 +494,13 @@ class App extends Component {
 			<div className="column">
 			  <div className="card" style={{borderRadius: 10 }}>
 			    <h4>Hits</h4><br />
-			    <h2>{this.state.hits}</h2>
+			    <h2>{this.state.result["hits"]}</h2>
 			  </div>
 			</div>
 			<div className="column">
 			  <div className="card" style={{borderRadius: 10 }}>
 			    <h4>False Hits</h4><br />
-			    <h2>{this.state.falseHits}</h2>
+			    <h2>{this.state.result["false_hits"]}</h2>
 			  </div>
 			</div>
 		</div>
@@ -527,13 +529,13 @@ class App extends Component {
 			<div className="column">
 			  <div className="card" style={{borderRadius: 10 }}>
 			    <h4>Hits</h4><br />
-			    <h2>{this.state.hits}</h2>
+			    <h2>{this.state.result["hits"]}</h2>
 			  </div>
 			</div>
 			<div className="column">
 			  <div className="card" style={{borderRadius: 10 }}>
 			    <h4>False Hits</h4><br />
-			    <h2>{this.state.falseHits}</h2>
+			    <h2>{this.state.result["false_hits"]}</h2>
 			  </div>
 			</div>
 		</div>

@@ -96,6 +96,7 @@ class GetTests(APIView):
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password)
 
+        print("API: Get tests")
         student = admin.get_user(name)
         active_exp = student.take_test()
 
@@ -104,7 +105,7 @@ class GetTests(APIView):
         return Response(data=data, status=status.HTTP_200_OK)
 
 
-class UpdateResult(APIView):
+class UpdateResponse(APIView):
     def post(self, req):
         admin = user.User.load('5dec206426dcce24267fe860')
 
@@ -118,6 +119,7 @@ class UpdateResult(APIView):
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password)
 
+        print("API: Update Response")
         student = admin.get_user(name)
         active_exp = student.active_exp
         is_valid = active_exp.update_response(test_code, selections)
@@ -125,4 +127,28 @@ class UpdateResult(APIView):
 
         # TODO: Capture collision (due to two active sessions of same user)
         data = {"isValid": is_valid, 'message': "Success" if is_valid else "Collision"}
+        return Response(data=data, status=status.HTTP_200_OK)
+
+
+class GetResult(APIView):
+    def post(self, req):
+        admin = user.User.load('5dec206426dcce24267fe860')
+
+        firstname = json.loads(req.body)['firstname']
+        lastname = json.loads(req.body)['lastname']
+        middlename = json.loads(req.body)['middlename']
+        password = json.loads(req.body)['password']
+        test_code = json.loads(req.body)['testcode']
+
+        name = user.Name(firstname, middlename, lastname)
+        password = user.Password(password)
+
+        print("API: Get result of %s" % (name.greet()))
+        student = admin.get_user(name)
+        active_exp = student.active_exp
+        result = active_exp.evaluate(test_code)
+        student.save()
+
+        # TODO: Capture collision (due to two active sessions of same user)
+        data = {"result": result, 'message': "Success"}
         return Response(data=data, status=status.HTTP_200_OK)

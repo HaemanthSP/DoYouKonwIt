@@ -1,7 +1,6 @@
 import os
 import pickle
 import datetime
-from collections import defaultdict
 
 import bson
 
@@ -47,8 +46,8 @@ class User:
     @staticmethod
     def load(uid):
         with open(os.path.join(DATAPATH, uid + '.p'), 'rb') as df:
-            teacher = pickle.load(df)
-        return teacher
+            user = pickle.load(df)
+        return user
 
     @staticmethod
     def get_index():
@@ -126,15 +125,16 @@ class TestHanlde:
         assert self.active_test['test_code'] == test_code
         assert len(self.active_test["responses"]) == len(self.active_test['tokens'])
         false_hits, hits = 0, 0
-        for response in self.active_test["responses"]:
+        for idx, response in enumerate(self.active_test["responses"]):
             if response == 'yes':
-                if response in self.active_test['improper_Ids']:
+                if idx in self.active_test['improper_Ids']:
                     false_hits += 1
                 else:
                     hits += 1
         result = {'false_hits': false_hits, 'hits': hits}
         self.active_test["result"] = result
         self.move_on()
+        return result
 
     def move_on(self):
         self.tests[self.active_index] = self.active_test
@@ -168,6 +168,7 @@ class Admin(User):
     def get_user(self, name):
         user_index = User.get_index()
         uid = user_index.get(str(name), None)
+        print("Loading user of id %s" % (uid))
         if uid:
             return User.load(uid)
         else:
