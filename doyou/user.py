@@ -74,23 +74,36 @@ class User:
 class Student(User):
     def __init__(self, name, password):
         super().__init__(name, password)
-        self.results = defaultdict(dict)
-        self.active_test = None
         self.role = 'Student'
+        self.experiments = []
+        self.active_exp = []
         self.save()
+
+    def take_test(self):
+        """
+        """
+        if not self.active_exp:
+            self.test = TestHanlde(len(self.experiments), self)
+
+    def close_exp(self, exp_id):
+        """
+        """
+        if self.active_exp.id == exp_id:
+            self.experiments.append(self.active_exp)
+            self.active_exp = None
 
 
 class TestHanlde:
-    def __init__(self, student):
-        self.tests = self.get_test()
-        self.session = None
+    def __init__(self, exp_id, student):
+        self.id = exp_id
+        self.student = student
+        self.tests = self.load_tests()
         self.logs = []
         self.tests = []
-        self.results = []
+        self.active_test = []
         self.active_test_index = 0
-        self.responses = []
 
-    def get_tests(self):
+    def load_tests(self):
         # TODO: Implement experiment class to define experiments
         # maybe a look up of experiments to specific to student
         # exp = Experiment.load_recent()
@@ -98,37 +111,40 @@ class TestHanlde:
         vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
         self.tests = vocab_test[0]['testsets'][:3]
         self.active_test_index = 0
+        self.active_test = self.tests[self.active_test_index]
         return self.tests
 
-    def add_result(self, test_code, result):
-        timestamp = datetime.datetime.now().timestamp()
-        self.results[test_code][timestamp] = result
-
-    def get_test(self):
-        if self.tests:
-            # TODO: Threshold for time difference for valid session
-            return self.tests
-
     def update_response(self, test_code, responses):
-        if self.tests[self.active_test_index]['test_code'] == test_code:
-            timestamp = datetime.datetime.now().timestamp()
-            self.logs.append({"time": timestamp, "test_code": self.tests[self.active_test_index]['test_code'], "response": responses})
-            self.responses = responses
-
-            # TODO: Handle the rest transition differently + pack responses after test
-            print("Len of response, tokens %s" % (len(responses)))
-            if len(responses) == len(self.tests[self.active_test_index]['tokens']):
-                print("Moving on to Next test")
-                self.active_test_index += 1
-            return True
-        else:
-            print("Test Code: %s" % (test_code))
-            assert False
-            return False
+        assert self.active_test['test_code'] == test_code
+        timestamp = datetime.datetime.now().timestamp()
+        self.active_test["responses"] = responses
+        self.logs.append({"time": timestamp,
+                          "test_code": self.active_test['test_code'],
+                          "response": responses})
 
     def evaluate(self, test_code):
-        assert self.active_test == test_code
-        assert self.tests[0]["code"] == test_code
+        assert self.active_test['test_code'] == test_code
+        assert len(self.active_test["responses"]) == len(self.active_test['tokens'])
+        false_hits, hits = 0, 0
+        for response in self.active_test["responses"]:
+            if response == 'yes':
+                if response in self.active_test['improper_Ids']:
+                    false_hits += 1
+
+                hits += 1
+        result = {'false_hits': false_hits, 'hits': hits}
+        self.active_test["results"] = result
+        self.move_on()
+
+    def move_on(self):
+        self.tests[self.active_index] = self.active_test
+        self.active_test_index += 1
+        if self.active_test_index < len(self.tests):
+            print("Moving on to Next test")
+            self.active_test = self.tests[self.active_test_index]
+        else:
+            print("Finished all tests")
+            self.active_test = None
 
 
 class Teacher(User):
