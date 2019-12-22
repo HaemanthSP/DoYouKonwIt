@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.52.151'
+var HOST = '192.168.31.54'
 
 class App extends Component {
      constructor(props) {
@@ -129,7 +129,7 @@ class App extends Component {
       })
   }
 
-  report(page) {
+  report(selections, page) {
     let stateData = this.state;
     const user = {
       firstname: stateData.firstName,
@@ -138,6 +138,7 @@ class App extends Component {
       role: stateData.role,
       email: stateData.email,
       password: stateData.password,
+      selections: selections,
       testcode: this.state.tests[this.state.activeTestIndex]['test_code'],
     };
     // this.setState({ isLoading: true })
@@ -237,10 +238,10 @@ class App extends Component {
     var joined = this.state.selections.concat(choice);
     var page = this.state.activePage
     if(joined.length >= this.state.wordList.length && this.state.wordList.length > 0) {
-       this.update(joined)
+       // this.update(joined)
        page = "minireport"
        // page = "report"
-       this.report(page)
+       this.report(joined, page)
     }
 
     this.setState({

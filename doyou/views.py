@@ -139,6 +139,7 @@ class GetResult(APIView):
         middlename = json.loads(req.body)['middlename']
         password = json.loads(req.body)['password']
         test_code = json.loads(req.body)['testcode']
+        selections = json.loads(req.body)['selections']
 
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password)
@@ -146,9 +147,10 @@ class GetResult(APIView):
         print("API: Get result of %s" % (name.greet()))
         student = admin.get_user(name)
         active_exp = student.active_exp
+        is_valid = active_exp.update_response(test_code, selections)
         result = active_exp.evaluate(test_code)
         student.save()
 
         # TODO: Capture collision (due to two active sessions of same user)
-        data = {"result": result, 'message': "Success"}
+        data = {"result": result, 'message': "Success" if is_valid else "Collision"}
         return Response(data=data, status=status.HTTP_200_OK)
