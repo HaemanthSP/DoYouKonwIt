@@ -125,7 +125,7 @@ class TestHanlde:
         assert self.active_test['test_code'] == test_code
         assert len(self.active_test["responses"]) == len(self.active_test['tokens'])
         false_hits, hits = 0, 0
-        for idx, response in enumerate(self.active_test["responses"]):
+        for idx, response in enumerate(self.active_test["responses"], 1):
             if response == 'yes':
                 if idx in self.active_test['improper_Ids']:
                     false_hits += 1
