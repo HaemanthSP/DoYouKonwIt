@@ -10,9 +10,9 @@ DATAPATH = "./data/users"
 
 class Name:
     def __init__(self, first_name, middle_name, last_name, salutation=""):
-        self.fname = first_name
-        self.mname = middle_name
-        self.lname = last_name
+        self.fname = first_name.lower().strip().capitalize()
+        self.mname = middle_name.lower().strip().capitalize()
+        self.lname = last_name.lower().strip().capitalize()
         self.salutation = salutation
 
     def greet(self):
