@@ -408,7 +408,7 @@ class App extends Component {
 		  <ul className="checkout-bar">
           	{this.state.tests.map((value, index) => {
             	return (
-				  <li style={{width: (index != this.state.activeTestIndex? 6 : 100 - (this.state.tests.length - 1) * 6).toString() + '%'}} className={index == this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> Level {value['test_code'][5]} </li>
+				  <li style={{width: (index != this.state.activeTestIndex? 6 : 100 - (this.state.tests.length - 1) * 6).toString() + '%'}} className={index == this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> {value['test_code'][5]}&#9734;</li>
             	)
           	})}
 		  </ul>

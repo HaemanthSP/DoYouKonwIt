@@ -108,7 +108,11 @@ class TestHanlde:
         # exp = Experiment.load_recent()
         # self.tests = exp.get_tests()
         vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
-        self.tests = vocab_test[0]['testsets'][:3]
+        self.tests = [vocab_test[2]['testsets'][3]]
+        self.tests += [vocab_test[1]['testsets'][3]]
+        self.tests += [vocab_test[3]['testsets'][3]]
+        self.tests += [vocab_test[4]['testsets'][3]]
+        self.tests += [vocab_test[5]['testsets'][3]]
         self.active_index = 0
         self.active_test = self.tests[self.active_index]
         return self.tests
@@ -201,5 +205,7 @@ class Experiment():
 
     def get_tests(self):
         vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
-        tests = vocab_test[0]['testsets'][:3]
+        tests = [vocab_test[0]['testsets'][3]]
+        tests += vocab_test[1]['testsets'][3]
+        tests += vocab_test[3]['testsets'][3]
         return tests
