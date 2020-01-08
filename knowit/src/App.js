@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.31.54'
+var HOST = '192.168.38.157'
 
 class App extends Component {
      constructor(props) {
@@ -59,7 +59,6 @@ class App extends Component {
          "minireport": this.renderMiniReport.bind(this),
        }; 
    }
-
 
   signup = event => {
     event.preventDefault();
@@ -168,7 +167,6 @@ class App extends Component {
         })
       })
   }
-
 
   getTests = (event) => {
     let stateData = this.state;
@@ -406,6 +404,15 @@ class App extends Component {
     return (
       <div className="canvas">
 		{this.renderHeader()}
+		<div class="checkout-wrap">
+		  <ul class="checkout-bar">
+          	{this.state.tests.map((value, index) => {
+            	return (
+				  <li className={index == this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> Level_ + {value['test_code']} </li>
+            	)
+          	})}
+		  </ul>
+		</div>
 		<div className="content">
         <div id="progressbar">
           <div style={{ width: (this.state.activeWordIndex / this.state.wordList.length) * 100 + "%" }}></div>
