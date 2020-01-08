@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.38.157'
+var HOST = '192.168.31.54'
 
 class App extends Component {
      constructor(props) {
@@ -404,11 +404,11 @@ class App extends Component {
     return (
       <div className="canvas">
 		{this.renderHeader()}
-		<div class="checkout-wrap">
-		  <ul class="checkout-bar">
+		<div className="checkout-wrap">
+		  <ul className="checkout-bar">
           	{this.state.tests.map((value, index) => {
             	return (
-				  <li className={index == this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> Level_ + {value['test_code']} </li>
+				  <li style={{width: (index != this.state.activeTestIndex? 6 : 100 - (this.state.tests.length - 1) * 6).toString() + '%'}} className={index == this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> Level {value['test_code'][5]} </li>
             	)
           	})}
 		  </ul>
