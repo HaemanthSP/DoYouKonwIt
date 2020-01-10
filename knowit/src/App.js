@@ -564,10 +564,19 @@ class App extends Component {
 
   renderMiniReport() {
     return ( 
-      <div>
+      <div className="canvas">
+		{this.renderHeader()}
+		<div className="checkout-wrap">
+		  <ul className="checkout-bar">
+          	{this.state.tests.map((value, index) => {
+            	return (
+				  <li style={{width: (index !== this.state.activeTestIndex? 6 : 100 - (this.state.tests.length - 1) * 6).toString() + '%'}} className={index === this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> {value['test_code'][5]}&#9734;</li>
+            	)
+          	})}
+		 </ul>
+	    </div>
 	  	<br />
 	  	<br />
-        <h1> Report </h1>
 		<div className="row">
 			<div className="column">
 			  <div className="card" style={{borderRadius: 10 }}>
