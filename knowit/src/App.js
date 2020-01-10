@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.31.54'
+var HOST = '192.168.35.220'
 
 class App extends Component {
      constructor(props) {
@@ -344,10 +344,12 @@ class App extends Component {
 							<InputLabel id="rolelist">Teacher</InputLabel>
 							<Select labelId="rolelist" name="teacher" value={this.state.teacher} onChange={this.handleChange}>
 							  <MenuItem value=""><em>None</em></MenuItem>
-							  <MenuItem value="teacher1">Detmar</MenuItem>
-							  <MenuItem value="teacher2">Christoph</MenuItem>
-							  <MenuItem value="teacher3">Nicholas</MenuItem>
-							  <MenuItem value="teacher4">Joerg</MenuItem>
+							  <MenuItem value="teacher1">Bleicher</MenuItem>
+							  <MenuItem value="teacher2">Goedicke</MenuItem>
+							  <MenuItem value="teacher3">Howind</MenuItem>
+							  <MenuItem value="teacher4">Lang</MenuItem>
+							  <MenuItem value="teacher5">Rehberger</MenuItem>
+							  <MenuItem value="teacher6">Spiegelhalter</MenuItem>
 							</Select>
                         </FormControl>
 						 </Grid>
