@@ -188,8 +188,10 @@ class Admin(User):
     def validate_user(self, name, password):
         user = self.get_user(name)
         if user:
+            print("Password not matching")
             return user.password == password
         else:
+            print("No user found of name %s" % (name))
             return False
 
 

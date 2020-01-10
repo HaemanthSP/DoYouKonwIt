@@ -79,8 +79,12 @@ class Login(APIView):
         message = 'Welcome, %s' % (name.greet())
         if not is_valid:
             message = 'Invalid username or password'
+            role = None
+        else:
+            role = admin.get_user(name).role
+            message = "Successfully logged in"
         print(message)
-        data = {"isValid": is_valid, 'message': message}
+        data = {"isValid": is_valid, "role": role, 'message': message}
         return Response(data=data, status=status.HTTP_200_OK)
 
 

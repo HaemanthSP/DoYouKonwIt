@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.35.220'
+var HOST = '192.168.178.28'
 
 class App extends Component {
      constructor(props) {
@@ -34,6 +34,9 @@ class App extends Component {
             levels: [],
             result: {},
 
+			// Admin exp
+			experiment: "",
+
             // UI Handling
             isLoading: false,
             activePage: "signup",
@@ -52,6 +55,7 @@ class App extends Component {
          "login": this.renderLogin.bind(this),
          "signup": this.renderSignup.bind(this),
 		 "landing": this.renderDashboard.bind(this),
+		 "adminlanding": this.renderAdminDashboard.bind(this),
          "activity": this.renderActivity.bind(this),
          "index": this.renderIndex.bind(this),
          "level": this.renderLevel.bind(this),
@@ -95,7 +99,14 @@ class App extends Component {
     axios.post('http://' + HOST + ':8000/api/v1/login', user, config)
       .then(response => {
 	   if (response.data.isValid) {
+		  if (response.data.role === 'Admin') {
+		  	this.setState({role: 'Admin',
+						   activePage: 'adminlanding',
+						   isLoading: false});
+		  }
+		  else {
 	  	  this.getTests();
+          }
 		}
 	  else {
         this.setState({
@@ -402,6 +413,28 @@ class App extends Component {
 	);
   }
 
+ renderAdminDashboard() {
+  	return (
+		<div className="canvas">
+			{this.renderHeader()}
+			<div className="content">
+			<div className="row">
+			<form action={this.defineExperiment}>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="experiment" label="Test Seuqence" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
+                        </Grid>
+                    </Grid>
+                    <Grid container justify="center" style={{ marginTop: '20px' }}>
+                        <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Save</Button>
+                    </Grid>
+			</form>
+			</div>
+			</div>
+		</div>
+	);
+  }
+
   renderActivity() {
     return (
       <div className="canvas">
@@ -410,7 +443,7 @@ class App extends Component {
 		  <ul className="checkout-bar">
           	{this.state.tests.map((value, index) => {
             	return (
-				  <li style={{width: (index != this.state.activeTestIndex? 6 : 100 - (this.state.tests.length - 1) * 6).toString() + '%'}} className={index == this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> {value['test_code'][5]}&#9734;</li>
+				  <li style={{width: (index !== this.state.activeTestIndex? 6 : 100 - (this.state.tests.length - 1) * 6).toString() + '%'}} className={index === this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> {value['test_code'][5]}&#9734;</li>
             	)
           	})}
 		  </ul>
