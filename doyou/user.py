@@ -194,6 +194,10 @@ class Admin(User):
             print("No user found of name %s" % (name))
             return False
 
+    def update_experiment(self, experiment):
+        experiments = Experiment.load()
+        experiments.add_experiment(experiment)
+
 
 class SuperUser(User):
     def __init__(self, name, password):
@@ -202,12 +206,33 @@ class SuperUser(User):
 
 
 class Experiment():
-    def __init__(self, exp_id):
-        self.exp_id = exp_id
+    def __init__(self):
+        self.experiment = {}
+        self.vocab_tests = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
+        self.tests = []
 
-    def get_tests(self):
-        vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
-        tests = [vocab_test[0]['testsets'][3]]
-        tests += vocab_test[1]['testsets'][3]
-        tests += vocab_test[3]['testsets'][3]
-        return tests
+    def add_exp(self, experiment):
+        uid = str(bson.objectid.ObjectId())
+        self.experiment.update({uid: experiment})
+        self.get_tests(experiment)
+        self.save()
+
+    def get_tests(self, experiment):
+        for test_code in experiment.split(';'):
+            level = int(test_code[0]) - 1
+            test_set = int(test_code[2]) - 1
+            self.tests.append(self.vocab_tests[level]['testsets'][test_set])
+
+    def save(self):
+        with open(os.path.join(DATAPATH, 'experiment' + '.p'), 'wb') as df:
+            pickle.dump(self, df)
+
+    @staticmethod
+    def load():
+        if os.path.isfile(os.path.join(DATAPATH, 'experiment' + '.p')):
+            with open(os.path.join(DATAPATH, 'experiment' + '.p'), 'rb') as df:
+                experiment = pickle.load(df)
+        else:
+            experiment = Experiment()
+            experiment.add_exp('101;201;301;201;101')
+        return experiment
