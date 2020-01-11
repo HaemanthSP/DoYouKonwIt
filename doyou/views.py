@@ -88,6 +88,27 @@ class Login(APIView):
         return Response(data=data, status=status.HTTP_200_OK)
 
 
+class DefineExperiment(APIView):
+    def post(self, req):
+        admin = user.User.load('5dec206426dcce24267fe860')
+        firstname = json.loads(req.body)['firstname']
+        lastname = json.loads(req.body)['lastname']
+        middlename = json.loads(req.body)['middlename']
+        password = json.loads(req.body)['password']
+        experiment = json.loads(req.body)['experiment']
+
+        name = user.Name(firstname, middlename, lastname)
+        password = user.Password(password)
+
+        print("API: Define experiment")
+        admin_user = admin.get_user(name)
+        admin_user.update_experiment(experiment)
+
+        data = {"message": "Successfully updated experiment"}
+
+        return Response(data=data, status=status.HTTP_200_OK)
+
+
 class GetTests(APIView):
     def post(self, req):
         admin = user.User.load('5dec206426dcce24267fe860')

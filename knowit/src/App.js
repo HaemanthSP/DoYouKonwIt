@@ -85,6 +85,27 @@ class App extends Component {
       })
   }
 
+  defineExperiment = event => {
+    event.preventDefault();
+    let stateData = this.state;
+    const user = {
+      firstname: stateData.firstName,
+      lastname: stateData.lastName,
+      middlename: stateData.middleName,
+      role: stateData.role,
+      email: stateData.email,
+      password: stateData.password,
+	  experiment: stateData.experiment
+    };
+    this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + ':8000/api/v1/defineexp', user, config)
+      .then(response => {
+        this.setState({message: response.data.message,
+                       isLoading: false})
+      })
+  }
+
   login = event => {
     event.preventDefault();
     let stateData = this.state;
