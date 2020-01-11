@@ -100,22 +100,13 @@ class TestHanlde:
         self.logs = []
         self.active_test = None
         self.active_index = 0
-        self.tests = self.load_tests()
+        self.load_tests()
 
     def load_tests(self):
-        # TODO: Implement experiment class to define experiments
-        # maybe a look up of experiments to specific to student
-        # exp = Experiment.load_recent()
-        # self.tests = exp.get_tests()
-        vocab_test = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
-        self.tests = [vocab_test[2]['testsets'][3]]
-        self.tests += [vocab_test[1]['testsets'][3]]
-        self.tests += [vocab_test[3]['testsets'][3]]
-        self.tests += [vocab_test[4]['testsets'][3]]
-        self.tests += [vocab_test[5]['testsets'][3]]
+        exp = Experiment.load()
+        self.tests = exp.tests
         self.active_index = 0
         self.active_test = self.tests[self.active_index]
-        return self.tests
 
     def update_response(self, test_code, responses):
         assert self.active_test['test_code'] == test_code
@@ -211,13 +202,14 @@ class Experiment():
         self.vocab_tests = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
         self.tests = []
 
-    def add_exp(self, experiment):
+    def add_experiment(self, experiment):
         uid = str(bson.objectid.ObjectId())
         self.experiment.update({uid: experiment})
         self.get_tests(experiment)
         self.save()
 
     def get_tests(self, experiment):
+        self.tests = []
         for test_code in experiment.split(';'):
             level = int(test_code[0]) - 1
             test_set = int(test_code[2]) - 1
