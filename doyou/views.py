@@ -43,11 +43,13 @@ class SignUp(APIView):
         middlename = json.loads(req.body)['middlename']
         role = json.loads(req.body)['role']
         email = json.loads(req.body)['email']
-        password = json.loads(req.body)['password']
+        dob = json.loads(req.body)['dob']
 
-        print("Details:\n%s\n%s\n%s\n%s\n " % (firstname, lastname, email, password))
         name = user.Name(firstname, middlename, lastname)
-        password = user.Password(password)
+
+        pass_phrase = ''.join(dob.split('-')[::-1]) + firstname[:3].lower()
+        print("Details:\n%s\n%s\n%s\n%s\n " % (firstname, lastname, email, pass_phrase))
+        password = user.Password(pass_phrase)
         if not admin.get_user(name):
             this_user = admin.add_user(name, password, role)
             is_valid = True
@@ -57,7 +59,7 @@ class SignUp(APIView):
             is_valid = False
             message = "Sorry, your already has an account, Please Login"
         print("Message:", message)
-        data = {"isValid": is_valid, "message": message}
+        data = {"isValid": is_valid, "message": message, "password": pass_phrase}
         return Response(data=data, status=status.HTTP_200_OK)
 
 

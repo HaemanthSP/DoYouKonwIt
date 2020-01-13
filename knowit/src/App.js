@@ -49,6 +49,7 @@ class App extends Component {
             teacher: "",
             email: "",
             password: "",
+            dob: "",
 			message: "",
         };
        this.pages = {
@@ -73,7 +74,7 @@ class App extends Component {
       middlename: stateData.middleName,
       role: stateData.role,
       email: stateData.email,
-      password: stateData.password
+      dob: stateData.dob
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
@@ -123,6 +124,7 @@ class App extends Component {
 		  if (response.data.role === 'Admin') {
 		  	this.setState({role: 'Admin',
 						   activePage: 'adminlanding',
+                           password: response.data.password,
 						   isLoading: false});
 		  }
 		  else {
@@ -134,6 +136,7 @@ class App extends Component {
 			// activePage: response.data.isValid ? 'activity': 'login',
 			activePage: 'login',
 			message: response.data.message,
+            password: response.data.password,
             isLoading: false});
 	    }
       })
@@ -386,14 +389,14 @@ class App extends Component {
                         </FormControl>
 						 </Grid>
 			        </Grid>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="dob" label="Date of Birth" type="date" fullWidth required onChange={this.handleChange}/>
+                        </Grid>
+                    </Grid>
                     <Grid container spacing={8} alignItems="flex-end" style={{display: "none"}}>
                         <Grid item md={true} sm={true} xs={true}>
                             <TextField name="email" label="E-mail" type="email" fullWidth onChange={this.handleChange} />
-                        </Grid>
-                    </Grid>
-                    <Grid container spacing={8} alignItems="flex-end">
-                        <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="password" label="Password" type="password" fullWidth required onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
                     <Grid container justify="center" style={{ marginTop: '20px' }}>
@@ -477,7 +480,7 @@ class App extends Component {
         <div className="col-md-12">
           <div className="row card_ctr">
             <button className="button option green" onClick={() => {this.selection("yes")}}> known (Y) </button>
-            <button className="button option red" onClick={() => {this.selection("no")}}> unknow (N) </button>
+            <button className="button option red" onClick={() => {this.selection("no")}}> unknown (N) </button>
           </div>
         </div>
         </div>
