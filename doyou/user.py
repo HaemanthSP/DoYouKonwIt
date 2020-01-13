@@ -186,6 +186,7 @@ class Admin(User):
             return False
 
     def update_experiment(self, experiment):
+        print("Updating Exp: %s" % (experiment))
         experiments = Experiment.load()
         experiments.add_experiment(experiment)
 

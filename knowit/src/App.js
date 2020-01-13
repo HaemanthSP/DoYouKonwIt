@@ -440,7 +440,7 @@ class App extends Component {
 			{this.renderHeader()}
 			<div className="content">
 			<div className="row">
-			<form action={this.defineExperiment}>
+			<form onSubmit={this.defineExperiment}>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
                             <TextField name="experiment" label="Test Seuqence" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
