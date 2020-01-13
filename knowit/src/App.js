@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.31.54'
+var HOST = '192.168.46.234'
 
 class App extends Component {
      constructor(props) {
@@ -476,8 +476,8 @@ class App extends Component {
         <h1 className="word"> {this.state.wordList[this.state.activeWordIndex]} </h1>
         <div className="col-md-12">
           <div className="row card_ctr">
-            <button className="button option green" onClick={() => {this.selection("yes")}}> Bekannt (Y) </button>
-            <button className="button option red" onClick={() => {this.selection("no")}}> Unbakannt (N) </button>
+            <button className="button option green" onClick={() => {this.selection("yes")}}> known (Y) </button>
+            <button className="button option red" onClick={() => {this.selection("no")}}> unknow (N) </button>
           </div>
         </div>
         </div>
