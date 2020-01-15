@@ -72,7 +72,7 @@ class Login(APIView):
         password = json.loads(req.body)['password']
 
         name = user.Name(firstname, middlename, lastname)
-        password = user.Password(password)
+        password = user.Password(password.lower())
 
         is_valid = admin.validate_user(name, password)
         print("valid:", is_valid)
@@ -100,7 +100,7 @@ class DefineExperiment(APIView):
         experiment = json.loads(req.body)['experiment']
 
         name = user.Name(firstname, middlename, lastname)
-        password = user.Password(password)
+        password = user.Password(password.lower())
 
         print("API: Define experiment")
         admin_user = admin.get_user(name)
@@ -121,7 +121,7 @@ class GetTests(APIView):
         password = json.loads(req.body)['password']
 
         name = user.Name(firstname, middlename, lastname)
-        password = user.Password(password)
+        password = user.Password(password.lower())
 
         print("API: Get tests")
         student = admin.get_user(name)
@@ -144,7 +144,7 @@ class UpdateResponse(APIView):
         selections = json.loads(req.body)['selections']
 
         name = user.Name(firstname, middlename, lastname)
-        password = user.Password(password)
+        password = user.Password(password.lower())
 
         print("API: Update Response")
         student = admin.get_user(name)
@@ -169,7 +169,7 @@ class GetResult(APIView):
         selections = json.loads(req.body)['selections']
 
         name = user.Name(firstname, middlename, lastname)
-        password = user.Password(password)
+        password = user.Password(password.lower())
 
         print("API: Get result of %s" % (name.greet()))
         student = admin.get_user(name)
