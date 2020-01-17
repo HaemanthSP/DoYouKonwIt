@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.46.234'
+var HOST = '192.168.44.220'
 
 class App extends Component {
      constructor(props) {
@@ -34,8 +34,8 @@ class App extends Component {
             levels: [],
             result: {},
 
-			// Admin exp
-			experiment: "",
+      			// Admin exp
+			      experiment: "",
 
             // UI Handling
             isLoading: false,
@@ -45,7 +45,7 @@ class App extends Component {
             firstName: "",
             lastName: "",
             middleName: "",
-			role: "student",
+			      role: "student",
             teacher: "",
             email: "",
             password: "",
@@ -62,6 +62,7 @@ class App extends Component {
          "level": this.renderLevel.bind(this),
          "report": this.renderReport.bind(this),
          "minireport": this.renderMiniReport.bind(this),
+         "score": this.renderScore.bind(this),
        }; 
    }
 
@@ -106,7 +107,7 @@ class App extends Component {
                        isLoading: false})
       })
   }
-
+  
   login = event => {
     event.preventDefault();
     let stateData = this.state;
@@ -272,7 +273,8 @@ class App extends Component {
     var page = this.state.activePage
     if(joined.length >= this.state.wordList.length && this.state.wordList.length > 0) {
        // this.update(joined)
-       page = "minireport"
+       // page = "minireport"
+       page = "score"
        // page = "report"
        this.report(joined, page)
     }
@@ -617,6 +619,34 @@ class App extends Component {
 		</div>
         <div className="row">
            <button style={{borderRadius: 10}} onClick={() => {this.nextTest()}} > Next {this.state.activeTestIndex + 1} </button>
+        </div>
+      </div>
+    );
+  }
+
+  renderScore() {
+    return ( 
+      <div className="canvas">
+		{this.renderHeader()}
+		<div className="checkout-wrap">
+		  <ul className="checkout-bar">
+          	{this.state.tests.map((value, index) => {
+            	return (
+				  <li style={{width: (index !== this.state.activeTestIndex? 6 : 100 - (this.state.tests.length - 1) * 6).toString() + '%'}} className={index === this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> {value['test_code'][5]}&#9734;</li>
+            	)
+          	})}
+		 </ul>
+	    </div>
+	  	<br />
+	  	<br />
+        <div className="scoreboard">
+			<div className="row">	
+				<div className="scorecard">{this.state.result["score"]}%</div>
+				<div >{this.state.result["message"]}</div>
+			</div> 
+            <div className="row">
+               <button className="button" style={{borderRadius: 10, margin:"40px auto"}} onClick={() => {this.nextTest()}} > Next </button>
+            </div>
         </div>
       </div>
     );

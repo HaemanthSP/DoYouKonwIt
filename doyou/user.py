@@ -1,6 +1,7 @@
 import os
 import pickle
 import datetime
+import numpy as np
 
 import bson
 
@@ -126,7 +127,20 @@ class TestHanlde:
                     false_hits += 1
                 else:
                     hits += 1
-        result = {'false_hits': false_hits, 'hits': hits}
+        # Compute the score based on the paul meara evaluation table
+        score = int(np.round(min(0, hits * 2.5 - false_hits * 5)))
+        print("%s Hits, and %s false hits" % (hits, false_hits))
+        guess = false_hits > 10
+        low_compentence = hits < 10
+        message = ''
+        if guess:
+            message = 'Please donot guess'
+        elif hits < 10:
+            messgae = 'Its ok, these are difficult words'
+        else:
+            message = 'Good job !!'
+
+        result = {'message': message, 'score': score, }
         self.active_test["result"] = result
         self.move_on()
         return result

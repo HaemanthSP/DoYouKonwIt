@@ -284,7 +284,7 @@
 .checkout-wrap {
   color: #444;
   font-family: 'PT Sans Caption', sans-serif;
-  margin: 40px auto;
+  margin: 60px auto;
   max-width: 100%;
   position: relative;
 }
@@ -444,3 +444,21 @@ ul.checkout-bar li:nth-child(12):before {
   }
 }
 
+.scoreborad {
+    width: 100%
+}
+
+.scorecard {
+    height: 250px;
+    border-style: solid;
+    width: 250px;
+    border-color: darkcyan;
+    display: flex;
+    border-radius: 50%;
+    font-size: 36px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 40px auto;
+    box-shadow: 4px 4px 11px 5px;
+}
