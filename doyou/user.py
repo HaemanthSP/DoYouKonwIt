@@ -91,13 +91,12 @@ class Student(User):
         """
         if self.active_exp.id == exp_id:
             self.experiments.append(self.active_exp)
-            self.active_exp.close()
             self.active_exp = None
 
 
 class TestHandle:
     def __init__(self, student):
-        self.student = student.uid
+        self.student = student
         self.load_tests()
         self.logs = []
 
@@ -131,7 +130,7 @@ class TestHandle:
         self.active_test["evaluated_responses"] = evaluated_responses
         
         # Compute the score based on the paul meara evaluation table
-        score = int(np.round(min(0, hits * 2.5 - false_hits * 5)))
+        score = int(np.round(max(0, (hits * 2.5 - false_hits * 5))))
         print("%s Hits, and %s false hits" % (hits, false_hits))
         guess = false_hits > 10
         low_compentence = hits < 10
@@ -143,7 +142,7 @@ class TestHandle:
         else:
             message = 'Good job !!'
 
-        result = {'message': message, 'score': score, }
+        result = {"message": message, "hits": hits, "false_hits": false_hits, "score": score}
         self.active_test["result"] = result
         self.move_on()
         return result
@@ -157,6 +156,7 @@ class TestHandle:
         else:
             print("Finished all tests")
             self.student.close_exp(self.id)
+            self.close()
             self.active_test = None
 
     def close(self):
@@ -171,7 +171,7 @@ class TestHandle:
 
         # Store it in the respective experiment
         exp = Experiment.load()
-        exp.experiments[self.id]["results"].update({self.student: results})
+        exp.experiments[self.id]["results"].update({self.student.uid: results})
         exp.save()
 
 
