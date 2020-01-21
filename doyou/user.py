@@ -20,7 +20,8 @@ class Name:
         return self.fname
 
     def __str__(self):
-        return ' '.join([self.fname, self.mname, self.lname])
+        # return ' '.join([self.fname, self.mname, self.lname])
+        return ', '.join([self.lname, self.fname])
 
 
 class Password:
@@ -270,3 +271,26 @@ class Experiment():
             experiment = Experiment()
             experiment.add_experiment('101;201;301;201;101')
         return experiment
+
+    def filter_report(self, student_list):
+        filtered_report = []
+        for experiment in self.experiments.values():
+            temp = {"definition": experiment["definition"],
+                    "tests": experiment["tests"]}
+
+            results = []
+            for student_id in student_list:
+                student = User.load(student_id)
+                if not student_id in experiment["results"]:
+                    continue
+                
+                student_res = experiment["results"][student_id]
+                student_res.update({"name": str(student))
+                results.append(student_res)
+
+            # TODO: Sort results by students name
+            if results:
+                temp.update("results": results)
+                filtered_report.append(temp)
+
+        return filtered_report
