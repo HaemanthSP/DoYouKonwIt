@@ -83,7 +83,7 @@ class Student(User):
         """
         """
         if not self.active_exp:
-            self.active_exp = TestHanlde(len(self.experiments), self)
+            self.active_exp = TestHandle(self)
         return self.active_exp
 
     def close_exp(self, exp_id):
@@ -91,21 +91,20 @@ class Student(User):
         """
         if self.active_exp.id == exp_id:
             self.experiments.append(self.active_exp)
+            self.active_exp.close()
             self.active_exp = None
 
 
-class TestHanlde:
-    def __init__(self, exp_id, student):
-        self.id = exp_id
-        self.student = student
-        self.logs = []
-        self.active_test = None
-        self.active_index = 0
+class TestHandle:
+    def __init__(self, student):
+        self.student = student.uid
         self.load_tests()
+        self.logs = []
 
     def load_tests(self):
         exp = Experiment.load()
-        self.tests = exp.tests
+        self.id = exp.active_id
+        self.tests = exp.experiments[self.id]["tests"]
         self.active_index = 0
         self.active_test = self.tests[self.active_index]
 
@@ -121,12 +120,16 @@ class TestHanlde:
         assert self.active_test['test_code'] == test_code
         assert len(self.active_test["responses"]) == len(self.active_test['tokens'])
         false_hits, hits = 0, 0
+        evaluated_responses = list(self.active_test['responses'])
         for idx, response in enumerate(self.active_test["responses"], 1):
             if response == 'yes':
                 if idx in self.active_test['improper_Ids']:
                     false_hits += 1
+                    evaluated_responses[idx-1] = "wrong"
                 else:
                     hits += 1
+        self.active_test["evaluated_responses"] = evaluated_responses
+        
         # Compute the score based on the paul meara evaluation table
         score = int(np.round(min(0, hits * 2.5 - false_hits * 5)))
         print("%s Hits, and %s false hits" % (hits, false_hits))
@@ -155,6 +158,21 @@ class TestHanlde:
             print("Finished all tests")
             self.student.close_exp(self.id)
             self.active_test = None
+
+    def close(self):
+        """
+        """
+        results = []
+        for test in self.tests:
+            results.append({
+                "test_code": test['test_code'],
+                "evaluated_responses": test['evaluated_responses'],
+                "metrics": test["result"]})
+
+        # Store it in the respective experiment
+        exp = Experiment.load()
+        exp.experiments[self.id]["results"].update({self.student: results})
+        exp.save()
 
 
 class Teacher(User):
@@ -208,10 +226,10 @@ class Admin(User):
             print("No user found of name %s" % (name))
             return False
 
-    def update_experiment(self, experiment):
-        print("Updating Exp: %s" % (experiment))
+    def update_experiment(self, definition):
+        print("Updating Exp: %s" % (definition))
         experiments = Experiment.load()
-        experiments.add_experiment(experiment)
+        experiments.add_experiment(definition)
 
 
 class SuperUser(User):
@@ -222,22 +240,22 @@ class SuperUser(User):
 
 class Experiment():
     def __init__(self):
-        self.experiment = {}
         self.vocab_tests = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
-        self.tests = []
+        self.experiments = {}
 
-    def add_experiment(self, experiment):
+    def add_experiment(self, definition):
         uid = str(bson.objectid.ObjectId())
-        self.experiment.update({uid: experiment})
-        self.get_tests(experiment)
+        self.active_id = uid
+        self.experiments.update({uid: {"definition": definition, "tests": self.get_tests(definition), "results": {}}})
         self.save()
 
-    def get_tests(self, experiment):
-        self.tests = []
-        for test_code in experiment.split(';'):
+    def get_tests(self, definition):
+        tests = []
+        for test_code in definition.split(';'):
             level = int(test_code[0]) - 1
             test_set = int(test_code[2]) - 1
-            self.tests.append(self.vocab_tests[level]['testsets'][test_set])
+            tests.append(self.vocab_tests[level]['testsets'][test_set])
+        return tests
 
     def save(self):
         with open(os.path.join(DATAPATH, 'experiment' + '.p'), 'wb') as df:
@@ -250,5 +268,5 @@ class Experiment():
                 experiment = pickle.load(df)
         else:
             experiment = Experiment()
-            experiment.add_exp('101;201;301;201;101')
+            experiment.add_experiment('101;201;301;201;101')
         return experiment
