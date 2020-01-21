@@ -163,6 +163,15 @@ class Teacher(User):
         self.role = 'Teacher'
         self.name = name
         self.password = password
+        self.students = set()
+        self.save()
+
+    def add_student(self, uid):
+        self.students.add(uid)
+        self.save()
+
+    def remove_student(self, uid):
+        self.students.remove(uid)
         self.save()
 
 

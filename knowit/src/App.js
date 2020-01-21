@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.44.220'
+var HOST = '192.168.49.43' 
 
 class App extends Component {
      constructor(props) {
@@ -74,6 +74,7 @@ class App extends Component {
       lastname: stateData.lastName,
       middlename: stateData.middleName,
       role: stateData.role,
+      teacher: stateData.teacher,
       email: stateData.email,
       dob: stateData.dob
     };
@@ -378,11 +379,11 @@ class App extends Component {
 					<Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
 						<FormControl fullWidth required>	
-							<InputLabel id="rolelist">Teacher</InputLabel>
-							<Select labelId="rolelist" name="teacher" value={this.state.teacher} onChange={this.handleChange}>
+							<InputLabel id="teachers">Teacher</InputLabel>
+							<Select labelId="teachers" name="teacher" value={this.state.teacher} onChange={this.handleChange}>
 							  <MenuItem value=""><em>None</em></MenuItem>
-							  <MenuItem value="teacher1">Bleicher</MenuItem>
-							  <MenuItem value="teacher2">Goedicke</MenuItem>
+							  <MenuItem value="5e26db7a26dcce09b67b74a3">Bleicher</MenuItem>
+							  <MenuItem value="5e26dbd826dcce09b67b74a4">Goedicke</MenuItem>
 							  <MenuItem value="teacher3">Howind</MenuItem>
 							  <MenuItem value="teacher4">Lang</MenuItem>
 							  <MenuItem value="teacher5">Rehberger</MenuItem>

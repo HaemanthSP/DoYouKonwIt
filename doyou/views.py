@@ -42,6 +42,7 @@ class SignUp(APIView):
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
         role = json.loads(req.body)['role']
+        teacher_id = json.loads(req.body)['teacher']
         email = json.loads(req.body)['email']
         dob = json.loads(req.body)['dob']
 
@@ -51,10 +52,14 @@ class SignUp(APIView):
         print("Details:\n%s\n%s\n%s\n%s\n " % (firstname, lastname, email, pass_phrase))
         password = user.Password(pass_phrase)
         if not admin.get_user(name):
-            this_user = admin.add_user(name, password, role)
+            student = admin.add_user(name, password, role)
             is_valid = True
             message = "Congratulations, Your account has been created"
-            print(this_user.uid)
+            print(student.uid)
+
+            # Assign to the teacher
+            teacher = user.User.load(teacher_id)
+            teacher.add_student(student.uid)
         else:
             is_valid = False
             message = "Sorry, your already has an account, Please Login"
