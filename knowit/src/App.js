@@ -35,7 +35,10 @@ class App extends Component {
             result: {},
 
       			// Admin exp
-			      experiment: "",
+            experiment: "",
+            
+            // Teacher students
+            student_results: [],
 
             // UI Handling
             isLoading: false,
@@ -53,16 +56,17 @@ class App extends Component {
 			message: "",
         };
        this.pages = {
-         "login": this.renderLogin.bind(this),
-         "signup": this.renderSignup.bind(this),
-		 "landing": this.renderDashboard.bind(this),
-		 "adminlanding": this.renderAdminDashboard.bind(this),
-         "activity": this.renderActivity.bind(this),
-         "index": this.renderIndex.bind(this),
-         "level": this.renderLevel.bind(this),
-         "report": this.renderReport.bind(this),
-         "minireport": this.renderMiniReport.bind(this),
-         "score": this.renderScore.bind(this),
+          "login": this.renderLogin.bind(this),
+          "signup": this.renderSignup.bind(this),
+		      "landing": this.renderDashboard.bind(this),
+		      "adminlanding": this.renderAdminDashboard.bind(this),
+		      "teacherlanding": this.renderTeacherDashboard.bind(this),
+          "activity": this.renderActivity.bind(this),
+          "index": this.renderIndex.bind(this),
+          "level": this.renderLevel.bind(this),
+          "report": this.renderReport.bind(this),
+          "minireport": this.renderMiniReport.bind(this),
+          "score": this.renderScore.bind(this),
        }; 
    }
 
@@ -96,9 +100,8 @@ class App extends Component {
       lastname: stateData.lastName,
       middlename: stateData.middleName,
       role: stateData.role,
-      email: stateData.email,
       password: stateData.password,
-	  experiment: stateData.experiment
+	    experiment: stateData.experiment
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
@@ -144,6 +147,25 @@ class App extends Component {
       })
   }
 
+  teacherReport() {
+    let stateData = this.state;
+    const user = {
+      firstname: stateData.firstName,
+      lastname: stateData.lastName,
+      middlename: stateData.middleName,
+      role: stateData.role,
+      password: stateData.password,
+    };
+    this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + ':8000/api/v1/teacherreport', user, config)
+      .then(response => {
+        this.setState({message: response.data.message,
+                       studentResults: response.data.student_results,
+                       isLoading: false
+                       })
+      })
+  }
   update(selections) {
     let stateData = this.state;
     const user = {
@@ -449,13 +471,25 @@ class App extends Component {
 			<form onSubmit={this.defineExperiment}>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="experiment" label="Test Seuqence" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
+                            <TextField name="experiment" label="Test Sequence" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
                     <Grid container justify="center" style={{ marginTop: '20px' }}>
                         <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Save</Button>
                     </Grid>
 			</form>
+			</div>
+			</div>
+		</div>
+	);
+  }
+
+ renderTeacherDashboard() {
+  	return (
+		<div className="canvas">
+			{this.renderHeader()}
+			<div className="content">
+			<div className="row">
 			</div>
 			</div>
 		</div>

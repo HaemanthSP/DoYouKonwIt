@@ -101,8 +101,9 @@ class DefineExperiment(APIView):
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
-        password = json.loads(req.body)['password']
         experiment = json.loads(req.body)['experiment']
+        # FIXME: Identify the issue arises by enabling this
+        # password = json.loads(req.body)['password']
 
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password.lower())
