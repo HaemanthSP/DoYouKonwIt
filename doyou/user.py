@@ -20,7 +20,10 @@ class Name:
         return self.fname
 
     def __str__(self):
-        # return ' '.join([self.fname, self.mname, self.lname])
+        return ' '.join([self.fname, self.mname, self.lname])
+
+    @property
+    def fullname(self):
         return ', '.join([self.lname, self.fname])
 
 
@@ -284,13 +287,12 @@ class Experiment():
                 if not student_id in experiment["results"]:
                     continue
                 
-                student_res = experiment["results"][student_id]
-                student_res.update({"name": str(student))
+                student_res = {"name": student.name.fullname, "result": experiment["results"][student_id]}
                 results.append(student_res)
 
             # TODO: Sort results by students name
             if results:
-                temp.update("results": results)
+                temp.update({"results": results})
                 filtered_report.append(temp)
 
         return filtered_report

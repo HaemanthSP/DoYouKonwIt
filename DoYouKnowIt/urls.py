@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^api/v1/gettests$', views.GetTests.as_view(), name='get tests'),
     url(r'^api/v1/updateresponse$', views.UpdateResponse.as_view(), name='update response'),
     url(r'^api/v1/getresult$', views.GetResult.as_view(), name='get result'),
+    url(r'^api/v1/getteacherreport$', views.GetTeacherReport.as_view(), name='get teacherreport'),
     url(r'^api/v1/defineexp$', views.DefineExperiment.as_view(), name='post experiment'),
     url(r'^api/v1/signup$', views.SignUp.as_view(), name='post signup'),
     url(r'^api/v1/login$', views.Login.as_view(), name='post Login'),

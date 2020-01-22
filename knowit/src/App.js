@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.49.43' 
+var HOST = '192.168.8.29' 
 
 class App extends Component {
      constructor(props) {
@@ -24,6 +24,7 @@ class App extends Component {
 
             // Test session
             tests: [],
+            testsets: [],
             activeTestIndex: '',
 
             // For each test
@@ -37,8 +38,12 @@ class App extends Component {
       			// Admin exp
             experiment: "",
             
-            // Teacher students
-            student_results: [],
+            // Teacher
+            studentResults: [],
+            teacherReport: [],
+            expName: "",
+            aStudentResult: [],
+            metrics: {},
 
             // UI Handling
             isLoading: false,
@@ -61,6 +66,8 @@ class App extends Component {
 		      "landing": this.renderDashboard.bind(this),
 		      "adminlanding": this.renderAdminDashboard.bind(this),
 		      "teacherlanding": this.renderTeacherDashboard.bind(this),
+		      "teacherlanding1": this.renderTeacherDashboard1.bind(this),
+		      "teacherlanding2": this.renderTeacherDashboard2.bind(this),
           "activity": this.renderActivity.bind(this),
           "index": this.renderIndex.bind(this),
           "level": this.renderLevel.bind(this),
@@ -125,16 +132,23 @@ class App extends Component {
     let config = { "Content-Type": "application/json" };
     axios.post('http://' + HOST + ':8000/api/v1/login', user, config)
       .then(response => {
-	   if (response.data.isValid) {
+	  if (response.data.isValid) {
 		  if (response.data.role === 'Admin') {
 		  	this.setState({role: 'Admin',
 						   activePage: 'adminlanding',
                            password: response.data.password,
 						   isLoading: false});
-		  }
-		  else {
+      }
+      else if(response.data.role === 'Teacher') {
+        this.setState({
+          role: 'Teacher',
+          password: response.data.password,
+        });
+        this.getTeacherReport();
+      }
+	    else {
 	  	  this.getTests();
-          }
+      }
 		}
 	  else {
         this.setState({
@@ -147,7 +161,7 @@ class App extends Component {
       })
   }
 
-  teacherReport() {
+  getTeacherReport() {
     let stateData = this.state;
     const user = {
       firstname: stateData.firstName,
@@ -158,11 +172,12 @@ class App extends Component {
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/teacherreport', user, config)
+    axios.post('http://' + HOST + ':8000/api/v1/getteacherreport', user, config)
       .then(response => {
         this.setState({message: response.data.message,
-                       studentResults: response.data.student_results,
-                       isLoading: false
+                       teacherReport: response.data.teacher_report,
+                       isLoading: false,
+                       activePage: 'teacherlanding'
                        })
       })
   }
@@ -490,7 +505,59 @@ class App extends Component {
 			{this.renderHeader()}
 			<div className="content">
 			<div className="row">
+          {this.state.teacherReport.map((value, index) => {
+            return (
+              <div className="card level_card"  onClick={() => {this.setState({tests: value['tests'], studentResults:value['results'], expName:value["definition"], activePage: 'teacherlanding1'})}}>
+                {value["definition"]}
+              </div>
+            )
+          })}
 			</div>
+			</div>
+		</div>
+	);
+  }
+
+
+ renderTeacherDashboard1() {
+  	return (
+		<div className="canvas">
+			{this.renderHeader()}
+			<div className="content">
+			  <div className="row">
+          {this.state.studentResults.map((value, index) => {
+            return (
+              <div className="card testset_card"  onClick={() => {this.setState({aStudentResult: value["result"], activePage: 'teacherlanding2'})}}>
+                {value["name"]}
+              </div>
+            )
+          })}
+			  </div>
+	    <div className='row'>
+	      <button className='button' onClick={() => {this.setState({activePage: 'teacherlanding'})}}> Back </button>
+	    </div>
+			</div>
+		</div>
+	);
+  }
+
+ renderTeacherDashboard2() {
+  	return (
+		<div className="canvas">
+			{this.renderHeader()}
+			<div className="content">
+			  <div className="row">
+          {this.state.aStudentResult.map((value, index) => {
+            return (
+              <div className="card testset_card"  onClick={() => {this.setState({wordList: this.state.tests[index]['tokens'], metrics:value['metrics'], selections:value['evaluated_responses'], activePage: 'report'})}}>
+                {value["test_code"]}
+              </div>
+            )
+          })}
+			  </div>
+	    <div className='row'>
+	      <button className='button' onClick={() => {this.setState({activePage: 'teacherlanding1'})}}> Back </button>
+	    </div>
 			</div>
 		</div>
 	);
@@ -598,13 +665,19 @@ class App extends Component {
 			<div className="column">
 			  <div className="card" style={{borderRadius: 10 }}>
 			    <h4>Hits</h4><br />
-			    <h2>{this.state.result["hits"]}</h2>
+			    <h2>{this.state.metrics["hits"]}</h2>
 			  </div>
 			</div>
 			<div className="column">
 			  <div className="card" style={{borderRadius: 10 }}>
 			    <h4>False Hits</h4><br />
-			    <h2>{this.state.result["false_hits"]}</h2>
+			    <h2>{this.state.metrics["false_hits"]}</h2>
+			  </div>
+			</div>
+			<div className="column">
+			  <div className="card" style={{borderRadius: 10 }}>
+			    <h4>Score</h4><br />
+			    <h2>{this.state.metrics["score"]}</h2>
 			  </div>
 			</div>
 		</div>
@@ -617,6 +690,9 @@ class App extends Component {
           )
         })}
       </div>
+	    <div className='row'>
+	      <button className='button' onClick={() => {this.setState({activePage: 'teacherlanding2'})}}> Back </button>
+	    </div>
 	  <br />
 	  <br />
       </div>

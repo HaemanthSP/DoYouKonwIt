@@ -94,6 +94,28 @@ class Login(APIView):
         data = {"isValid": is_valid, "role": role, 'message': message}
         return Response(data=data, status=status.HTTP_200_OK)
 
+class GetTeacherReport(APIView):
+    def post(self, req):
+        admin = user.User.load('5dec206426dcce24267fe860')
+        firstname = json.loads(req.body)['firstname']
+        lastname = json.loads(req.body)['lastname']
+        middlename = json.loads(req.body)['middlename']
+        print(json.loads(req.body))
+        # password = json.loads(req.body)['password']
+
+        name = user.Name(firstname, middlename, lastname)
+        # password = user.Password(password.lower())
+
+        print("API: Collect teacher report")
+        teacher = admin.get_user(name)
+        student_list = teacher.students
+
+        exp = user.Experiment.load()
+        teacher_report = exp.filter_report(student_list)
+
+        data = {"teacher_report": teacher_report, "message": "Successfully collected the report"}
+
+        return Response(data=data, status=status.HTTP_200_OK)
 
 class DefineExperiment(APIView):
     def post(self, req):
