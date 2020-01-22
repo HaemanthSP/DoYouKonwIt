@@ -131,6 +131,9 @@ class TestHandle:
                     evaluated_responses[idx-1] = "wrong"
                 else:
                     hits += 1
+            else:
+                if idx not in self.active_test['improper_Ids']:
+                    evaluated_responses[idx-1] = "unknown"
         self.active_test["evaluated_responses"] = evaluated_responses
         
         # Compute the score based on the paul meara evaluation table

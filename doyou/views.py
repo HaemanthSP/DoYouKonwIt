@@ -128,7 +128,7 @@ class DefineExperiment(APIView):
         # password = json.loads(req.body)['password']
 
         name = user.Name(firstname, middlename, lastname)
-        password = user.Password(password.lower())
+        # password = user.Password(password.lower())
 
         print("API: Define experiment")
         admin_user = admin.get_user(name)

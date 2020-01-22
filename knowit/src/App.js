@@ -771,7 +771,11 @@ class App extends Component {
 		bgColor = "#01a22b88";
 	} else if (selection === "wrong") {
 		bgColor = "#c51a0988";
-	} else {
+  } else if(selection === "unknown")
+   {
+		bgColor = "#004cc5bb";
+		textColor = "white";
+  } else {
 		bgColor = "grey";
 		textColor = "white";
 	}
