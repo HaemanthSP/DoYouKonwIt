@@ -37,7 +37,7 @@ class PostActivity(APIView):
 
 class SignUp(APIView):
     def post(self, req):
-        admin = user.User.load('5dec206426dcce24267fe860')
+        admin = user.User.load('5e2b194bab748c8d228e4ac4')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
@@ -70,7 +70,7 @@ class SignUp(APIView):
 
 class Login(APIView):
     def post(self, req):
-        admin = user.User.load('5dec206426dcce24267fe860')
+        admin = user.User.load('5e2b194bab748c8d228e4ac4')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
@@ -96,7 +96,7 @@ class Login(APIView):
 
 class GetTeacherReport(APIView):
     def post(self, req):
-        admin = user.User.load('5dec206426dcce24267fe860')
+        admin = user.User.load('5e2b194bab748c8d228e4ac4')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
@@ -119,7 +119,7 @@ class GetTeacherReport(APIView):
 
 class DefineExperiment(APIView):
     def post(self, req):
-        admin = user.User.load('5dec206426dcce24267fe860')
+        admin = user.User.load('5e2b194bab748c8d228e4ac4')
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
         middlename = json.loads(req.body)['middlename']
@@ -141,7 +141,7 @@ class DefineExperiment(APIView):
 
 class GetTests(APIView):
     def post(self, req):
-        admin = user.User.load('5dec206426dcce24267fe860')
+        admin = user.User.load('5e2b194bab748c8d228e4ac4')
 
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
@@ -162,7 +162,7 @@ class GetTests(APIView):
 
 class UpdateResponse(APIView):
     def post(self, req):
-        admin = user.User.load('5dec206426dcce24267fe860')
+        admin = user.User.load('5e2b194bab748c8d228e4ac4')
 
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']
@@ -187,7 +187,7 @@ class UpdateResponse(APIView):
 
 class GetResult(APIView):
     def post(self, req):
-        admin = user.User.load('5dec206426dcce24267fe860')
+        admin = user.User.load('5e2b194bab748c8d228e4ac4')
 
         firstname = json.loads(req.body)['firstname']
         lastname = json.loads(req.body)['lastname']

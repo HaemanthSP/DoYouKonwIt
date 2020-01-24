@@ -3,11 +3,14 @@ import pickle
 import datetime
 import numpy as np
 
-import bson
+from bson import ObjectId
+from pymongo import MongoClient
 
-# Globals
-DATAPATH = "./data/users"
+# Setup db handle
+DB = MongoClient('mongodb://localhost:27017/')["prototype"]
 
+# TODO: Add methods for initial setup like creating admin, indexer and experiments
+# TODO: A verification routine for admin
 
 class Name:
     def __init__(self, first_name, middle_name, last_name, salutation=""):
@@ -45,34 +48,42 @@ class User:
     def __init__(self, name, password):
         self.name = name
         self.password = password
-        self.uid = str(bson.objectid.ObjectId())
+        self.uid = str(DB.users.insert_one({}).inserted_id)
         self.update_index()
 
     @staticmethod
     def load(uid):
-        with open(os.path.join(DATAPATH, uid + '.p'), 'rb') as df:
-            user = pickle.load(df)
+        print("Fetching user of id %s" % (uid))
+        user_entry = DB.users.find_one({'_id': ObjectId(uid)})
+        user = pickle.loads(user_entry['binary'])
         return user
 
     @staticmethod
     def get_index():
-        with open(os.path.join(DATAPATH, 'user_index.p'), 'rb') as df:
-            user_index = pickle.load(df)
-        return user_index
+        index_entry = DB.index.find_one({'_id': ObjectId("5e2b14f5ab748c8d228e4abd")})
+        index = index_entry['mapping']
+        if not index:
+            index = {}
+            print("No index found")
+        return index
 
     @staticmethod
     def remove_user(uid):
         raise NotImplementedError
 
     def update_index(self):
-        user_index = User.get_index()
-        user_index.update({str(self.name): self.uid})
-        with open(os.path.join(DATAPATH, 'user_index.p'), 'wb') as df:
-            pickle.dump(user_index, df)
+        index = User.get_index()
+        index.update({str(self.name): self.uid})
+        ack = DB.users.update_one({'_id': ObjectId("5e2b14f5ab748c8d228e4abd")}, {"$set": {"mapping": index}})
+        if ack.matched_count != 1:
+            print("Warning: no matching entries found to save the INDEX")
 
     def save(self):
-        with open(os.path.join(DATAPATH, self.uid + '.p'), 'wb') as df:
-            pickle.dump(self, df)
+        user = pickle.dumps(self)
+        ack = DB.users.update_one({'_id': ObjectId(self.uid)}, {"$set": {"binary": user}})
+        if ack.matched_count != 1:
+            print("Warning: no matching entries found to save the USER")
+            
 
 
 class Student(User):
@@ -218,6 +229,7 @@ class Admin(User):
             return None
 
     def add_user(self, name, password, role):
+        # FIXME: It just overwrites the existing user.
         user_type = {'student': Student, 'teacher': Teacher}
         return user_type[role](name, password)
 
@@ -251,7 +263,7 @@ class Experiment():
         self.experiments = {}
 
     def add_experiment(self, definition):
-        uid = str(bson.objectid.ObjectId())
+        uid = str(ObjectId())
         self.active_id = uid
         self.experiments.update({uid: {"definition": definition, "tests": self.get_tests(definition), "results": {}}})
         self.save()
@@ -265,15 +277,17 @@ class Experiment():
         return tests
 
     def save(self):
-        with open(os.path.join(DATAPATH, 'experiment' + '.p'), 'wb') as df:
-            pickle.dump(self, df)
+        exp = pickle.dumps(self)
+        ack = DB.experiments.update_one({'_id': ObjectId("5e2b137cab748c8d228e4abb")}, {"$set": {"binary": exp}})
+        if ack.matched_count != 1:
+            print("Warning: no matching entries found to save the EXPERIMENT")
 
     @staticmethod
     def load():
-        if os.path.isfile(os.path.join(DATAPATH, 'experiment' + '.p')):
-            with open(os.path.join(DATAPATH, 'experiment' + '.p'), 'rb') as df:
-                experiment = pickle.load(df)
-        else:
+        exp_entry = DB.experiments.find_one({'_id': ObjectId("5e2b137cab748c8d228e4abb")})
+        experiment = pickle.loads(exp_entry['binary'])
+        if not experiment:
+            print("No experiment setup found creating default")
             experiment = Experiment()
             experiment.add_experiment('101;201;301;201;101')
         return experiment
