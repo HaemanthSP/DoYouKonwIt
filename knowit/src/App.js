@@ -482,6 +482,15 @@ class App extends Component {
 			{this.renderHeader()}
 			<div className="content">
 			<div className="row">
+      <div className="card">
+        Choose the testsets within the following range.
+        <br />101-120
+        <br />201-220
+        <br />301-320
+        <br />401-420
+        <br />501-520
+        <br />601-620
+      </div>
 			<form onSubmit={this.defineExperiment}>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
@@ -596,7 +605,7 @@ renderTeacherDashboard1() {
         {this.renderResultTableHeader()}
         {this.renderResultTableEntry()}
 	      <div className='row'>
-	        <button className='button' onClick={() => {this.setState({activePage: 'teacherlanding'})}}> Back </button>
+	        <button className='button back' onClick={() => {this.setState({activePage: 'teacherlanding'})}}> &#8617; </button>
 	      </div>
 			</div>
 		</div>
@@ -675,7 +684,7 @@ renderTeacherDashboard1() {
 	  <br />
 	  <br />
 	  <div className='row'>
-	  <button className='button' onClick={() => {this.setState({activePage: 'index'})}}> Back </button>
+	  <button className='button back' onClick={() => {this.setState({activePage: 'index'})}}> &#8617; </button>
 	  </div>
 	</div>
 	</div>
@@ -731,7 +740,7 @@ renderTeacherDashboard1() {
         })}
       </div>
 	    <div className='row'>
-	      <button className='button' onClick={() => {this.setState({activePage: 'teacherlanding1'})}}> Back </button>
+	      <button className='button back' onClick={() => {this.setState({activePage: 'teacherlanding1'})}}> &#8617; </button>
 	    </div>
 	  <br />
 	  <br />

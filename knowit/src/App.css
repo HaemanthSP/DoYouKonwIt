@@ -473,3 +473,11 @@ ul.checkout-bar li:nth-child(12):before {
 .card.scoreRow {
   margin: 5px;
 }
+
+button.back {
+  margin: -25% 0 0 -10%;
+  height: 65px;
+  width: 65px;
+  font-size: 30px;
+  background: dimgray;
+}
