@@ -74,7 +74,7 @@ class User:
     def update_index(self):
         index = User.get_index()
         index.update({str(self.name): self.uid})
-        ack = DB.users.update_one({'_id': ObjectId("5e2b14f5ab748c8d228e4abd")}, {"$set": {"mapping": index}})
+        ack = DB.index.update_one({'_id': ObjectId("5e2b14f5ab748c8d228e4abd")}, {"$set": {"mapping": index}})
         if ack.matched_count != 1:
             print("Warning: no matching entries found to save the INDEX")
 
@@ -285,11 +285,12 @@ class Experiment():
     @staticmethod
     def load():
         exp_entry = DB.experiments.find_one({'_id': ObjectId("5e2b137cab748c8d228e4abb")})
-        experiment = pickle.loads(exp_entry['binary'])
-        if not experiment:
+        if 'binary' not in exp_entry:
             print("No experiment setup found creating default")
             experiment = Experiment()
             experiment.add_experiment('101;201;301;201;101')
+        else:
+            experiment = pickle.loads(exp_entry['binary'])
         return experiment
 
     def filter_report(self, student_list):
