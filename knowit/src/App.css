@@ -462,3 +462,14 @@ ul.checkout-bar li:nth-child(12):before {
     margin: 40px auto;
     box-shadow: 4px 4px 11px 5px;
 }
+
+
+.card.scoreCell {
+  margin: 5px 0;
+  text-align: center;
+  cursor: pointer;
+}
+
+.card.scoreRow {
+  margin: 5px;
+}

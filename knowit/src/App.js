@@ -67,7 +67,6 @@ class App extends Component {
 		      "adminlanding": this.renderAdminDashboard.bind(this),
 		      "teacherlanding": this.renderTeacherDashboard.bind(this),
 		      "teacherlanding1": this.renderTeacherDashboard1.bind(this),
-		      "teacherlanding2": this.renderTeacherDashboard2.bind(this),
           "activity": this.renderActivity.bind(this),
           "index": this.renderIndex.bind(this),
           "level": this.renderLevel.bind(this),
@@ -518,46 +517,87 @@ class App extends Component {
 	);
   }
 
-
- renderTeacherDashboard1() {
-  	return (
-		<div className="canvas">
-			{this.renderHeader()}
-			<div className="content">
-			  <div className="row">
-          {this.state.studentResults.map((value, index) => {
-            return (
-              <div className="card testset_card"  onClick={() => {this.setState({aStudentResult: value["result"], activePage: 'teacherlanding2'})}}>
-                {value["name"]}
-              </div>
-            )
-          })}
-			  </div>
-	    <div className='row'>
-	      <button className='button' onClick={() => {this.setState({activePage: 'teacherlanding'})}}> Back </button>
-	    </div>
-			</div>
-		</div>
-	);
+renderScoreCell(result) {
+  function percentageToColor(percentage) {
+  const colors = [
+                   "#c50000a8",
+                   "#c42a00a8",
+                   "#c35400a8",
+                   "#c27d00a8",
+                   "#c1a600a8",
+                   "#b2c000a8",
+                   "#88bf00a8",
+                   "#5fbe00a8",
+                   "#36bd00a8",
+                   "#0dbc00a8",
+                   "#00bb1ba8",
+                   "#00bb1ba8"]
+    return colors[Math.floor(percentage/10)];
   }
+  return (
+    <div className="col-lg-9 row">
+      {result.map((value, index) => {
+        return(
+          <div className="scoreCell card" style={{width: (100 / result.length).toString() + "%", background:percentageToColor(value["metrics"]["score"])}}  onClick={() => {this.setState({wordList: this.state.tests[index]['tokens'], metrics:value['metrics'], selections:value['evaluated_responses'], activePage: 'report'})}}>
+            {value["metrics"]["score"]}
+          </div>
+        )
+      })
+      }
+    </div>
+  );
+}
 
- renderTeacherDashboard2() {
+renderResultTableEntry() {
+  return (
+	  <div>
+        {this.state.studentResults.map((value, index) => {
+          return (
+            <div className="row">
+              <div className="scoreRow col-lg-3 card">
+                 {value["name"]}
+              </div>
+              {this.renderScoreCell(value["result"])}
+            </div>
+          )
+        })}
+	  </div>
+  )
+}
+
+renderResultTableHeader() {
+  return (
+	  <div>
+      <div className="row">
+        <div className="scoreRow col-lg-3 card">
+           Name
+        </div>
+        <div className="col-lg-9 row">
+         {this.state.studentResults[0]["result"].map((value, index) => {
+           return(
+              <div className="scoreCell card" style={{width: (100 / this.state.studentResults[0]["result"].length).toString() + "%"}}>
+               {value['test_code'][5]}&#9734;
+             </div>
+           )
+         })
+         }
+        </div>
+      </div>
+	  </div>
+  )
+
+}
+
+renderTeacherDashboard1() {
   	return (
 		<div className="canvas">
 			{this.renderHeader()}
 			<div className="content">
-			  <div className="row">
-          {this.state.aStudentResult.map((value, index) => {
-            return (
-              <div className="card testset_card"  onClick={() => {this.setState({wordList: this.state.tests[index]['tokens'], metrics:value['metrics'], selections:value['evaluated_responses'], activePage: 'report'})}}>
-                {value["test_code"]}
-              </div>
-            )
-          })}
-			  </div>
-	    <div className='row'>
-	      <button className='button' onClick={() => {this.setState({activePage: 'teacherlanding1'})}}> Back </button>
-	    </div>
+        {this.renderResultTableHeader()}
+        {this.renderResultTableEntry()}
+	      <div className='row'>
+	        <button className='button' onClick={() => {this.setState({activePage: 'teacherlanding'})}}> Back </button>
+	      </div>
 			</div>
 		</div>
 	);
@@ -691,7 +731,7 @@ class App extends Component {
         })}
       </div>
 	    <div className='row'>
-	      <button className='button' onClick={() => {this.setState({activePage: 'teacherlanding2'})}}> Back </button>
+	      <button className='button' onClick={() => {this.setState({activePage: 'teacherlanding1'})}}> Back </button>
 	    </div>
 	  <br />
 	  <br />
