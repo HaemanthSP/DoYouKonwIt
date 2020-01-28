@@ -272,7 +272,7 @@ class Experiment():
         tests = []
         for test_code in definition.split(';'):
             level = int(test_code[0]) - 1
-            test_set = int(test_code[2]) - 1
+            test_set = int(test_code[1:]) - 1
             tests.append(self.vocab_tests[level]['testsets'][test_set])
         return tests
 
