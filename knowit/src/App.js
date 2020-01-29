@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.42.137' 
+var HOST = '192.168.26.215' 
 
 class App extends Component {
      constructor(props) {
@@ -490,6 +490,8 @@ class App extends Component {
         <br />401-420
         <br />501-520
         <br />601-620
+        <br />
+        <br />Example: <b>102;201;311;403;514</b>
       </div>
 			<form onSubmit={this.defineExperiment}>
                     <Grid container spacing={8} alignItems="flex-end">
@@ -693,15 +695,38 @@ renderTeacherDashboard1() {
 
   nextTest() {
     var testIndex = this.state.activeTestIndex + 1;
-    this.setState({
-      activeTestIndex: testIndex,
-      wordList: this.state.tests[testIndex]['tokens'],
-      activeWordIndex: 0,
-      selection: "",
-      selections: [],
-      levels: [],
-      result: {},
-      activePage: 'activity'})
+    if(testIndex < this.state.tests.length) {
+      this.setState({
+        activeTestIndex: testIndex,
+        wordList: this.state.tests[testIndex]['tokens'],
+        activeWordIndex: 0,
+        selection: "",
+        selections: [],
+        levels: [],
+        result: {},
+        activePage: 'activity'})
+    }
+    else {
+      this.setState({
+        activeTestIndex: 0,
+        activeWordIndex: 0,
+        selection: "",
+        selections: [],
+        levels: [],
+        result: {},
+        activePage: 'thankyou'})
+    }
+  }
+
+  renderThankyou() {
+  	return (
+		<div className="canvas">
+			{this.renderHeader()}
+			<div className="content">
+        <div className="thankyou">Thank You !!!</div>
+			</div>
+		</div>
+	);
   }
 
   renderReport() {
@@ -802,7 +827,9 @@ renderTeacherDashboard1() {
         <div className="scoreboard">
 			<div className="row">	
 				<div className="scorecard">{this.state.result["score"]}%</div>
-				<div >{this.state.result["message"]}</div>
+      </div>
+      <div>
+				<div className="scoreFeedback">{this.state.result["message"]}</div>
 			</div> 
             <div className="row">
                <button className="button" style={{borderRadius: 10, margin:"40px auto"}} onClick={() => {this.nextTest()}} > Next </button>

@@ -101,7 +101,7 @@
 }
 
 #progressbar>div {
-  background-color: #ffe007;
+  background-color: #ffe2075e;
   max-width: 100%;
   height: 20px;
   border-radius: 10px;
@@ -249,7 +249,7 @@
 
 .content {
   padding: 2%;
-  margin-top: 100px;
+  margin-top: 120px;
 }
 
 .dashboardCard {
@@ -284,7 +284,7 @@
 .checkout-wrap {
   color: #444;
   font-family: 'PT Sans Caption', sans-serif;
-  margin: 60px auto;
+  margin: 70px auto;
   max-width: 100%;
   position: relative;
 }
@@ -390,7 +390,7 @@ ul.checkout-bar li:nth-child(12):before {
   }
 
   .checkout-wrap {
-    margin: 40px auto;
+    margin: 70px auto;
   }
 
   ul.checkout-bar {
@@ -449,18 +449,27 @@ ul.checkout-bar li:nth-child(12):before {
 }
 
 .scorecard {
-    height: 250px;
-    border-style: solid;
-    width: 250px;
-    border-color: darkcyan;
-    display: flex;
-    border-radius: 50%;
-    font-size: 36px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    margin: 40px auto;
-    box-shadow: 4px 4px 11px 5px;
+  height: 250px;
+  border-style: solid;
+  width: 250px;
+  border-color: #dddddd;
+  display: flex;
+  border-width: 9px;
+  border-radius: 50%;
+  font-size: 72px;
+  font-family: cursive;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 40px auto;
+  box-shadow: inset 8px 7px 20px 0px;
+}
+
+.scoreFeedback {
+  text-align: center;
+  font-size: xx-large;
+  font-family: cursive;
+  color: lightslategray;
 }
 
 
