@@ -73,6 +73,7 @@ class App extends Component {
           "report": this.renderReport.bind(this),
           "minireport": this.renderMiniReport.bind(this),
           "score": this.renderScore.bind(this),
+          "thankyou": this.renderThankyou.bind(this),
        }; 
    }
 
