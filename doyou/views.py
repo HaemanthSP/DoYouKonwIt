@@ -10,7 +10,7 @@ from rest_framework.generics import ListCreateAPIView
 import base64
 import pickle
 
-from doyou import tokens, user
+from doyou import user
 
 
 class GetWordList(APIView):
