@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.26.215' 
+var HOST = '192.168.0.188' 
 
 class App extends Component {
      constructor(props) {
@@ -339,7 +339,7 @@ class App extends Component {
 			   <h1>Login</h1>
 			   <form  onSubmit={this.login} style={{marginTop:"30px"}}>
 					  <div>
-    					  <div className='authAlert' style={{color: 'red'}}>{this.state.message}</div>
+    					  <div className='authAlert' style={{color: 'blue'}}>{this.state.message}</div>
 					  </div>
                 <div>
                     <Grid container spacing={8} alignItems="flex-end">
@@ -442,6 +442,13 @@ class App extends Component {
                     <Grid container justify="center" style={{ marginTop: '20px' }}>
                         <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Sign up</Button>
                     </Grid>
+                    <div className="card">
+                      Password: mmddyyyyabc
+
+                      Data of birth in (mmddyyyy) and First three letter of first name (abc)
+
+                      for example: Walter White, 15/10/2004 -> <b>15102004wal</b>
+                    </div>
                 </div>
 			  </form>
             </Paper>
