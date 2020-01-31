@@ -420,11 +420,13 @@ class App extends Component {
 							<Select labelId="teachers" name="teacher" value={this.state.teacher} onChange={this.handleChange}>
 							  <MenuItem value=""><em>None</em></MenuItem>
 							  <MenuItem value="5e2ebbd9e414a94dc67fd995">Bleicher</MenuItem>
+							  <MenuItem value="5e3454f8cc0b53337bc5fa13">Meurers</MenuItem>
+							  <MenuItem value="5e34554acc0b53337bc5fa14">Deeg</MenuItem>
 							  <MenuItem value="5e2ebbaae414a94dc67fd994">Goedicke</MenuItem>
-							  <MenuItem value="teacher3">Howind</MenuItem>
-							  <MenuItem value="teacher4">Lang</MenuItem>
-							  <MenuItem value="teacher5">Rehberger</MenuItem>
-							  <MenuItem value="teacher6">Spiegelhalter</MenuItem>
+							  {/* <MenuItem value="teacher3">Howind</MenuItem> */}
+							  {/* <MenuItem value="teacher4">Lang</MenuItem> */}
+							  {/* <MenuItem value="teacher5">Rehberger</MenuItem> */}
+							  {/* <MenuItem value="teacher6">Spiegelhalter</MenuItem> */}
 							</Select>
                         </FormControl>
 						 </Grid>
