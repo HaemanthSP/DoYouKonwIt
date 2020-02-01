@@ -151,17 +151,16 @@ class TestHandle:
         score = int(np.round(max(0, (hits * 2.5 - false_hits * 2.5))))
         print("%s Hits, and %s false hits" % (hits, false_hits))
         guess = false_hits > 10
-        low_compentence = hits < 10
         message = ''
         if guess:
             message = 'Please donot guess'
             score = 0
         elif hits < 10:
-            messgae = 'Its ok, these are difficult words'
+            message = 'Its ok, these are difficult words'
             score = 0
         else:
             if score < 30:
-                messgae = 'Its ok, these are difficult words'
+                message = 'Its ok, these are difficult words'
             elif score > 90:
                 message = 'Great !!!'
             elif score > 70:

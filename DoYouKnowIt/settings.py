@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '6$y702)t1oqyd^axe2+oq8r=331=+lx90jcnssig25l5xqpw-2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -54,9 +54,6 @@ MIDDLEWARE = [
 ]
 
 REACT_APP_DIR = os.path.join(BASE_DIR, 'knowit') 
-STATICFILES_DIRS = [
-    os.path.join(REACT_APP_DIR, 'build', 'static'),
-]
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -70,7 +67,7 @@ ROOT_URLCONF = 'DoYouKnowIt.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [REACT_APP_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,4 +130,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'doyou', 'static') 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(REACT_APP_DIR, 'build', 'static'),
+]

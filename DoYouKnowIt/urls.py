@@ -18,8 +18,11 @@ from django.urls import path
 from django.conf.urls import url
 from doyou import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path(r'', views.index, name="index"),
+    # url(r'^', views.FrontendAppView.as_view()),
     url(r'^api/v1/getwordlist$', views.GetWordList.as_view(), name='get word list'),
     url(r'^api/v1/getlevels$', views.GetLevels.as_view(), name='get levels'),
     url(r'^api/v1/gettests$', views.GetTests.as_view(), name='get tests'),

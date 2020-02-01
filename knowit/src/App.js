@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '134.2.128.120' 
+var HOST = '192.168.31.54' 
 
 class App extends Component {
      constructor(props) {
@@ -445,11 +445,10 @@ class App extends Component {
                         <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Sign up</Button>
                     </Grid>
                     <div className="card">
-                      Password: mmddyyyyabc
-
-                      Data of birth in (mmddyyyy) and First three letter of first name (abc)
-
-                      for example: Walter White, 15/10/2004 -> <b>15102004wal</b>
+                      Password: mmddyyyyabc 
+                    <br />
+                    <br />
+                      for example: <br /> Walter White, 15/10/2004 <br /> <b>15102004wal</b>
                     </div>
                 </div>
 			  </form>
