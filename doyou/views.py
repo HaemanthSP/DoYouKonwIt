@@ -63,7 +63,7 @@ class GetLevels(APIView):
 
 class PostActivity(APIView):
     def post(self, req):
-        username = json.loads(req.body)['username']
+        username = req_json['username']
         data = {'username': username}
         return Response(data=data, status=status.HTTP_200_OK)
 
@@ -71,13 +71,14 @@ class PostActivity(APIView):
 class SignUp(APIView):
     def post(self, req):
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
-        firstname = json.loads(req.body)['firstname']
-        lastname = json.loads(req.body)['lastname']
-        middlename = json.loads(req.body)['middlename']
-        role = json.loads(req.body)['role']
-        teacher_id = json.loads(req.body)['teacher']
-        email = json.loads(req.body)['email']
-        dob = json.loads(req.body)['dob']
+        req_json = json.loads(req.body.decode('utf-8'))
+        firstname = req_json['firstname']
+        lastname = req_json['lastname']
+        middlename = req_json['middlename']
+        role = req_json['role']
+        teacher_id = req_json['teacher']
+        email = req_json['email']
+        dob = req_json['dob']
 
         name = user.Name(firstname, middlename, lastname)
 
@@ -104,10 +105,11 @@ class SignUp(APIView):
 class Login(APIView):
     def post(self, req):
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
-        firstname = json.loads(req.body)['firstname']
-        lastname = json.loads(req.body)['lastname']
-        middlename = json.loads(req.body)['middlename']
-        password = json.loads(req.body)['password']
+        req_json = json.loads(req.body.decode('utf-8'))
+        firstname = req_json['firstname']
+        lastname = req_json['lastname']
+        middlename = req_json['middlename']
+        password = req_json['password']
 
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password.lower())
@@ -130,11 +132,12 @@ class Login(APIView):
 class GetTeacherReport(APIView):
     def post(self, req):
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
-        firstname = json.loads(req.body)['firstname']
-        lastname = json.loads(req.body)['lastname']
-        middlename = json.loads(req.body)['middlename']
-        print(json.loads(req.body))
-        # password = json.loads(req.body)['password']
+        req_json = json.loads(req.body.decode('utf-8'))
+        firstname = req_json['firstname']
+        lastname = req_json['lastname']
+        middlename = req_json['middlename']
+        print(req_json)
+        # password = req_json['password']
 
         name = user.Name(firstname, middlename, lastname)
         # password = user.Password(password.lower())
@@ -153,12 +156,13 @@ class GetTeacherReport(APIView):
 class DefineExperiment(APIView):
     def post(self, req):
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
-        firstname = json.loads(req.body)['firstname']
-        lastname = json.loads(req.body)['lastname']
-        middlename = json.loads(req.body)['middlename']
-        experiment = json.loads(req.body)['experiment']
+        req_json = json.loads(req.body.decode('utf-8'))
+        firstname = req_json['firstname']
+        lastname = req_json['lastname']
+        middlename = req_json['middlename']
+        experiment = req_json['experiment']
         # FIXME: Identify the issue arises by enabling this
-        # password = json.loads(req.body)['password']
+        # password = req_json['password']
 
         name = user.Name(firstname, middlename, lastname)
         # password = user.Password(password.lower())
@@ -176,10 +180,11 @@ class GetTests(APIView):
     def post(self, req):
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
 
-        firstname = json.loads(req.body)['firstname']
-        lastname = json.loads(req.body)['lastname']
-        middlename = json.loads(req.body)['middlename']
-        password = json.loads(req.body)['password']
+        req_json = json.loads(req.body.decode('utf-8'))
+        firstname = req_json['firstname']
+        lastname = req_json['lastname']
+        middlename = req_json['middlename']
+        password = req_json['password']
 
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password.lower())
@@ -197,12 +202,13 @@ class UpdateResponse(APIView):
     def post(self, req):
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
 
-        firstname = json.loads(req.body)['firstname']
-        lastname = json.loads(req.body)['lastname']
-        middlename = json.loads(req.body)['middlename']
-        password = json.loads(req.body)['password']
-        test_code = json.loads(req.body)['testcode']
-        selections = json.loads(req.body)['selections']
+        req_json = json.loads(req.body.decode('utf-8'))
+        firstname = req_json['firstname']
+        lastname = req_json['lastname']
+        middlename = req_json['middlename']
+        password = req_json['password']
+        test_code = req_json['testcode']
+        selections = req_json['selections']
 
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password.lower())
@@ -222,12 +228,13 @@ class GetResult(APIView):
     def post(self, req):
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
 
-        firstname = json.loads(req.body)['firstname']
-        lastname = json.loads(req.body)['lastname']
-        middlename = json.loads(req.body)['middlename']
-        password = json.loads(req.body)['password']
-        test_code = json.loads(req.body)['testcode']
-        selections = json.loads(req.body)['selections']
+        req_json = json.loads(req.body.decode('utf-8'))
+        firstname = req_json['firstname']
+        lastname = req_json['lastname']
+        middlename = req_json['middlename']
+        password = req_json['password']
+        test_code = req_json['testcode']
+        selections = req_json['selections']
 
         name = user.Name(firstname, middlename, lastname)
         password = user.Password(password.lower())
