@@ -461,7 +461,7 @@ class App extends Component {
 		<div>
 			<div className='header'>
 				<div>
-					<div className='AppName' onClick={()=>{this.setState({activePage: "landing"})}}>HomeWork</div>
+					<div className='AppName'>DoYouKnowIt!</div>
 					<div className='username'>{this.state.firstName}</div>
 				</div>
 			</div>
