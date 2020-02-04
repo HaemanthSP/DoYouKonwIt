@@ -7,7 +7,7 @@ from bson import ObjectId
 from pymongo import MongoClient
 
 # Setup db handle
-DB = MongoClient('mongodb://localhost:27017/')["prototype"]
+DB = MongoClient('mongodb://127.0.0.1:27017/')["prototype"]
 
 # TODO: Add methods for initial setup like creating admin, indexer and experiments
 # TODO: A verification routine for admin

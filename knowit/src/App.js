@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = 'localhost' 
+var HOST = '134.2.129.143' 
 
 class App extends Component {
      constructor(props) {
