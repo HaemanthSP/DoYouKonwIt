@@ -63,6 +63,7 @@ class GetLevels(APIView):
 
 class PostActivity(APIView):
     def post(self, req):
+        req_json = json.loads(req.body.decode('utf-8'))
         username = req_json['username']
         data = {'username': username}
         return Response(data=data, status=status.HTTP_200_OK)
