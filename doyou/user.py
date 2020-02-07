@@ -331,11 +331,22 @@ class Analyser:
 
     def get_test_overlap(self, test):
         """Get the subset of test tokens that overlaps with the book vocabulary."""
-        return [(idx, token) for idx, token in enumerate(test["tokens"])]
+
+        test["overlap"] = {
+            self.name: set([(idx, token)
+                            for idx, token in enumerate(test["tokens"])
+                            if token in self.vocablist])}
+        return test["overlap"][self.name]
 
     def analyse(self, experiment):
-        for test in experiment:
-            overlapping_tokens = self.get_test_overlap(test)
+        overlapping_tokens
+        for test in experiment["tests"]:
+            overlapping_tokens.add(self.get_test_overlap(test))
+
+        experiment["overlap"][self.name] = overlapping_tokens
+
+        for result in experiments["results"]:
+            
 
             # Compare the student resposes here
         return
