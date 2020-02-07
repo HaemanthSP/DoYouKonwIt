@@ -322,3 +322,20 @@ class Experiment():
                 filtered_report.append(temp)
 
         return filtered_report
+
+        
+class Analyser:
+    def __init__(self, name, vocablist):
+        self.name = name
+        self.vocablist = vocablist
+
+    def get_test_overlap(self, test):
+        """Get the subset of test tokens that overlaps with the book vocabulary."""
+        return [(idx, token) for idx, token in enumerate(test["tokens"])]
+
+    def analyse(self, experiment):
+        for test in experiment:
+            overlapping_tokens = self.get_test_overlap(test)
+
+            # Compare the student resposes here
+        return
