@@ -345,9 +345,7 @@ class Analyser:
 
         experiment["overlap"][self.name] = overlapping_tokens
 
-        for result in experiments["results"]:
-            pass
-            
+        #for result in experiments["results"]:
 
             # Compare the student resposes here
         return
