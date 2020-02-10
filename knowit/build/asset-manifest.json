@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/DoYouKnowIt-static/css/main.d40644d2.chunk.css",
-    "main.js": "/DoYouKnowIt-static/js/main.22f2ef9a.chunk.js",
-    "main.js.map": "/DoYouKnowIt-static/js/main.22f2ef9a.chunk.js.map",
-    "runtime-main.js": "/DoYouKnowIt-static/js/runtime-main.980aa254.js",
-    "runtime-main.js.map": "/DoYouKnowIt-static/js/runtime-main.980aa254.js.map",
-    "DoYouKnowIt-static/css/2.b0bb7f2c.chunk.css": "/DoYouKnowIt-static/css/2.b0bb7f2c.chunk.css",
-    "DoYouKnowIt-static/js/2.79025801.chunk.js": "/DoYouKnowIt-static/js/2.79025801.chunk.js",
-    "DoYouKnowIt-static/js/2.79025801.chunk.js.map": "/DoYouKnowIt-static/js/2.79025801.chunk.js.map",
+    "main.css": "/static/css/main.d40644d2.chunk.css",
+    "main.js": "/static/js/main.4c3511fd.chunk.js",
+    "main.js.map": "/static/js/main.4c3511fd.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.980aa254.js",
+    "runtime-main.js.map": "/static/js/runtime-main.980aa254.js.map",
+    "static/css/2.b0bb7f2c.chunk.css": "/static/css/2.b0bb7f2c.chunk.css",
+    "static/js/2.79025801.chunk.js": "/static/js/2.79025801.chunk.js",
+    "static/js/2.79025801.chunk.js.map": "/static/js/2.79025801.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.6dc4e6bf03433569ca34a961549d5681.js": "/precache-manifest.6dc4e6bf03433569ca34a961549d5681.js",
+    "precache-manifest.a22415ab4ac0e5b861f1f58cadff75bc.js": "/precache-manifest.a22415ab4ac0e5b861f1f58cadff75bc.js",
     "service-worker.js": "/service-worker.js",
-    "DoYouKnowIt-static/css/2.b0bb7f2c.chunk.css.map": "/DoYouKnowIt-static/css/2.b0bb7f2c.chunk.css.map",
-    "DoYouKnowIt-static/css/main.d40644d2.chunk.css.map": "/DoYouKnowIt-static/css/main.d40644d2.chunk.css.map",
-    "DoYouKnowIt-static/media/logo.svg": "/DoYouKnowIt-static/media/logo.25bf045c.svg"
+    "static/css/2.b0bb7f2c.chunk.css.map": "/static/css/2.b0bb7f2c.chunk.css.map",
+    "static/css/main.d40644d2.chunk.css.map": "/static/css/main.d40644d2.chunk.css.map",
+    "static/media/logo.svg": "/static/media/logo.25bf045c.svg"
   },
   "entrypoints": [
-    "DoYouKnowIt-static/js/runtime-main.980aa254.js",
-    "DoYouKnowIt-static/css/2.b0bb7f2c.chunk.css",
-    "DoYouKnowIt-static/js/2.79025801.chunk.js",
-    "DoYouKnowIt-static/css/main.d40644d2.chunk.css",
-    "DoYouKnowIt-static/js/main.22f2ef9a.chunk.js"
+    "static/js/runtime-main.980aa254.js",
+    "static/css/2.b0bb7f2c.chunk.css",
+    "static/js/2.79025801.chunk.js",
+    "static/css/main.d40644d2.chunk.css",
+    "static/js/main.4c3511fd.chunk.js"
   ]
 }

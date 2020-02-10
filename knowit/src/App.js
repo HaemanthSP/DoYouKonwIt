@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '134.2.129.143' 
+var HOST = '134.2.128.120/vocabulary-test/' 
 
 class App extends Component {
      constructor(props) {
@@ -91,7 +91,7 @@ class App extends Component {
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/signup', user, config)
+    axios.post('http://' + HOST + '/api/v1/signup', user, config)
       .then(response => {
         this.setState({activePage: response.data.isValid ? "login" : 'signup',
 					   message: response.data.message,
@@ -112,7 +112,7 @@ class App extends Component {
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/defineexp', user, config)
+    axios.post('http://' + HOST + '/api/v1/defineexp', user, config)
       .then(response => {
         this.setState({message: response.data.message,
                        isLoading: false})
@@ -130,7 +130,7 @@ class App extends Component {
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/login', user, config)
+    axios.post('http://' + HOST + '/api/v1/login', user, config)
       .then(response => {
 	  if (response.data.isValid) {
 		  if (response.data.role === 'Admin') {
@@ -172,7 +172,7 @@ class App extends Component {
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/getteacherreport', user, config)
+    axios.post('http://' + HOST + '/api/v1/getteacherreport', user, config)
       .then(response => {
         this.setState({message: response.data.message,
                        teacherReport: response.data.teacher_report,
@@ -195,7 +195,7 @@ class App extends Component {
     };
     // this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/updateresponse', user, config)
+    axios.post('http://' + HOST + '/api/v1/updateresponse', user, config)
       .then(response => {
         this.setState({message: response.data.message
                        })
@@ -216,7 +216,7 @@ class App extends Component {
     };
     // this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/getresult', user, config)
+    axios.post('http://' + HOST + '/api/v1/getresult', user, config)
       .then(response => {
         this.setState({message: response.data.message,
                        result: response.data.result,
@@ -232,7 +232,7 @@ class App extends Component {
       username: stateData.user,
     };
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/getlevels', user, config)
+    axios.post('http://' + HOST + '/api/v1/getlevels', user, config)
       .then(response => {
         this.setState({
           levels: response.data.levels,
@@ -255,7 +255,7 @@ class App extends Component {
       username: stateData.user,
     };
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/gettests', user, config)
+    axios.post('http://' + HOST + '/api/v1/gettests', user, config)
       .then(response => {
         this.setState({
           tests: response.data.tests,
@@ -274,7 +274,7 @@ class App extends Component {
       username: stateData.user,
     };
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/getwordlist', user, config)
+    axios.post('http://' + HOST + '/api/v1/getwordlist', user, config)
       .then(response => {
         this.setState({
           wordList: response.data.wordList,
