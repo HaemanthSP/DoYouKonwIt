@@ -362,18 +362,6 @@ class App extends Component {
                             <TextField name="password" label="Password" type="password" fullWidth required  onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
-                    <Grid container alignItems="center" justify="space-between">
-                        <Grid item>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    color="primary"
-                                />
-                            } label="Remember me" />
-                        </Grid>
-                        <Grid item>
-                            <Button disableFocusRipple disableRipple style={{ textTransform: "none" }} variant="text" color="primary">Forgot password ?</Button>
-                        </Grid>
-                    </Grid>
                     <Grid container justify="center" style={{ marginTop: '25px' }}>
                         <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Login</Button>
                     </Grid>
