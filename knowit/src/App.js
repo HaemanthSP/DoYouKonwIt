@@ -445,8 +445,9 @@ class App extends Component {
                         <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Sign up</Button>
                     </Grid>
                     <div className="card">
-                      Password: mmddyyyyabc 
+                      Password: ddmmyyyyabc
                     <br />
+                      (ddmmyyyy) Date of birth and (abc) first three letters of the name
                     <br />
                       for example: <br /> Walter White, 15/10/2004 <br /> <b>15102004wal</b>
                     </div>

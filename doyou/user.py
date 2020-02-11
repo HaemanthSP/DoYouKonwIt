@@ -150,7 +150,7 @@ class TestHandle:
         # Compute the score based on the paul meara evaluation table
         score = int(np.round(max(0, (hits * 2.5 - false_hits * 2.5))))
         print("%s Hits, and %s false hits" % (hits, false_hits))
-        guess = false_hits >= 8
+        guess = false_hits >= 10
         message = ''
         if guess:
             message = 'Please donot guess'
@@ -166,7 +166,10 @@ class TestHandle:
             elif score > 70:
                 message = 'Good job !!'
             else:
-                message = 'Well done'
+                if false_hits >= 8:
+                    message = "Please don't guess"
+                else:
+                    message = 'Well done'
 
         result = {"message": message, "hits": hits, "false_hits": false_hits, "score": score}
         self.active_test["result"] = result
