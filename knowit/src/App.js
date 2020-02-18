@@ -14,7 +14,7 @@ const styles = theme => ({
     }
 });
 
-var HOST = '192.168.21.192' 
+var HOST = '134.2.128.120/vocabulary-test/' 
 
 class App extends Component {
      constructor(props) {
@@ -60,21 +60,23 @@ class App extends Component {
             dob: "",
 			message: "",
         };
-       this.pages = {
-          "login": this.renderLogin.bind(this),
-          "signup": this.renderSignup.bind(this),
-		      "landing": this.renderDashboard.bind(this),
-		      "adminlanding": this.renderAdminDashboard.bind(this),
-		      "teacherlanding": this.renderTeacherDashboard.bind(this),
-		      "teacherlanding1": this.renderTeacherDashboard1.bind(this),
-          "activity": this.renderActivity.bind(this),
-          "index": this.renderIndex.bind(this),
-          "level": this.renderLevel.bind(this),
-          "report": this.renderReport.bind(this),
-          "minireport": this.renderMiniReport.bind(this),
-          "score": this.renderScore.bind(this),
-          "thankyou": this.renderThankyou.bind(this),
-       }; 
+
+      this.pages = {
+         "login": this.renderLogin.bind(this),
+         "signup": this.renderSignup.bind(this),
+         "landing": this.renderDashboard.bind(this),
+         "instructions": this.renderInstructions.bind(this),
+         "adminlanding": this.renderAdminDashboard.bind(this),
+         "teacherlanding": this.renderTeacherDashboard.bind(this),
+         "teacherlanding1": this.renderTeacherDashboard1.bind(this),
+         "activity": this.renderActivity.bind(this),
+         "index": this.renderIndex.bind(this),
+         "level": this.renderLevel.bind(this),
+         "report": this.renderReport.bind(this),
+         "minireport": this.renderMiniReport.bind(this),
+         "score": this.renderScore.bind(this),
+         "thankyou": this.renderThankyou.bind(this),
+      }; 
    }
 
   signup = event => {
@@ -91,7 +93,7 @@ class App extends Component {
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/signup', user, config)
+    axios.post('http://' + HOST + '/api/v1/signup', user, config)
       .then(response => {
         this.setState({activePage: response.data.isValid ? "login" : 'signup',
 					   message: response.data.message,
@@ -112,7 +114,7 @@ class App extends Component {
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/defineexp', user, config)
+    axios.post('http://' + HOST + '/api/v1/defineexp', user, config)
       .then(response => {
         this.setState({message: response.data.message,
                        isLoading: false})
@@ -130,7 +132,7 @@ class App extends Component {
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/login', user, config)
+    axios.post('http://' + HOST + '/api/v1/login', user, config)
       .then(response => {
 	  if (response.data.isValid) {
 		  if (response.data.role === 'Admin') {
@@ -172,7 +174,7 @@ class App extends Component {
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/getteacherreport', user, config)
+    axios.post('http://' + HOST + '/api/v1/getteacherreport', user, config)
       .then(response => {
         this.setState({message: response.data.message,
                        teacherReport: response.data.teacher_report,
@@ -195,7 +197,7 @@ class App extends Component {
     };
     // this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/updateresponse', user, config)
+    axios.post('http://' + HOST + '/api/v1/updateresponse', user, config)
       .then(response => {
         this.setState({message: response.data.message
                        })
@@ -216,7 +218,7 @@ class App extends Component {
     };
     // this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/getresult', user, config)
+    axios.post('http://' + HOST + '/api/v1/getresult', user, config)
       .then(response => {
         this.setState({message: response.data.message,
                        result: response.data.result,
@@ -232,7 +234,7 @@ class App extends Component {
       username: stateData.user,
     };
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/getlevels', user, config)
+    axios.post('http://' + HOST + '/api/v1/getlevels', user, config)
       .then(response => {
         this.setState({
           levels: response.data.levels,
@@ -255,14 +257,15 @@ class App extends Component {
       username: stateData.user,
     };
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/gettests', user, config)
+    axios.post('http://' + HOST + '/api/v1/gettests', user, config)
       .then(response => {
         this.setState({
           tests: response.data.tests,
           isLoading: false,
           activeTestIndex: response.data.index,
           wordList: response.data.tests[response.data.index]['tokens'],
-          activePage: "activity"
+          // activePage: "activity"
+          activePage: "instructions"
         })
       })
   }
@@ -274,7 +277,7 @@ class App extends Component {
       username: stateData.user,
     };
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + ':8000/api/v1/getwordlist', user, config)
+    axios.post('http://' + HOST + '/api/v1/getwordlist', user, config)
       .then(response => {
         this.setState({
           wordList: response.data.wordList,
@@ -362,18 +365,6 @@ class App extends Component {
                             <TextField name="password" label="Password" type="password" fullWidth required  onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
-                    <Grid container alignItems="center" justify="space-between">
-                        <Grid item>
-                            <FormControlLabel control={
-                                <Checkbox
-                                    color="primary"
-                                />
-                            } label="Remember me" />
-                        </Grid>
-                        <Grid item>
-                            <Button disableFocusRipple disableRipple style={{ textTransform: "none" }} variant="text" color="primary">Forgot password ?</Button>
-                        </Grid>
-                    </Grid>
                     <Grid container justify="center" style={{ marginTop: '25px' }}>
                         <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Login</Button>
                     </Grid>
@@ -445,8 +436,9 @@ class App extends Component {
                         <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Sign up</Button>
                     </Grid>
                     <div className="card">
-                      Password: mmddyyyyabc 
+                      Password: ddmmyyyyabc
                     <br />
+                      (ddmmyyyy) Date of birth and (abc) first three letters of the name
                     <br />
                       for example: <br /> Walter White, 15/10/2004 <br /> <b>15102004wal</b>
                     </div>
@@ -461,7 +453,7 @@ class App extends Component {
 		<div>
 			<div className='header'>
 				<div>
-					<div className='AppName' onClick={()=>{this.setState({activePage: "landing"})}}>HomeWork</div>
+					<div className='AppName'>DoYouKnowIt!</div>
 					<div className='username'>{this.state.firstName}</div>
 				</div>
 			</div>
