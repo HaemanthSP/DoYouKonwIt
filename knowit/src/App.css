@@ -503,3 +503,7 @@ button.back {
   text-align: center;
   font-size: 100px;
 }
+
+.instruct {
+  font-size: 25px;
+}

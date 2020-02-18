@@ -23,7 +23,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '6$y702)t1oqyd^axe2+oq8r=331=+lx90jcnssig25l5xqpw-2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -130,8 +131,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'DoYouKnowIt-static') 
-STATIC_URL = '/DoYouKnowIt-static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static') 
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(REACT_APP_DIR, 'build', 'DoYouKnowIt-static'),
+    os.path.join(REACT_APP_DIR, 'build', 'static'),
 ]

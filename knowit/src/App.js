@@ -15,6 +15,7 @@ const styles = theme => ({
 });
 
 var HOST = '134.2.128.120/vocabulary-test/' 
+// var HOST = '127.0.0.1:8000' 
 
 class App extends Component {
      constructor(props) {
@@ -724,11 +725,12 @@ renderTeacherDashboard1() {
 		<div className="canvas">
 			{this.renderHeader()}
 			<div className="content">
-        <div className="instruct"> Read through the list of words carefully. For each word: <br />
-                                   if you know what it means, click 'y' key or <button className="button option green"> known (y) </button> (for YES)  <br />
+        <div className="instruct"> <b> Read through the list of words carefully. For each word: </b> <br /> <br />
+                                   if you know what it means, click 'y' key or <button className="button option green"> known (y) </button> (for YES)  <br /> <br />
                                    if you don't know what it means, or if you aren't sure, click 'n' or click <button className="button option grey"> unknown (n) </button> key (for NO).</div>
 	      <div>
-           <button style={{borderRadius: 10}} onClick={() => {this.setState({activePage: 'activity'})}} > Continue </button>
+           <br />
+           <button style={{borderRadius: 10}} style={{borderRadius: 10, margin:"40px auto"}} onClick={() => {this.setState({activePage: 'activity'})}} > Continue </button>
         </div>
 			</div>
       
