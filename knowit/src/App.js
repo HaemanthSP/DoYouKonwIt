@@ -60,21 +60,23 @@ class App extends Component {
             dob: "",
 			message: "",
         };
-       this.pages = {
-          "login": this.renderLogin.bind(this),
-          "signup": this.renderSignup.bind(this),
-		      "landing": this.renderDashboard.bind(this),
-		      "adminlanding": this.renderAdminDashboard.bind(this),
-		      "teacherlanding": this.renderTeacherDashboard.bind(this),
-		      "teacherlanding1": this.renderTeacherDashboard1.bind(this),
-          "activity": this.renderActivity.bind(this),
-          "index": this.renderIndex.bind(this),
-          "level": this.renderLevel.bind(this),
-          "report": this.renderReport.bind(this),
-          "minireport": this.renderMiniReport.bind(this),
-          "score": this.renderScore.bind(this),
-          "thankyou": this.renderThankyou.bind(this),
-       }; 
+
+      this.pages = {
+         "login": this.renderLogin.bind(this),
+         "signup": this.renderSignup.bind(this),
+         "landing": this.renderDashboard.bind(this),
+         "instructions": this.renderInstructions.bind(this),
+         "adminlanding": this.renderAdminDashboard.bind(this),
+         "teacherlanding": this.renderTeacherDashboard.bind(this),
+         "teacherlanding1": this.renderTeacherDashboard1.bind(this),
+         "activity": this.renderActivity.bind(this),
+         "index": this.renderIndex.bind(this),
+         "level": this.renderLevel.bind(this),
+         "report": this.renderReport.bind(this),
+         "minireport": this.renderMiniReport.bind(this),
+         "score": this.renderScore.bind(this),
+         "thankyou": this.renderThankyou.bind(this),
+      }; 
    }
 
   signup = event => {
@@ -262,7 +264,8 @@ class App extends Component {
           isLoading: false,
           activeTestIndex: response.data.index,
           wordList: response.data.tests[response.data.index]['tokens'],
-          activePage: "activity"
+          // activePage: "activity"
+          activePage: "instructions"
         })
       })
   }
@@ -632,8 +635,8 @@ renderTeacherDashboard1() {
         <h1 className="word"> {this.state.wordList[this.state.activeWordIndex]} </h1>
         <div className="col-md-12">
           <div className="row card_ctr">
-            <button className="button option green" onClick={() => {this.selection("yes")}}> known (Y) </button>
-            <button className="button option red" onClick={() => {this.selection("no")}}> unknown (N) </button>
+            <button className="button option green" onClick={() => {this.selection("yes")}}> known (y) </button>
+            <button className="button option grey" onClick={() => {this.selection("no")}}> unknown (n) </button>
           </div>
         </div>
         </div>
@@ -714,6 +717,23 @@ renderTeacherDashboard1() {
         result: {},
         activePage: 'thankyou'})
     }
+  }
+
+  renderInstructions() {
+  	return (
+		<div className="canvas">
+			{this.renderHeader()}
+			<div className="content">
+        <div className="instruct"> Read through the list of words carefully. For each word: <br />
+                                   if you know what it means, click 'y' key or <button className="button option green"> known (y) </button> (for YES)  <br />
+                                   if you don't know what it means, or if you aren't sure, click 'n' or click <button className="button option grey"> unknown (n) </button> key (for NO).</div>
+	      <div>
+           <button style={{borderRadius: 10}} onClick={() => {this.setState({activePage: 'activity'})}} > Continue </button>
+        </div>
+			</div>
+      
+		</div>
+	);
   }
 
   renderThankyou() {
