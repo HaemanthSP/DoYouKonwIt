@@ -7,7 +7,7 @@ from bson import ObjectId
 from pymongo import MongoClient
 
 # Setup db handle
-DB = MongoClient('mongodb://localhost:27017/')["prototype"]
+DB = MongoClient('mongodb://127.0.0.1:27017/')["prototype"]
 
 # TODO: Add methods for initial setup like creating admin, indexer and experiments
 # TODO: A verification routine for admin
@@ -150,7 +150,7 @@ class TestHandle:
         # Compute the score based on the paul meara evaluation table
         score = int(np.round(max(0, (hits * 2.5 - false_hits * 2.5))))
         print("%s Hits, and %s false hits" % (hits, false_hits))
-        guess = false_hits > 10
+        guess = false_hits >= 10
         message = ''
         if guess:
             message = 'Please donot guess'
@@ -166,7 +166,10 @@ class TestHandle:
             elif score > 70:
                 message = 'Good job !!'
             else:
-                message = 'Well done'
+                if false_hits >= 8:
+                    message = "Please don't guess"
+                else:
+                    message = 'Well done'
 
         result = {"message": message, "hits": hits, "false_hits": false_hits, "score": score}
         self.active_test["result"] = result
@@ -322,3 +325,32 @@ class Experiment():
                 filtered_report.append(temp)
 
         return filtered_report
+
+        
+class Analyser:
+    def __init__(self, name, vocablist):
+        self.name = name
+        self.vocablist = vocablist
+
+    def get_test_overlap(self, test):
+        """Get the subset of test tokens that overlaps with the book vocabulary."""
+
+        test["overlap"] = {
+            self.name: set([(idx, token)
+                            for idx, token in enumerate(test["tokens"])
+                            if token in self.vocablist])}
+        return test["overlap"][self.name]
+
+    def analyse(self, experiment):
+        overlapping_tokens
+        for test in experiment["tests"]:
+            overlapping_tokens.add(self.get_test_overlap(test))
+
+        experiment["overlap"][self.name] = overlapping_tokens
+
+        for result in experiments["results"]:
+            pass
+            
+
+            # Compare the student resposes here
+        return
