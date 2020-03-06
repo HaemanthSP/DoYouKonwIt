@@ -1,4 +1,5 @@
 import os
+import csv
 import pickle
 import datetime
 import numpy as np
@@ -260,6 +261,33 @@ class Admin(User):
         print("Updating Exp: %s" % (definition))
         experiments = Experiment.load()
         experiments.add_experiment(definition)
+
+    def export(self, exp_id):
+        experiment = Experiment.load().experiments[exp_id]
+
+        # overall_res = [['ID', 'Teacher'] + [t['test_code'] for t in experiment['tests']]]
+        # results = {t['test_code']: [['ID', 'Teacher'] + t['tokens'] + ['Hits', 'False Hits', 'Score']] for t in experiment['tests']}
+        test_codes = [t['test_code'] for t in experiment['tests']]
+        overall_results = [['ID'] + test_codes]
+        results = [[['ID'] + t['tokens'] + ['Hits', 'False Hits', 'Score']] for t in experiment['tests']]
+        for sid, test_results in experiment['results'].items():
+            temp_overall = [sid]
+            for idx, test_res in enumerate(test_results): 
+                metrics = test_res['metrics']
+                temp_overall.append(metrics['score'])
+                results[idx].append([sid] + test_res['evaluated_responses'] + [metrics['hits'], metrics['false_hits'], metrics['score']])
+            overall_results.append(temp_overall)
+
+            
+        # Write overall results
+        with open('res_' + str(exp_id) + '.csv', 'w') as fhandle:
+            writer = csv.writer(fhandle)
+            writer.writerows(overall_results)
+
+        for test_code, result in zip(test_codes, results):
+            with open('res_' + str(exp_id) + '_' + str(test_code) + '.csv', 'w') as fhandle:
+                writer = csv.writer(fhandle)
+                writer.writerows(result)
 
 
 class SuperUser(User):
