@@ -6,6 +6,7 @@ import numpy as np
 
 from bson import ObjectId
 from pymongo import MongoClient
+from zipfile import ZipFile
 
 # Setup db handle
 DB = MongoClient('mongodb://127.0.0.1:27017/')["prototype"]
@@ -262,7 +263,15 @@ class Admin(User):
         experiments = Experiment.load()
         experiments.add_experiment(definition)
 
-    def export(self, exp_id):
+    def export(self, exp_id, teacher_id):
+        # Export the results of the teacher for the specified experiment_id
+
+        # Teacher
+        teacher = User.load(teacher_id)
+        res_folder = 'result/' + exp_id + '_' + teacher.name.greet()
+        if not os.path.exists(res_folder):
+            os.makedirs(res_folder)
+        
         experiment = Experiment.load().experiments[exp_id]
 
         # overall_res = [['ID', 'Teacher'] + [t['test_code'] for t in experiment['tests']]]
@@ -271,6 +280,9 @@ class Admin(User):
         overall_results = [['ID'] + test_codes]
         results = [[['ID'] + t['tokens'] + ['Hits', 'False Hits', 'Score']] for t in experiment['tests']]
         for sid, test_results in experiment['results'].items():
+            if sid not in teacher.students:
+                continue
+
             temp_overall = [sid]
             for idx, test_res in enumerate(test_results): 
                 metrics = test_res['metrics']
@@ -278,16 +290,26 @@ class Admin(User):
                 results[idx].append([sid] + test_res['evaluated_responses'] + [metrics['hits'], metrics['false_hits'], metrics['score']])
             overall_results.append(temp_overall)
 
-            
         # Write overall results
-        with open('res_' + str(exp_id) + '.csv', 'w') as fhandle:
+        with open(os.path.join(res_folder, 'overall') + '.csv', 'w') as fhandle:
             writer = csv.writer(fhandle)
             writer.writerows(overall_results)
 
         for test_code, result in zip(test_codes, results):
-            with open('res_' + str(exp_id) + '_' + str(test_code) + '.csv', 'w') as fhandle:
+            with open(os.path.join(res_folder, str(test_code)) + '.csv', 'w') as fhandle:
                 writer = csv.writer(fhandle)
                 writer.writerows(result)
+
+        # create a ZipFile object
+        with ZipFile(res_folder + '.zip', 'w') as zipObj:
+           # Iterate over all the files in directory
+           for folderName, subfolders, filenames in os.walk(res_folder):
+               for filename in filenames:
+                   #create complete filepath of file in directory
+                   filePath = os.path.join(folderName, filename)
+                   # Add file to zip
+                   zipObj.write(filePath)
+        return res_folder + '.zip'
 
 
 class SuperUser(User):

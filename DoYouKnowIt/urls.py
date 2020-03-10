@@ -32,4 +32,5 @@ urlpatterns = [
     url(r'^api/v1/defineexp$', views.DefineExperiment.as_view(), name='post experiment'),
     url(r'^api/v1/signup$', views.SignUp.as_view(), name='post signup'),
     url(r'^api/v1/login$', views.Login.as_view(), name='post Login'),
+    url(r'^api/v1/export$', views.Export.as_view(), name='post export'),
 ]

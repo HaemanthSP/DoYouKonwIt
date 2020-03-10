@@ -11,8 +11,7 @@ import base64
 import pickle
 
 from doyou import user
-
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
@@ -250,3 +249,18 @@ class GetResult(APIView):
         # TODO: Capture collision (due to two active sessions of same user)
         data = {"result": result, 'message': "Success" if is_valid else "Collision"}
         return Response(data=data, status=status.HTTP_200_OK)
+
+
+class Export (APIView):
+    def post(self, req):
+        admin = user.User.load('5e2ebb45e414a94dc67fd993')
+        req_json = json.loads(req.body.decode('utf-8'))
+        teacher_id = req_json['teacherId']
+        exp_id = req_json['expId']
+
+        print("API: Collect teacher report")
+        zip_path = admin.export(exp_id, teacher_id)
+        zip_file = open(zip_path, 'r')
+        response = HttpResponse(zip_file, content_type='application/force-download')
+        response['Content-Disposition'] = 'attachment; filename="%s"' % zip_path 
+        return response
