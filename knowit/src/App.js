@@ -513,30 +513,36 @@ class App extends Component {
   	return (
 		<div className="canvas">
 			{this.renderHeader()}
-			<div className="content">
-			<div className="row">
-      <div className="card">
-        Choose the testsets within the following range.
-        <br />101-120
-        <br />201-220
-        <br />301-320
-        <br />401-420
-        <br />501-520
-        <br />601-620
-        <br />
-        <br />Example: <b>102;201;311;403;514</b>
-      </div>
-			<form onSubmit={this.defineExperiment}>
-                    <Grid container spacing={8} alignItems="flex-end">
-                        <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="experiment" label="Test Sequence" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
+			<div style={{padding: "2%"}}>
+      <div className="tabs">
+        <Tabs data={[
+          ["Experiment", 
+          <div>
+           <div className="card">
+             Choose the testsets within the following range.
+             101-120, 
+             201-220, 
+             301-320, 
+             401-420, 
+             501-520, 
+             601-620 
+             <br />
+             <br />Example: <b>102;201;311;403;514</b>
+           </div>
+			     <form onSubmit={this.defineExperiment}>
+                        <Grid container spacing={8} alignItems="flex-end">
+                            <Grid item md={true} sm={true} xs={true}>
+                                <TextField name="experiment" label="Test Sequence" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <Grid container justify="center" style={{ marginTop: '20px' }}>
-                        <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Save</Button>
-                    </Grid>
-			</form>
-
+                        <Grid container justify="center" style={{ marginTop: '20px' }}>
+                            <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Save</Button>
+                        </Grid>
+			     </form>
+           </div>]
+          ,
+          ["Export",
+          <div>
       <div className='row'>
 			  <form onSubmit={this.download}>
 					<Grid container spacing={8} alignItems="flex-end">
@@ -557,10 +563,10 @@ class App extends Component {
                         <Grid item md={true} sm={true} xs={true}>
 						<FormControl fullWidth required>	
 							<InputLabel id="experiment">Experiment</InputLabel>
-							<Select labelId="experiment" name="expId" value={this.state.expId} onChange={this.handleChange}>
+							<Select labelId="experiment" name="expId" value={this.state.expId} fullWidth onChange={this.handleChange}>
 							  <MenuItem value=""><em>None</em></MenuItem>
           	    {this.state.experiments.map((value, index) => {
-               	return (
+                  return (
 							    <MenuItem value={value[0]}>{value[1]}</MenuItem>
                	)
           	    })}
@@ -573,10 +579,14 @@ class App extends Component {
           </Grid>
 			  </form>
       </div>
-      
 			</div>
-			</div>
-		</div>
+    ],
+          ["Users", ""],
+        ]}/>
+        
+        </div>
+        </div>
+        </div>
 	);
   }
 
@@ -973,3 +983,44 @@ renderTeacherDashboard1() {
 }
 
 export default App;
+
+class Tabs extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      active: 0
+    }
+  }
+  
+  clickHandler = (e) => {
+    this.setState({
+      active: parseInt(e.currentTarget.attributes.num.value)
+    })
+  }
+  
+  render() {
+    let content = "";
+    const tabs = this.props.data.map(([label, text], i) => {
+      content = this.state.active === i ? text : content;  
+      return <li 
+               className={this.state.active === i ? "tab active" : "tab" } 
+               key={label} 
+               num={i}
+               onClick={this.clickHandler}>
+        {label}
+      </li>;
+    });
+    
+    return ( 
+      <section className="tabs">
+        <menu>
+          <ul>
+            {tabs}
+          </ul>
+        </menu>
+        <div>
+          {content}
+        </div>
+      </section>);
+  }
+}
