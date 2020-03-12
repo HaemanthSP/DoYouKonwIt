@@ -70,8 +70,29 @@ class User:
         return index
 
     @staticmethod
+    def get_user_list():
+        index = User.get_index()
+        user_list = []
+        for _, uid in index.items():
+            usr = User.load(uid)
+            user_list.append({'name': usr.name.fullname, 'role': usr.role, 'id': uid})
+
+        return user_list
+
+    @staticmethod
     def remove_user(uid):
-        raise NotImplementedError
+        index = User.get_index()
+        ack = DB.users.delete_one({'_id': ObjectId(uid)})
+        if ack.deleted_count != 1:
+            print("Warning: no matching entries found to save the INDEX")
+
+        usr_name = ''
+        for name, _id in index.items():
+            if _id == usr_name:
+                usr_name = name
+                break
+        if usr_name:
+            index.pop({usr_name})
 
     def update_index(self):
         index = User.get_index()
