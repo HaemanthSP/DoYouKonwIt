@@ -12,6 +12,7 @@ import pickle
 
 from doyou import user
 from django.http import HttpResponse, Http404
+from django.http import FileResponse
 from django.views.generic import View
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
@@ -251,16 +252,34 @@ class GetResult(APIView):
         return Response(data=data, status=status.HTTP_200_OK)
 
 
-class Export (APIView):
-    def post(self, req):
+# class Export (APIView):
+def export(req):
+    # def post(self, req):
+        print("API1: Export results")
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
-        req_json = json.loads(req.body.decode('utf-8'))
-        teacher_id = req_json['teacherId']
-        exp_id = req_json['expId']
+        # req_json = json.loads(req.body.decode('utf-8'))
+        # req_json = json.loads(req.body)
+        # teacher_id = req_json['teacher_id']
+        teacher_id = '5e2ebbd9e414a94dc67fd995'
+        exp_id = '5e2ef8918099f0bfd8bfca9a'
+        # exp_id = req_json['exp_id']
 
-        print("API: Collect teacher report")
+        print("API: Export results")
+        print("exp_id: %s, teacher_id: %s" % (exp_id, teacher_id))
         zip_path = admin.export(exp_id, teacher_id)
-        zip_file = open(zip_path, 'r')
-        response = HttpResponse(zip_file, content_type='application/force-download')
-        response['Content-Disposition'] = 'attachment; filename="%s"' % zip_path 
+        print("Wrote file to %s" % zip_path)
+        zip_file = open(zip_path, 'rb')
+        response = FileResponse(zip_file)
+        # response = HttpResponse(zip_file, content_type='application/zip')
+        # response = HttpResponse(zip_file, content_type='application/force-download')
+        # response['Content-Disposition'] = 'attachment; filename="%s"' % 'test.zip' 
         return response
+
+        
+class ExperimentList(APIView):
+    def post(self, req):
+        exp_handle = user.Experiment.load()
+        
+        experiments = [(exp_id, exp['definition']) for exp_id, exp in exp_handle.experiments.items()] 
+        data = {"experiments": experiments}
+        return Response(data=data, status=status.HTTP_200_OK)

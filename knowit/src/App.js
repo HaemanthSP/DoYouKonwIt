@@ -14,8 +14,8 @@ const styles = theme => ({
     }
 });
 
-var HOST = '134.2.128.120/vocabulary-test/' 
-// var HOST = '127.0.0.1:8000' 
+// var HOST = '134.2.128.120/vocabulary-test/' 
+var HOST = '127.0.0.1:8080' 
 
 class App extends Component {
      constructor(props) {
@@ -137,11 +137,20 @@ class App extends Component {
       .then(response => {
 	  if (response.data.isValid) {
 		  if (response.data.role === 'Admin') {
-		  	this.setState({role: 'Admin',
-						   activePage: 'adminlanding',
-                           password: response.data.password,
-						   isLoading: false});
-      }
+           let stateData = this.state;
+           const user = {
+           };
+           this.setState({ isLoading: true })
+           let config = { "Content-Type": "application/json" };
+           axios.post('http://' + HOST + '/api/v1/experiments', user, config)
+             .then(response => {
+         	    this.setState({role: 'Admin',
+       			    	           activePage: 'adminlanding',
+                             password: response.data.password,
+                             experiments: response.data.experiments,
+       			            	   isLoading: false});
+             })
+         }
       else if(response.data.role === 'Teacher') {
         this.setState({
           role: 'Teacher',
@@ -163,6 +172,7 @@ class App extends Component {
 	    }
       })
   }
+
 
   getTeacherReport() {
     let stateData = this.state;
@@ -202,6 +212,27 @@ class App extends Component {
       .then(response => {
         this.setState({message: response.data.message
                        })
+      })
+  }
+
+  download = event => {
+    let stateData = this.state;
+    const user = {
+      firstname: stateData.firstName,
+      lastname: stateData.lastName,
+      middlename: stateData.middleName,
+      role: stateData.role,
+      email: stateData.email,
+      password: stateData.password,
+      exp_id: stateData.expId,
+      teacher_id: stateData.teacher
+    };
+    // this.setState({ isLoading: true })
+    // let config = { "Content-Type": "application/zip" };
+    let config = { "Content-Type": "application/force-download" };
+    axios.get('http://' + HOST + '/api/v1/export', user, config)
+      .then(response => {
+        this.setState({message: 'Done'})
       })
   }
 
@@ -505,6 +536,44 @@ class App extends Component {
                         <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Save</Button>
                     </Grid>
 			</form>
+
+      <div className='row'>
+			  <form onSubmit={this.download}>
+					<Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+						<FormControl fullWidth required>	
+							<InputLabel id="teachers">Teacher</InputLabel>
+							<Select labelId="teachers" name="teacher" value={this.state.teacher} onChange={this.handleChange}>
+							  <MenuItem value=""><em>None</em></MenuItem>
+							  <MenuItem value="5e2ebbd9e414a94dc67fd995">Bleicher</MenuItem>
+							  <MenuItem value="5e3454f8cc0b53337bc5fa13">Meurers</MenuItem>
+							  <MenuItem value="5e34554acc0b53337bc5fa14">Deeg</MenuItem>
+							  <MenuItem value="5e2ebbaae414a94dc67fd994">Goedicke</MenuItem>
+							</Select>
+            </FormControl>
+					</Grid>
+			   </Grid>
+					<Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+						<FormControl fullWidth required>	
+							<InputLabel id="experiment">Experiment</InputLabel>
+							<Select labelId="experiment" name="expId" value={this.state.expId} onChange={this.handleChange}>
+							  <MenuItem value=""><em>None</em></MenuItem>
+          	    {this.state.experiments.map((value, index) => {
+               	return (
+							    <MenuItem value={value[0]}>{value[1]}</MenuItem>
+               	)
+          	    })}
+							</Select>
+            </FormControl>
+					</Grid>
+			   </Grid>
+          <Grid container justify="center" style={{ marginTop: '20px' }}>
+              <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Download</Button>
+          </Grid>
+			  </form>
+      </div>
+      
 			</div>
 			</div>
 		</div>
