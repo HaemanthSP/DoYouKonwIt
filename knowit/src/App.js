@@ -59,7 +59,10 @@ class App extends Component {
             email: "",
             password: "",
             dob: "",
-			message: "",
+            message: "",
+            
+            // User maintenance
+            userList = []
         };
 
       this.pages = {
@@ -100,6 +103,59 @@ class App extends Component {
 					   message: response.data.message,
                        isLoading: false})
       })
+  }
+
+  adduser = event => {
+    event.preventDefault();
+    let stateData = this.state;
+    const user = {
+      firstname: stateData.firstName,
+      lastname: stateData.lastName,
+      middlename: stateData.middleName,
+      role: stateData.role,
+      teacher: stateData.teacher,
+      email: stateData.email,
+      dob: stateData.dob,
+      password: stateData.password
+    };
+    this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + '/api/v1/adduser', user, config)
+      .then(response => {
+        this.setState({activePage: 'adminlanding',
+                       message: response.data.message,
+                       userList: response.data.user_list, 
+                       isLoading: false})
+      })
+  }
+
+  removeusr(uid) {
+    const user = {
+      uid: uid,
+    };
+    this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + '/api/v1/removeuser', user, config)
+      .then(response => {
+        this.setState({message: response.data.message,
+                       userList: response.data.user_list,
+                       isLoading: false})
+                       })
+      })
+  }
+
+  userList = event => {
+    const user = {
+    };
+    this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + '/api/v1/userList', user, config)
+      .then(response => {
+        this.setState({message: response.data.message,
+                       userList: response.data.user_list,
+                       isLoading: false})
+      })
+
   }
 
   defineExperiment = event => {
@@ -194,6 +250,7 @@ class App extends Component {
                        })
       })
   }
+  
   update(selections) {
     let stateData = this.state;
     const user = {
