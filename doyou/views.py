@@ -83,7 +83,12 @@ class SignUp(APIView):
 
         name = user.Name(firstname, middlename, lastname)
 
-        pass_phrase = ''.join(dob.split('-')[::-1]) + firstname[:3].lower()
+        if '-' in dob:
+            pass_phrase = ''.join(dob.split('-')[::-1]) + firstname[:3].lower()
+        # Handle for safari
+        elif '/' in dob:
+            pass_phrase = ''.join(dob.split('/')) + firstname[:3].lower()
+
         print("Details:\n%s\n%s\n%s\n%s\n " % (firstname, lastname, email, pass_phrase))
         password = user.Password(pass_phrase)
         if not admin.get_user(name):
