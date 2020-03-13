@@ -93,6 +93,8 @@ class User:
                 break
         if usr_name:
             index.pop({usr_name})
+        else:
+            return 1
 
     def update_index(self):
         index = User.get_index()
@@ -107,7 +109,6 @@ class User:
         if ack.matched_count != 1:
             print("Warning: no matching entries found to save the USER")
             
-
 
 class Student(User):
     def __init__(self, name, password):
@@ -268,7 +269,7 @@ class Admin(User):
         return user_type[role](name, password)
 
     def remove_user(self, uid):
-        raise NotImplementedError
+        return User.remove_user(uid)
 
     def validate_user(self, name, password):
         user = self.get_user(name)
