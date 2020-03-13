@@ -75,26 +75,37 @@ class User:
         user_list = []
         for _, uid in index.items():
             usr = User.load(uid)
+            if usr.role == 'Admin':
+                continue
             user_list.append({'name': usr.name.fullname, 'role': usr.role, 'id': uid})
 
+        user_list = sorted(user_list, key=lambda x: x['name'])
         return user_list
 
     @staticmethod
     def remove_user(uid):
         index = User.get_index()
-        ack = DB.users.delete_one({'_id': ObjectId(uid)})
-        if ack.deleted_count != 1:
-            print("Warning: no matching entries found to save the INDEX")
+
+        # Disable this for safety 
+        # ack = DB.users.delete_one({'_id': ObjectId(uid)})
+        # if ack.deleted_count != 1:
+            # print("Warning: no matching entries found to save the INDEX")
 
         usr_name = ''
         for name, _id in index.items():
-            if _id == usr_name:
+            if _id == uid:
                 usr_name = name
                 break
         if usr_name:
-            index.pop({usr_name})
+            index.pop(usr_name)
         else:
             return 1
+
+        ack = DB.index.update_one({'_id': ObjectId("5e2b14f5ab748c8d228e4abd")}, {"$set": {"mapping": index}})
+        if ack.matched_count != 1:
+            print("Warning: no matching entries found to save the INDEX")
+
+        return 0
 
     def update_index(self):
         index = User.get_index()

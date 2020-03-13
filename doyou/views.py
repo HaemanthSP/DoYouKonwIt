@@ -281,7 +281,8 @@ class ExperimentList(APIView):
         exp_handle = user.Experiment.load()
         
         experiments = [(exp_id, exp['definition']) for exp_id, exp in exp_handle.experiments.items()] 
-        data = {"experiments": experiments}
+        user_list = user.User.get_user_list()
+        data = {"experiments": experiments, "user_list": user_list}
         return Response(data=data, status=status.HTTP_200_OK)
 
         
@@ -326,12 +327,13 @@ class RemoveUser(APIView):
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
         req_json = json.loads(req.body.decode('utf-8'))
         uid = req_json['uid']
+        users = user.User.get_user_list()
         
         if admin.remove_user(uid):
             message = "No user with this id found."
         else:
             message = "User removed successfully."
-        data = {"message": message}
+        data = {"user_list": users, "message": message}
         return Response(data=data, status=status.HTTP_200_OK)
 
         

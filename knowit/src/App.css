@@ -556,7 +556,7 @@ button.back {
 
 section {
   margin: 15px auto;
-  width: 700px;
+  /* width: 700px; */
 }
 
 .tabs menu ul {
@@ -570,4 +570,33 @@ section {
   color: white;
   line-height: 1.5;
   color: rgba(255,255,255,.6);
+}
+
+.usercard {
+  font: 'Open Sans'
+
+}
+
+.Student {
+    background: linear-gradient(45deg, #00adff, transparent);
+}
+
+.Teacher {
+    background: linear-gradient(45deg, #ff7600, transparent);
+}
+
+.Admin {
+    background: linear-gradient(45deg, #6e00ff, transparent);
+}
+
+.userrow {
+    color: white;
+    display: flex;
+    padding: 2px 10px;
+    margin: 3px 0px;
+}
+
+.removeuser {
+  color: #ffcece;
+  cursor: pointer;
 }

@@ -62,7 +62,7 @@ class App extends Component {
             message: "",
             
             // User maintenance
-            userList = []
+            userList: [],
         };
 
       this.pages = {
@@ -129,7 +129,7 @@ class App extends Component {
       })
   }
 
-  removeusr(uid) {
+  removeuser(uid) {
     const user = {
       uid: uid,
     };
@@ -140,7 +140,6 @@ class App extends Component {
         this.setState({message: response.data.message,
                        userList: response.data.user_list,
                        isLoading: false})
-                       })
       })
   }
 
@@ -155,7 +154,6 @@ class App extends Component {
                        userList: response.data.user_list,
                        isLoading: false})
       })
-
   }
 
   defineExperiment = event => {
@@ -204,6 +202,7 @@ class App extends Component {
        			    	           activePage: 'adminlanding',
                              password: response.data.password,
                              experiments: response.data.experiments,
+                             userList: response.data.user_list,
        			            	   isLoading: false});
              })
          }
@@ -575,7 +574,7 @@ class App extends Component {
         <Tabs data={[
           ["Experiment", 
           <div>
-           <div className="card">
+           <div className="card" style={{"color": "dimgrey"}}>
              Choose the testsets within the following range.
              101-120, 
              201-220, 
@@ -638,7 +637,20 @@ class App extends Component {
       </div>
 			</div>
     ],
-          ["Users", ""],
+          ["Users",
+           <div> 
+             {this.state.userList.map((value, index) => {
+                return(
+                  <div className={value["role"] + " userrow"}>
+                    <div style={{"width": "98%", "display": "flex"}}>
+                    <div className='usercard' style={{"width": "90%"}}>{value["name"]}</div>
+                    <div className='usercard'>{value["role"]}</div>
+                    </div>
+                    <div className="removeuser" onClick={() => {this.removeuser(value["id"])}} style={{"width": "1%"}}> x </div>
+                  </div>
+                );
+             })}
+           </div>],
         ]}/>
         
         </div>
