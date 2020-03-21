@@ -536,6 +536,22 @@ class App extends Component {
 	);
   }
 
+  renderCheckoutbar() {
+    return (
+		<div className="checkout-wrap">
+      <div className="checkout-bar-empty"></div>
+		  <ul className="checkout-bar">
+          	{this.state.tests.map((value, index) => {
+            	return (
+				  <li style={{width: (index !== this.state.activeTestIndex? 6 : 100 - (this.state.tests.length - 1) * 6).toString() + '%'}} className={index === this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> <div className="bar" style={{ width: (this.state.activeWordIndex / this.state.wordList.length) * 96+ "%" }}></div> {value['test_code'][5]}&#9734;</li>
+            	)
+          	})}
+		  </ul>
+		</div>
+
+    );
+  }
+
   renderHeader() {
   	return (
 		<div>
@@ -768,19 +784,8 @@ renderTeacherDashboard1() {
     return (
       <div className="canvas">
 		{this.renderHeader()}
-		<div className="checkout-wrap">
-		  <ul className="checkout-bar">
-          	{this.state.tests.map((value, index) => {
-            	return (
-				  <li style={{width: (index !== this.state.activeTestIndex? 6 : 100 - (this.state.tests.length - 1) * 6).toString() + '%'}} className={index === this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> {value['test_code'][5]}&#9734;</li>
-            	)
-          	})}
-		  </ul>
-		</div>
+    {this.renderCheckoutbar()}
 		<div className="content">
-        <div id="progressbar">
-          <div style={{ width: (this.state.activeWordIndex / this.state.wordList.length) * 100 + "%" }}></div>
-        </div>
         <h1 className="word"> {this.state.wordList[this.state.activeWordIndex]} </h1>
         <div className="col-md-12">
           <div className="row card_ctr">
@@ -945,15 +950,7 @@ renderTeacherDashboard1() {
     return ( 
       <div className="canvas">
 		{this.renderHeader()}
-		<div className="checkout-wrap">
-		  <ul className="checkout-bar">
-          	{this.state.tests.map((value, index) => {
-            	return (
-				  <li style={{width: (index !== this.state.activeTestIndex? 6 : 100 - (this.state.tests.length - 1) * 6).toString() + '%'}} className={index === this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> {value['test_code'][5]}&#9734;</li>
-            	)
-          	})}
-		 </ul>
-	    </div>
+    {this.renderCheckoutbar()}
 	  	<br />
 	  	<br />
 		<div className="row">
@@ -981,15 +978,7 @@ renderTeacherDashboard1() {
     return ( 
       <div className="canvas">
 		{this.renderHeader()}
-		<div className="checkout-wrap">
-		  <ul className="checkout-bar">
-          	{this.state.tests.map((value, index) => {
-            	return (
-				  <li style={{width: (index !== this.state.activeTestIndex? 6 : 100 - (this.state.tests.length - 1) * 6).toString() + '%'}} className={index === this.state.activeTestIndex? 'active' : index < this.state.activeTestIndex? 'visited' : ''}> {value['test_code'][5]}&#9734;</li>
-            	)
-          	})}
-		 </ul>
-	    </div>
+    {this.renderCheckoutbar()}
 	  	<br />
 	  	<br />
         <div className="scoreboard">
