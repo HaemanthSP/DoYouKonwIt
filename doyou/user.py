@@ -391,6 +391,7 @@ class Experiment():
         filtered_report = []
         for experiment in self.experiments.values():
             temp = {"definition": experiment["definition"],
+                    "book_overlap": self._get_book_exp_overlap(experiment),
                     "tests": experiment["tests"]}
 
             results = []
@@ -399,7 +400,10 @@ class Experiment():
                 if not student_id in experiment["results"]:
                     continue
                 
-                student_res = {"name": student.name.fullname, "result": experiment["results"][student_id]}
+                result = experiment["results"][student_id]
+                student_res = {"name": student.name.fullname,
+                               "book_overlap": self._get_book_result_overlap(experiment["tests"], result),
+                               "result": result}
                 results.append(student_res)
 
             # TODO: Sort results by students name
@@ -408,6 +412,25 @@ class Experiment():
                 filtered_report.append(temp)
 
         return filtered_report
+
+    def _get_book_exp_overlap(self, exp):
+        tokens = [t for test in exp["tests"] for t in test["tokens"]]
+        tokens = set(tokens)
+        book_tokens = set(['hierograph', 'army', 'add', 'red', 'blue', 'girl', 'cage', 'actor', 'bird', 'new', 'dance'])
+        print("For Experiment")
+        print(tokens.intersection(book_tokens))
+        return tokens.intersection(book_tokens)
+
+    def _get_book_result_overlap(self, tests, result):
+        tokens = set()
+        for ix, test in enumerate(tests):
+            response = result[ix]["evaluated_responses"]
+            tokens.update(set([t for idx, t in enumerate(test["tokens"])
+                               if response[idx] == "yes"]))
+            
+        book_tokens = set(['hierograph', 'army', 'add', 'red', 'blue', 'girl', 'cage', 'actor', 'bird', 'new', 'dance'])
+        print(tokens.intersection(book_tokens))
+        return tokens.intersection(book_tokens)
 
         
 class Analyser:
