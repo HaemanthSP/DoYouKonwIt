@@ -14,8 +14,8 @@ const styles = theme => ({
     }
 });
 
-var HOST = '134.2.128.120/vocabulary-test/' 
-// var HOST = '127.0.0.1:8080' 
+// var HOST = '134.2.128.120/vocabulary-test/' 
+var HOST = '127.0.0.1:8080' 
 
 class App extends Component {
      constructor(props) {
@@ -733,6 +733,7 @@ renderResultTableEntry() {
             <div className="row">
               <div className="scoreRow col-lg-3 card">
                  {value["name"]}
+                 {/* <div style={{float: "right"}}> t </div> */}
               </div>
               {this.renderScoreCell(value["result"])}
             </div>
@@ -770,11 +771,11 @@ renderTeacherDashboard1() {
 		<div className="canvas">
 			{this.renderHeader()}
 			<div className="content">
-        {this.renderResultTableHeader()}
-        {this.renderResultTableEntry()}
 	      <div className='row'>
 	        <button className='button back' onClick={() => {this.setState({activePage: 'teacherlanding'})}}> &#8617; </button>
 	      </div>
+        {this.renderResultTableHeader()}
+        {this.renderResultTableEntry()}
 			</div>
 		</div>
 	);
@@ -998,23 +999,29 @@ renderTeacherDashboard1() {
 
   renderReportCard (index, value) {
     var selection = this.state.selections[index];
-	var bgColor;
+  var bgColor;
+  var isFake;
 	var textColor = "black";
 	if (selection === "yes") {
-		bgColor = "#01a22b88";
+		bgColor = "#01a22bcc";
 	} else if (selection === "wrong") {
-		bgColor = "#c51a0988";
+    // bgColor = "#c51a0988";
+    bgColor = "repeating-linear-gradient(45deg, rgba(197, 26, 9, 0.6), rgba(197, 26, 9, 0.6) 10px, rgba(197, 26, 9, 0.8) 10px, rgba(197, 26, 9, 0.8) 20px)"
+		textColor = "white";
   } else if(selection === "unknown")
    {
-		bgColor = "#004cc5bb";
+		// bgColor = "#004cc5bb";
+		bgColor = "#c51a09cc";
 		textColor = "white";
   } else {
-		bgColor = "grey";
-		textColor = "white";
+    // bgColor = "grey";
+    bgColor = "repeating-linear-gradient( 45deg, rgba(1, 162, 43, 0.6), rgba(1, 162, 43, 0.6) 10px, rgba(1, 162, 43, 0.8) 10px, rgba(1, 162, 43, 0.8) 20px )"
+		// bgColor = "#01a22b88";
+		// textColor = "white";
 	}
 	return (
     	<div className="card report_card" style={{color: textColor, background: bgColor}}>
-    	  <h4 style={{textAlign: "center", display: "table-cell"}}>{value}</h4>
+    	  <h4 style={{textAlign: "center", display: "table-cell"}}> {value}</h4>
     	</div>
 	 );
   }
