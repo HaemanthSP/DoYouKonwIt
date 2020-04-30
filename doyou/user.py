@@ -188,7 +188,7 @@ class TestHandle:
         guess = false_hits >= 10
         message = ''
         if guess:
-            message = 'Please donot guess'
+            message = 'Please do not guess'
             score = 0
         elif hits < 10:
             message = 'Its ok, these are difficult words'
