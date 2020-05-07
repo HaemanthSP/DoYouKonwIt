@@ -14,8 +14,8 @@ const styles = theme => ({
     }
 });
 
-var HOST = '134.2.128.120/vocabulary-test/' 
-// var HOST = '127.0.0.1:8080' 
+// var HOST = '134.2.128.120/vocabulary-test/' 
+var HOST = '127.0.0.1:8080' 
 
 class App extends Component {
      constructor(props) {
@@ -165,7 +165,8 @@ class App extends Component {
       middlename: stateData.middleName,
       role: stateData.role,
       password: stateData.password,
-	    experiment: stateData.experiment
+      experiment: stateData.experiment,
+      expName : stateData.expName
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
@@ -417,6 +418,10 @@ class App extends Component {
    } 
   }
 
+  selectExperiment(uid) {
+
+  }
+
   renderLogin() {
         const { classes } = this.props;
     return ( 
@@ -590,6 +595,16 @@ class App extends Component {
         <Tabs data={[
           ["Experiment", 
           <div>
+            <div>
+              {this.state.experiments.map((value, index) => {
+                return (
+                  // <div className="tooltip">
+                  <button className="button" title={value[2]} onClick={this.selectExperiment(value[0])}> {value[1]} </button>
+                  // <span className="tooltiptext"> {value[2]}</span>
+                  // </div>
+                )
+                })}
+              </div>
            <div className="card" style={{"color": "dimgrey"}}>
              Choose the testsets within the following range.
              101-120, 
@@ -604,7 +619,8 @@ class App extends Component {
 			     <form onSubmit={this.defineExperiment}>
                         <Grid container spacing={8} alignItems="flex-end">
                             <Grid item md={true} sm={true} xs={true}>
-                                <TextField name="experiment" label="Test Sequence" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
+                                <TextField name="expName" label="Exercise Name" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
+                                <TextField name="experiment" label="Test Sequence" type="text" fullWidth required  onChange={this.handleChange}/>
                             </Grid>
                         </Grid>
                         <Grid container justify="center" style={{ marginTop: '20px' }}>

@@ -167,6 +167,7 @@ class DefineExperiment(APIView):
         lastname = req_json['lastname']
         middlename = req_json['middlename']
         experiment = req_json['experiment']
+        exp_name = req_json['expName']
         # FIXME: Identify the issue arises by enabling this
         # password = req_json['password']
 
@@ -175,7 +176,7 @@ class DefineExperiment(APIView):
 
         print("API: Define experiment")
         admin_user = admin.get_user(name)
-        admin_user.update_experiment(experiment)
+        admin_user.update_experiment(exp_name, experiment)
 
         data = {"message": "Successfully updated experiment"}
 
@@ -285,9 +286,9 @@ class ExperimentList(APIView):
     def post(self, req):
         exp_handle = user.Experiment.load()
         
-        experiments = [(exp_id, exp['definition']) for exp_id, exp in exp_handle.experiments.items()] 
+        experiments = [(exp_id, exp.get('name', 'dummy name'), exp['definition']) for exp_id, exp in exp_handle.experiments.items()] 
         user_list = user.User.get_user_list()
-        data = {"experiments": experiments, "user_list": user_list}
+        data = {"experiments": experiments, "user_list": user_list, "active_exp": exp_handle.active_id}
         return Response(data=data, status=status.HTTP_200_OK)
 
         

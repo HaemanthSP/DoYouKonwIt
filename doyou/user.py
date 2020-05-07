@@ -291,10 +291,10 @@ class Admin(User):
             print("No user found of name %s" % (name))
             return False
 
-    def update_experiment(self, definition):
+    def update_experiment(self, name, definition):
         print("Updating Exp: %s" % (definition))
         experiments = Experiment.load()
-        experiments.add_experiment(definition)
+        experiments.add_experiment(name, definition)
 
     def export(self, exp_id, teacher_id):
         # Export the results of the teacher for the specified experiment_id
@@ -355,11 +355,27 @@ class Experiment():
     def __init__(self):
         self.vocab_tests = pickle.load(open("./data/vocab_tests/PaulMeera.p", 'rb'))
         self.experiments = {}
+        self.deleted_exps = {}
 
-    def add_experiment(self, definition):
+    def select_exp(self, uid):
+        if uid in self.experiments:
+            self.active_id = uid
+            self.save()
+        else:
+            print("Invalid uid %s" %(uid))
+
+    def remove_exp(self, uid):
+        if uid in self.experiments:
+            res = self.experiments.pop(uid)
+            self.deleted_exps[uid] = res
+            self.save()
+        else:
+            print("Invalid uid %s" %(uid))
+
+    def add_experiment(self, name, definition):
         uid = str(ObjectId())
         self.active_id = uid
-        self.experiments.update({uid: {"definition": definition, "tests": self.get_tests(definition), "results": {}}})
+        self.experiments.update({uid: {"name": name, "definition": definition, "tests": self.get_tests(definition), "results": {}}})
         self.save()
 
     def get_tests(self, definition):
