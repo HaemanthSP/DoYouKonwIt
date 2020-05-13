@@ -7,6 +7,7 @@ import numpy as np
 from bson import ObjectId
 from pymongo import MongoClient
 from zipfile import ZipFile
+from collections import defaultdict
 
 # Setup db handle
 DB = MongoClient('mongodb://127.0.0.1:27017/')["prototype"]
@@ -447,6 +448,34 @@ class Experiment():
         book_tokens = set(['hierograph', 'army', 'add', 'red', 'blue', 'girl', 'cage', 'actor', 'bird', 'new', 'dance'])
         print(tokens.intersection(book_tokens))
         return tokens.intersection(book_tokens)
+
+
+    def consolidate_experiments(self):
+        self.consolidated = defaultdict(lambda: defaultdict(dict))
+        for experiment in self.experiments.values():
+            for student_id, result in experiment["results"].items():
+                for test_res in result:
+                    code = test_res["test_code"]
+                    level_name = "level " + (code[5] if code[5] != 'A' else '6')
+                    score = test_res["metrics"]["score"]
+                    if score > 0:
+                        # NOTE: It could be an option to take a mean instead of overwritting
+                        self.consolidated[student_id][level_name][code] = score
+
+        # Cumulative
+        for student_id, data in  self.consolidated.items():
+            self.consolidated[student_id]["vocab"] = 0
+            for level, scores in list(data.items()):
+                if "level" not in level:
+                    continue
+                scores = list(scores.values())
+                self.consolidated[student_id]["cummulative"][level] = np.mean(scores)
+                self.consolidated[student_id]["distribution"][level] = len(scores)
+
+                # Vocab estimation
+                self.consolidated[student_id]["vocab"] += int(np.mean(scores) * 1000)
+
+        self.save()
 
         
 class Analyser:

@@ -238,7 +238,6 @@ class App extends Component {
       })
   }
 
-
   getTeacherReport() {
     let stateData = this.state;
     const user = {
@@ -596,7 +595,6 @@ class App extends Component {
 		</div>
 	);
   }
-
 
  renderDashboard() {
   	return (
