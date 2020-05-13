@@ -475,7 +475,21 @@ class Experiment():
                 # Vocab estimation
                 self.consolidated[student_id]["vocab"] += int(np.mean(scores) * 1000)
 
+        self.consolidated = dict(self.consolidated)
         self.save()
+
+    def name_unnamed_exps(self, phrase='Exercise '):
+        count = 1
+        for experiment in self.experiments.values():
+            if "name" not in experiment:
+                experiment["name"] = phrase + str(count)
+                count += 1
+
+        self.save()
+                
+        
+    
+    
 
         
 class Analyser:
