@@ -178,7 +178,9 @@ class DefineExperiment(APIView):
         admin_user = admin.get_user(name)
         admin_user.update_experiment(exp_name, experiment)
 
-        data = {"message": "Successfully updated experiment"}
+        exp_handle = user.Experiment.load()
+        experiments = [(exp_id, exp.get('name', 'dummy name'), exp['definition']) for exp_id, exp in exp_handle.experiments.items()] 
+        data = {"message": "Successfully updated experiment", "experiments":experiments}
 
         return Response(data=data, status=status.HTTP_200_OK)
 
@@ -291,6 +293,22 @@ class ExperimentList(APIView):
         data = {"experiments": experiments, "user_list": user_list, "active_exp": exp_handle.active_id}
         return Response(data=data, status=status.HTTP_200_OK)
 
+
+        data = {"message": "Experiment %s is selected" % (req_json["active_id"])}
+        return Response(data=data, status=status.HTTP_200_OK)
+
+class SelectExperiment(APIView):
+    def post(self, req):
+        admin = user.User.load('5e2ebb45e414a94dc67fd993')
+        req_json = json.loads(req.body.decode('utf-8'))
+        uid = req_json['active_id']
+        exp_handle = user.Experiment.load()
+        exp_handle.select_exp(uid) 
+        
+        message = "Experiment selected successfully."
+        data = {"message": message}
+        return Response(data=data, status=status.HTTP_200_OK)
+
         
 class AddUser(APIView):
     def post(self, req):
@@ -333,12 +351,12 @@ class RemoveUser(APIView):
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
         req_json = json.loads(req.body.decode('utf-8'))
         uid = req_json['uid']
-        users = user.User.get_user_list()
         
         if admin.remove_user(uid):
             message = "No user with this id found."
         else:
             message = "User removed successfully."
+        users = user.User.get_user_list()
         data = {"user_list": users, "message": message}
         return Response(data=data, status=status.HTTP_200_OK)
 

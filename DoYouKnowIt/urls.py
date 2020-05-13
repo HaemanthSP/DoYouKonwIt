@@ -37,5 +37,6 @@ urlpatterns = [
     url(r'^api/v1/user_list$', views.UserList.as_view(), name='post user list'),
     # url(r'^api/v1/export$', views.Export.as_view(), name='get export'),
     url(r'^api/v1/export$', views.export, name='get export'),
+    url(r'^api/v1/selectexp$', views.SelectExperiment, name='post select experiment'),
     url(r'^api/v1/experiments$', views.ExperimentList.as_view(), name='post experiments'),
 ]

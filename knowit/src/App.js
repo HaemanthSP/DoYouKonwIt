@@ -173,7 +173,27 @@ class App extends Component {
     axios.post('http://' + HOST + '/api/v1/defineexp', user, config)
       .then(response => {
         this.setState({message: response.data.message,
+                       experiments: response.data.experiments,
                        isLoading: false})
+      })
+  }
+
+  selectExperiment (uid) {
+    let stateData = this.state;
+    const user = {
+      firstname: stateData.firstName,
+      lastname: stateData.lastName,
+      middlename: stateData.middleName,
+      role: stateData.role,
+      password: stateData.password,
+      active_id : uid
+    };
+    this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + '/api/v1/selectexp', user, config)
+      .then(response => {
+        this.setState({message: response.data.message,
+                      isLoading: false})
       })
   }
   
@@ -192,20 +212,9 @@ class App extends Component {
       .then(response => {
 	  if (response.data.isValid) {
 		  if (response.data.role === 'Admin') {
-           let stateData = this.state;
            const user = {
            };
-           this.setState({ isLoading: true })
-           let config = { "Content-Type": "application/json" };
-           axios.post('http://' + HOST + '/api/v1/experiments', user, config)
-             .then(response => {
-         	    this.setState({role: 'Admin',
-       			    	           activePage: 'adminlanding',
-                             password: response.data.password,
-                             experiments: response.data.experiments,
-                             userList: response.data.user_list,
-       			            	   isLoading: false});
-             })
+           this.getExperiments();
          }
       else if(response.data.role === 'Teacher') {
         this.setState({
@@ -250,6 +259,28 @@ class App extends Component {
                        })
       })
   }
+
+  getExperiments() {
+    let stateData = this.state;
+    const user = {
+      firstname: stateData.firstName,
+      lastname: stateData.lastName,
+      middlename: stateData.middleName,
+      password: stateData.password
+    };
+    this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + '/api/v1/experiments', user, config)
+      .then(response => {
+       this.setState({role: 'Admin',
+       	           activePage: 'adminlanding',
+                      password: response.data.password,
+                      experiments: response.data.experiments,
+                      userList: response.data.user_list,
+                      activeExp: response.data.active_exp,
+               	   isLoading: false});
+      })
+   }
   
   update(selections) {
     let stateData = this.state;
@@ -416,10 +447,6 @@ class App extends Component {
         activePage: page
     })
    } 
-  }
-
-  selectExperiment(uid) {
-
   }
 
   renderLogin() {
@@ -595,17 +622,18 @@ class App extends Component {
         <Tabs data={[
           ["Experiment", 
           <div>
-            <div>
+            <div className="exp_container">
               {this.state.experiments.map((value, index) => {
                 return (
                   // <div className="tooltip">
-                  <button className="button" title={value[2]} onClick={this.selectExperiment(value[0])}> {value[1]} </button>
+                  <button className={this.state.activeExp === value[0]? "exp_button active" : "exp_button"} title={value[2]} onClick={() => {this.removeuser(value[0])}}> {value[1]} </button>
+                  // <button className={this.state.activeExp === value[0]? "exp_button active" : "exp_button"} title={value[2]} > {value[1]} </button>
                   // <span className="tooltiptext"> {value[2]}</span>
                   // </div>
                 )
                 })}
               </div>
-           <div className="card" style={{"color": "dimgrey"}}>
+           <div className="card" style={{"color": "dimgrey", "left": "-13px", "width": "100%", "border-width": "initial", "border-color": "#a9a9a9"}}>
              Choose the testsets within the following range.
              101-120, 
              201-220, 
