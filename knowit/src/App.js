@@ -68,10 +68,10 @@ class App extends Component {
       this.pages = {
          "login": this.renderLogin.bind(this),
          "signup": this.renderSignup.bind(this),
-         "landing": this.renderDashboard.bind(this),
+        //  "landing": this.renderDashboard.bind(this),
          "instructions": this.renderInstructions.bind(this),
          "adminlanding": this.renderAdminDashboard.bind(this),
-         "teacherlanding": this.renderTeacherDashboard.bind(this),
+        //  "teacherlanding": this.renderTeacherDashboard.bind(this),
          "teacherlanding1": this.renderTeacherDashboard1.bind(this),
          "activity": this.renderActivity.bind(this),
          "index": this.renderIndex.bind(this),
@@ -249,12 +249,13 @@ class App extends Component {
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + '/api/v1/getteacherreport', user, config)
+    // axios.post('http://' + HOST + '/api/v1/getteacherreport', user, config)
+    axios.post('http://' + HOST + '/api/v1/consolidatedreport', user, config)
       .then(response => {
         this.setState({message: response.data.message,
                        teacherReport: response.data.teacher_report,
                        isLoading: false,
-                       activePage: 'teacherlanding'
+                       activePage: 'teacherlanding1'
                        })
       })
   }
@@ -751,14 +752,19 @@ renderScoreCell(result) {
                    "#0dbc00a8",
                    "#00bb1ba8",
                    "#00bb1ba8"]
+    if (percentage === '-'){
+      return "#d2d2cda8"
+    }
     return colors[Math.floor(percentage/10)];
   }
   return (
     <div className="col-lg-9 row">
       {result.map((value, index) => {
+      {/* {result.map((value, index) => { */}
         return(
-          <div className="scoreCell card" style={{width: (100 / result.length).toString() + "%", background:percentageToColor(value["metrics"]["score"])}}  onClick={() => {this.setState({wordList: this.state.tests[index]['tokens'], metrics:value['metrics'], selections:value['evaluated_responses'], activePage: 'report'})}}>
-            {value["metrics"]["score"]}
+          // <div className="scoreCell card" style={{width: (100 / result.length).toString() + "%", background:percentageToColor(value["metrics"]["score"])}}  onClick={() => {this.setState({wordList: this.state.tests[index]['tokens'], metrics:value['metrics'], selections:value['evaluated_responses'], activePage: 'report'})}}>
+          <div className="scoreCell card" style={{width: (100 / result.length).toString() + "%", background:percentageToColor(value)}}>
+            {value}
           </div>
         )
       })
@@ -770,14 +776,15 @@ renderScoreCell(result) {
 renderResultTableEntry() {
   return (
 	  <div>
-        {this.state.studentResults.map((value, index) => {
+        {/* {this.state.studentResults.map((value, index) => { */}
+        {this.state.teacherReport.map((value, index) => {
           return (
             <div className="row">
               <div className="scoreRow col-lg-3 card">
                  {value["name"]}
-                 {/* <div style={{float: "right"}}> t </div> */}
+                 <div className="vocab"> {value["result"]["vocab"]} </div>
               </div>
-              {this.renderScoreCell(value["result"])}
+              {this.renderScoreCell(value["result"]["scores"])}
             </div>
           )
         })}
@@ -791,12 +798,13 @@ renderResultTableHeader() {
       <div className="row">
         <div className="scoreRow col-lg-3 card">
            Name
+           <div className="vocab"> vocab </div>
         </div>
         <div className="col-lg-9 row">
-         {this.state.studentResults[0]["result"].map((value, index) => {
+         {['1','2','3','4','5','6'].map((value, index) => {
            return(
-              <div className="scoreCell card" style={{width: (100 / this.state.studentResults[0]["result"].length).toString() + "%"}}>
-               {value['test_code'][5]}&#9734;
+              <div className="scoreCell card" style={{width: (100 / 6).toString() + "%"}}>
+               {value}&#9734;
              </div>
            )
          })
@@ -813,9 +821,9 @@ renderTeacherDashboard1() {
 		<div className="canvas">
 			{this.renderHeader()}
 			<div className="content">
-	      <div className='row'>
-	        <button className='button back' onClick={() => {this.setState({activePage: 'teacherlanding'})}}> &#8617; </button>
-	      </div>
+	      {/* <div className='row'> */}
+	        {/* <button className='button back' onClick={() => {this.setState({activePage: 'teacherlanding'})}}> &#8617; </button> */}
+	      {/* </div> */}
         {this.renderResultTableHeader()}
         {this.renderResultTableEntry()}
 			</div>

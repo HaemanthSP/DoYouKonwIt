@@ -512,6 +512,7 @@ ul.checkout-bar li:nth-child(12):before {
 
 .card.scoreRow {
   margin: 5px;
+  display: block;
 }
 
 button.back {
@@ -659,4 +660,11 @@ section {
   border-color: #29a2a2;
   box-shadow: 0 6px 15px rgb(40, 163, 165);
   border-radius: 5px;
+}
+
+.vocab {
+  float: right;
+  color: yellowgreen;
+  font-style: italic;
+  font-weight: 900;
 }

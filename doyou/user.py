@@ -496,45 +496,17 @@ class Experiment():
             else:
                res_scores.append('-') 
         
-        res_scores.append(self.consolidated[uid]["vocab"])
+        return {"scores": res_scores, "vocab": self.consolidated[uid]["vocab"]}
 
-        return res_scores
-
-    def pack_consolidated(self):
+    def pack_consolidated(self, student_list):
         package = []
-        for uid in self.consolidated:
+        for uid in student_list:
+            if uid not in self.consolidated:
+                continue
+
             package.append({"uid": uid,
                             "name": User.load(uid).name.fullname,
-                            "scores": self.pack_student_res(uid)})
+                            "result": self.pack_student_res(uid)})
 
         package = sorted(package, key=lambda x: x["name"])
         return package
-
-        
-class Analyser:
-    def __init__(self, name, vocablist):
-        self.name = name
-        self.vocablist = vocablist
-
-    def get_test_overlap(self, test):
-        """Get the subset of test tokens that overlaps with the book vocabulary."""
-
-        test["overlap"] = {
-            self.name: set([(idx, token)
-                            for idx, token in enumerate(test["tokens"])
-                            if token in self.vocablist])}
-        return test["overlap"][self.name]
-
-    def analyse(self, experiment):
-        overlapping_tokens
-        for test in experiment["tests"]:
-            overlapping_tokens.add(self.get_test_overlap(test))
-
-        experiment["overlap"][self.name] = overlapping_tokens
-
-        for result in experiments["results"]:
-            pass
-            
-
-            # Compare the student resposes here
-        return

@@ -159,6 +159,32 @@ class GetTeacherReport(APIView):
 
         return Response(data=data, status=status.HTTP_200_OK)
 
+
+class GetConsolidatedTeacherReport(APIView):
+    def post(self, req):
+        admin = user.User.load('5e2ebb45e414a94dc67fd993')
+        req_json = json.loads(req.body.decode('utf-8'))
+        firstname = req_json['firstname']
+        lastname = req_json['lastname']
+        middlename = req_json['middlename']
+        print(req_json)
+        # password = req_json['password']
+
+        name = user.Name(firstname, middlename, lastname)
+        # password = user.Password(password.lower())
+
+        print("API: Collect teacher report")
+        teacher = admin.get_user(name)
+        student_list = teacher.students
+
+        exp = user.Experiment.load()
+        teacher_report = exp.pack_consolidated(student_list)
+        print(teacher_report) 
+
+        data = {"teacher_report": teacher_report, "message": "Successfully collected the report"}
+
+        return Response(data=data, status=status.HTTP_200_OK)
+
 class DefineExperiment(APIView):
     def post(self, req):
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
