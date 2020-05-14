@@ -193,6 +193,7 @@ class App extends Component {
     axios.post('http://' + HOST + '/api/v1/selectexp', user, config)
       .then(response => {
         this.setState({message: response.data.message,
+                       activeExp: uid,
                       isLoading: false})
       })
   }
@@ -625,7 +626,7 @@ class App extends Component {
               {this.state.experiments.map((value, index) => {
                 return (
                   // <div className="tooltip">
-                  <button className={this.state.activeExp === value[0]? "exp_button active" : "exp_button"} title={value[2]} onClick={() => {this.removeuser(value[0])}}> {value[1]} </button>
+                  <button className={this.state.activeExp === value[0]? "exp_button active" : "exp_button"} title={value[2]} onClick={() => {this.selectExperiment(value[0])}}> {value[1]} </button>
                   // <button className={this.state.activeExp === value[0]? "exp_button active" : "exp_button"} title={value[2]} > {value[1]} </button>
                   // <span className="tooltiptext"> {value[2]}</span>
                   // </div>

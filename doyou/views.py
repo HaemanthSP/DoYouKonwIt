@@ -178,6 +178,7 @@ class GetConsolidatedTeacherReport(APIView):
         student_list = teacher.students
 
         exp = user.Experiment.load()
+        exp.consolidate_experiments()
         teacher_report = exp.pack_consolidated(student_list)
         print(teacher_report) 
 
