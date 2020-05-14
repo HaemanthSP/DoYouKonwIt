@@ -449,7 +449,6 @@ class Experiment():
         print(tokens.intersection(book_tokens))
         return tokens.intersection(book_tokens)
 
-
     def consolidate_experiments(self):
         self.consolidated = defaultdict(lambda: defaultdict(dict))
         for experiment in self.experiments.values():
@@ -473,7 +472,8 @@ class Experiment():
                 self.consolidated[student_id]["distribution"][level] = len(scores)
 
                 # Vocab estimation
-                self.consolidated[student_id]["vocab"] += int(np.mean(scores) * 1000)
+                # The score is for 100, convert to 1000
+                self.consolidated[student_id]["vocab"] += int(np.mean(scores) * 10)
 
         self.consolidated = dict(self.consolidated)
         self.save()
@@ -484,12 +484,31 @@ class Experiment():
             if "name" not in experiment:
                 experiment["name"] = phrase + str(count)
                 count += 1
-
         self.save()
-                
+
+    def pack_student_res(self, uid):
+        scores = self.consolidated[uid]["cummulative"]
+        res_scores = []
+        for level in ['1', '2', '3', '4', '5', '6']:
+            level_name = "level " + level
+            if level_name in scores:
+               res_scores.append(scores[level_name]) 
+            else:
+               res_scores.append('-') 
         
-    
-    
+        res_scores.append(self.consolidated[uid]["vocab"])
+
+        return res_scores
+
+    def pack_consolidated(self):
+        package = []
+        for uid in self.consolidated:
+            package.append({"uid": uid,
+                            "name": User.load(uid).name.fullname,
+                            "scores": self.pack_student_res(uid)})
+
+        package = sorted(package, key=lambda x: x["name"])
+        return package
 
         
 class Analyser:
