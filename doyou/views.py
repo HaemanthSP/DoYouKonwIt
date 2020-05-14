@@ -359,39 +359,20 @@ class SelectExperiment(APIView):
         return Response(data=data, status=status.HTTP_200_OK)
 
         
-class AddUser(APIView):
+class AddTeacher(APIView):
     def post(self, req):
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
         req_json = json.loads(req.body.decode('utf-8'))
         firstname = req_json['firstname']
         lastname = req_json['lastname']
-        teacher_id = req_json['teacher_id']
-        role = req_json['role']
+        role = 'teacher' 
         password = req_json['password']
-        dob = req_json['dob']
-
         name = user.Name(firstname, '', lastname)
 
-        if role == 'student':
-            pass_phrase = ''.join(dob.split('-')[::-1]) + firstname[:3].lower()
-            print("Details:\n%s\n%s\n%s\n " % (firstname, lastname, pass_phrase))
-            password = user.Password(pass_phrase)
-
-            
-        if not admin.get_user(name):
-            student = admin.add_user(name, password, role)
-            is_valid = True
-            message = "Congratulations, Your account has been created"
-            print(student.uid)
-
-            # Assign to the teacher
-            teacher = user.User.load(teacher_id)
-            teacher.add_student(student.uid)
-        else:
-            is_valid = False
-            message = "Sorry, your already has an account, Please Login"
-        print("Message:", message)
-        data = {"isValid": is_valid, "message": message, "password": pass_phrase}
+        teacher = admin.add_user(name, password, role)
+        message = "Success"
+        users = user.User.get_user_list()
+        data = {"user_list": users, "uid": teacher.uid, "message": message}
         return Response(data=data, status=status.HTTP_200_OK)
 
 

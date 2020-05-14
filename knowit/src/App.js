@@ -105,25 +105,22 @@ class App extends Component {
       })
   }
 
-  adduser = event => {
+  addTeacher = event => {
     event.preventDefault();
     let stateData = this.state;
     const user = {
-      firstname: stateData.firstName,
-      lastname: stateData.lastName,
-      middlename: stateData.middleName,
-      role: stateData.role,
-      teacher: stateData.teacher,
-      email: stateData.email,
-      dob: stateData.dob,
-      password: stateData.password
+      firstname: stateData.tfirstName,
+      lastname: stateData.tlastName,
+      // middlename: stateData.middleName,
+      // email: stateData.email,
+      // dob: stateData.dob,
+      password: stateData.tpassword
     };
     this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + '/api/v1/adduser', user, config)
+    axios.post('http://' + HOST + '/api/v1/addteacher', user, config)
       .then(response => {
-        this.setState({activePage: 'adminlanding',
-                       message: response.data.message,
+        this.setState({message: response.data.message,
                        userList: response.data.user_list, 
                        isLoading: false})
       })
@@ -195,6 +192,32 @@ class App extends Component {
         this.setState({message: response.data.message,
                        activeExp: uid,
                       isLoading: false})
+      })
+  }
+
+
+  studentReport () {
+    let stateData = this.state;
+    const user = {
+      firstname: stateData.firstName,
+      lastname: stateData.lastName,
+      middlename: stateData.middleName,
+      role: stateData.role,
+      password: stateData.password,
+    };
+    this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + '/api/v1/studentreport', user, config)
+      .then(response => {
+        this.setState({message: response.data.message,
+                       result: response.data.result,
+                       activeTestIndex: 0,
+                       activeWordIndex: 0,
+                       selection: "",
+                       selections: [],
+                       levels: [],
+                       isLoading: false,
+                       activePage:"thankyou"})
       })
   }
   
@@ -590,7 +613,7 @@ class App extends Component {
 		<div>
 			<div className='header'>
 				<div>
-					<div className='AppName'>DoYouKnowIt!</div>
+					<div className='AppName'>DoYouKnowIt?</div>
 					<div className='username'>{this.state.firstName}</div>
 				</div>
 			</div>
@@ -703,13 +726,36 @@ class App extends Component {
                 return(
                   <div className={value["role"] + " userrow"}>
                     <div style={{"width": "98%", "display": "flex"}}>
-                    <div className='usercard' style={{"width": "90%"}}>{value["name"]}</div>
-                    <div className='usercard'>{value["role"]}</div>
+                      <div className='usercard' style={{"width": "90%"}}>{value["name"]}</div>
+                      <div className='usercard'>{value["role"]}</div>
                     </div>
                     <div className="removeuser" onClick={() => {this.removeuser(value["id"])}} style={{"width": "1%"}}> x </div>
                   </div>
                 );
              })}
+              <div>ipqngpng</div>
+			        <form  onSubmit={this.addTeacher} style={{marginTop:"20px"}}>
+                <div>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="tfirstName" label="First Name" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="tlastName" label="Last Name" type="text" fullWidth required  onChange={this.handleChange}/>
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={8} alignItems="flex-end">
+                        <Grid item md={true} sm={true} xs={true}>
+                            <TextField name="tpassword" label="Password" type="password" fullWidth required  onChange={this.handleChange}/>
+                        </Grid>
+                    </Grid>
+                    <Grid container justify="center" style={{ marginTop: '25px' }}>
+                        <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Login</Button>
+                    </Grid>
+                </div>
+			        </form>
            </div>],
         ]}/>
         
@@ -799,7 +845,7 @@ renderResultTableHeader() {
       <div className="row">
         <div className="scoreRow col-lg-3 card">
            Name
-           <div className="vocab"> vocab </div>
+           <div className="vocab"> vocab size </div>
         </div>
         <div className="col-lg-9 row">
          {['1','2','3','4','5','6'].map((value, index) => {
@@ -914,14 +960,7 @@ renderTeacherDashboard1() {
         activePage: 'activity'})
     }
     else {
-      this.setState({
-        activeTestIndex: 0,
-        activeWordIndex: 0,
-        selection: "",
-        selections: [],
-        levels: [],
-        result: {},
-        activePage: 'thankyou'})
+      this.studentReport();
     }
   }
 
@@ -949,8 +988,19 @@ renderTeacherDashboard1() {
 			{this.renderHeader()}
 			<div className="content">
         <div className="thankyou">Thank You !!!</div>
+        <div> {this.state.result["vocab"]} words </div>
+        <div className="row">
+        {[1,2,3,4,5,6].map((value, index) => {
+          return (
+            <div>
+            <div> {value}&#9734;</div>
+            <div> {this.state.result["scores"][{index}]} </div>
+            </div>
+          )
+        })}
 			</div>
 		</div>
+    </div>
 	);
   }
 
