@@ -260,6 +260,28 @@ class GetResult(APIView):
         return Response(data=data, status=status.HTTP_200_OK)
 
 
+class GetStudentReport(APIView):
+    def post(self, req):
+        admin = user.User.load('5e2ebb45e414a94dc67fd993')
+
+        req_json = json.loads(req.body.decode('utf-8'))
+        firstname = req_json['firstname']
+        lastname = req_json['lastname']
+        middlename = req_json['middlename']
+        password = req_json['password']
+
+        name = user.Name(firstname, middlename, lastname)
+        password = user.Password(password.lower())
+
+        print("API: Get result of %s" % (name.greet()))
+        student = admin.get_user(name)
+        exp = user.Experiment.load()
+        result = exp.pack_student_res(student.uid)
+
+        data = {"result": result, 'message': "Success"}
+        return Response(data=data, status=status.HTTP_200_OK)
+
+
 # class Export (APIView):
 def export(req):
     # def post(self, req):
