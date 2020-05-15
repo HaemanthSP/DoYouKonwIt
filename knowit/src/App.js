@@ -163,7 +163,7 @@ class App extends Component {
       middlename: stateData.middleName,
       role: stateData.role,
       password: stateData.password,
-      experiment: stateData.experiment,
+      experiment: stateData.experimentDef,
       expName : stateData.expName
     };
     this.setState({ isLoading: true })
@@ -172,6 +172,8 @@ class App extends Component {
       .then(response => {
         this.setState({message: response.data.message,
                        experiments: response.data.experiments,
+                       expName: '',
+                       experimentDef: '',
                        isLoading: false})
       })
   }
@@ -678,7 +680,7 @@ class App extends Component {
                         <Grid container spacing={8} alignItems="flex-end">
                             <Grid item md={true} sm={true} xs={true}>
                                 <TextField name="expName" label="Exercise Name" type="text" fullWidth autoFocus required  onChange={this.handleChange}/>
-                                <TextField name="experiment" label="Test Sequence" type="text" fullWidth required  onChange={this.handleChange}/>
+                                <TextField name="experimentDef" label="Test Sequence" type="text" fullWidth required  onChange={this.handleChange}/>
                             </Grid>
                         </Grid>
                         <Grid container justify="center" style={{ marginTop: '20px' }}>
