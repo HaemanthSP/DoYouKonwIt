@@ -508,6 +508,7 @@ ul.checkout-bar li:nth-child(12):before {
   margin: 5px 0;
   text-align: center;
   cursor: pointer;
+  display: block;
 }
 
 .card.scoreRow {
@@ -667,4 +668,13 @@ section {
   color: yellowgreen;
   font-style: italic;
   font-weight: 900;
+}
+
+.subscript {
+  font-size: small;
+  color: antiquewhite;
+  position: absolute;
+  left: 91%;
+  bottom: 5%;
+  font-weight: 300
 }

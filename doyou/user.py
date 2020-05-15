@@ -488,15 +488,20 @@ class Experiment():
 
     def pack_student_res(self, uid):
         scores = self.consolidated[uid]["cummulative"]
+        distribution = self.consolidated[uid]["distribution"]
+        
         res_scores = []
+        res_dis = []
         for level in ['1', '2', '3', '4', '5', '6']:
             level_name = "level " + level
             if level_name in scores:
-               res_scores.append(scores[level_name]) 
+               res_scores.append("%.2f" % (scores[level_name]))
+               res_dis.append(distribution[level_name])
             else:
                res_scores.append('-') 
+               res_dis.append('')
         
-        return {"scores": res_scores, "vocab": self.consolidated[uid]["vocab"]}
+        return {"scores": res_scores, "distribution": res_dis, "vocab": self.consolidated[uid]["vocab"]}
 
     def pack_consolidated(self, student_list):
         package = []
