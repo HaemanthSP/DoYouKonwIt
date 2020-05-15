@@ -213,7 +213,7 @@ class App extends Component {
     axios.post('http://' + HOST + '/api/v1/studentreport', user, config)
       .then(response => {
         this.setState({message: response.data.message,
-                       result: response.data.result,
+                       studentReport: response.data.result,
                        activeTestIndex: 0,
                        activeWordIndex: 0,
                        selection: "",
@@ -998,19 +998,27 @@ renderTeacherDashboard1() {
 			{this.renderHeader()}
 			<div className="content">
         <div className="thankyou">Thank You !!!</div>
-        <div> {this.state.result["vocab"]} words </div>
-        <div className="row">
-        {[1,2,3,4,5,6].map((value, index) => {
-          return (
-            <div>
-            <div> {value}&#9734;</div>
-            <div> {this.state.result["scores"][index]} </div>
-            </div>
-          )
-        })}
+        <div className="student_vocab"> {this.state.studentReport["vocab"]} words </div>
+        <div style={{textAlign:"center", marginTop:"5px", marginBottom:"30px"}}>(Your vocabulary size is estimated based on all your interactions with our system)</div>
+        <div className="row" style={{marginLeft:"-25%"}}>
+        <div className="col-lg-3 row">
+        </div>
+        <div className="col-lg-9 row">
+          {['1','2','3','4','5','6'].map((value, index) => {
+           return(
+             <div className="scoreCell card" style={{width: (100 / 6).toString() + "%"}}>
+               {value}&#9734;
+             </div>
+           )
+          })
+          }
+         </div>
+        <div className="col-lg-3 row">
+        </div>
+        {this.renderScoreCell(this.state.studentReport)}
+        </div>
 			</div>
 		</div>
-    </div>
 	);
   }
 
