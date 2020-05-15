@@ -140,12 +140,13 @@ class App extends Component {
       })
   }
 
-  userList = event => {
+  getUserList(roles) {
     const user = {
+      query: roles 
     };
-    this.setState({ isLoading: true })
+    // this.setState({ isLoading: true })
     let config = { "Content-Type": "application/json" };
-    axios.post('http://' + HOST + '/api/v1/userList', user, config)
+    axios.post('http://' + HOST + '/api/v1/getuserlist', user, config)
       .then(response => {
         this.setState({message: response.data.message,
                        userList: response.data.user_list,
@@ -435,6 +436,7 @@ class App extends Component {
   }
 
   componentWillMount() {
+    this.getUserList(["Teacher"]);
     this.setState({activePage: 'signup'});
     document.addEventListener("keyup", this.handleKeyPress.bind(this));
   }
@@ -553,11 +555,16 @@ class App extends Component {
 						<FormControl fullWidth required>	
 							<InputLabel id="teachers">Teacher</InputLabel>
 							<Select labelId="teachers" name="teacher" value={this.state.teacher} onChange={this.handleChange}>
-							  <MenuItem value=""><em>None</em></MenuItem>
-							  <MenuItem value="5e2ebbd9e414a94dc67fd995">Bleicher</MenuItem>
+                <MenuItem value=""><em>None</em></MenuItem>
+                {this.state.userList.map((value, index) => {
+                  return (
+                    <MenuItem value={value['id']}>{value['fullname']}</MenuItem>
+                  )
+                })}
+							  {/* <MenuItem value="5e2ebbd9e414a94dc67fd995">Bleicher</MenuItem>
 							  <MenuItem value="5e3454f8cc0b53337bc5fa13">Meurers</MenuItem>
 							  <MenuItem value="5e34554acc0b53337bc5fa14">Deeg</MenuItem>
-							  <MenuItem value="5e2ebbaae414a94dc67fd994">Goedicke</MenuItem>
+							  <MenuItem value="5e2ebbaae414a94dc67fd994">Goedicke</MenuItem> */}
 							  {/* <MenuItem value="teacher3">Howind</MenuItem> */}
 							  {/* <MenuItem value="teacher4">Lang</MenuItem> */}
 							  {/* <MenuItem value="teacher5">Rehberger</MenuItem> */}

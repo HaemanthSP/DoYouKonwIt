@@ -393,6 +393,10 @@ class RemoveUser(APIView):
         
 class UserList(APIView):
     def post(self, req):
-        users = user.User.get_user_list()
+        req_json = json.loads(req.body.decode('utf-8'))
+        query = req_json['query']
+        users = user.User.get_user_list(query)
         data = {"user_list": users}
+        print("User list")
+        print(data)
         return Response(data=data, status=status.HTTP_200_OK)

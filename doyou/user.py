@@ -71,14 +71,14 @@ class User:
         return index
 
     @staticmethod
-    def get_user_list():
+    def get_user_list(whitelist=['Student', 'Teacher']):
         index = User.get_index()
         user_list = []
         for _, uid in index.items():
             usr = User.load(uid)
-            if usr.role == 'Admin':
+            if usr.role not in whitelist:
                 continue
-            user_list.append({'name': usr.name.fullname, 'role': usr.role, 'id': uid})
+            user_list.append({'name': usr.name.fullname, 'fullname': str(usr.name), 'role': usr.role, 'id': uid})
 
         user_list = sorted(user_list, key=lambda x: x['name'])
         return user_list
