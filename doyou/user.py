@@ -497,6 +497,12 @@ class Experiment():
                 count += 1
         self.save()
 
+    def del_experiments(self, blacklist=[]):
+        for uid in list(self.experiments.keys()):
+            if self.experiments[uid]["name"] in blacklist:
+                print("Removed exp with name %s" % (self.experiments[uid]["name"]))
+                self.experiments.pop(uid)
+
     def pack_student_res(self, uid):
         scores = self.consolidated[uid]["cummulative"]
         reports = self.consolidated[uid]["reports"]
