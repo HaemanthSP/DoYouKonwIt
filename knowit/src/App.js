@@ -154,6 +154,22 @@ class App extends Component {
       })
   }
 
+  prepareDetailedReport(testCodes, report) {
+    const user = {
+      test_codes: testCodes 
+    };
+    // this.setState({ isLoading: true })
+    let config = { "Content-Type": "application/json" };
+    axios.post('http://' + HOST + '/api/v1/preparedetailedreport', user, config)
+      .then(response => {
+        this.setState({message: response.data.message,
+                       tests: response.data.tests,
+                       detailedReport: report,
+                       ARI: 0,
+                       isLoading: false})
+      })
+  }
+
   defineExperiment = event => {
     event.preventDefault();
     let stateData = this.state;
@@ -793,6 +809,7 @@ class App extends Component {
 	);
   }
 
+
 renderScoreCell(result) {
   function percentageToColor(percentage) {
   const colors = [
@@ -819,7 +836,7 @@ renderScoreCell(result) {
       {/* {result.map((value, index) => { */}
         return(
           // <div className="scoreCell card" style={{width: (100 / result.length).toString() + "%", background:percentageToColor(value["metrics"]["score"])}}  onClick={() => {this.setState({wordList: this.state.tests[index]['tokens'], metrics:value['metrics'], selections:value['evaluated_responses'], activePage: 'report'})}}>
-          <div className="scoreCell card" style={{width: (100 / result["scores"].length).toString() + "%", background:percentageToColor(value)}}>
+          <div className="scoreCell card" style={{width: (100 / result["scores"].length).toString() + "%", background:percentageToColor(value)}} title={result["testcases"][index]} onClick={() => {this.setState({detailedReport:result['reports'][index], activePage: 'report'})}}>
             {value}
             <div className="subscript">{result["distribution"][index]}</div>
           </div>
@@ -1023,45 +1040,54 @@ renderTeacherDashboard1() {
   }
 
   renderReport() {
+    // let activeReport = this.state.detailedReport[this.state.ARI]
+    let activeReport = this.state.detailedReport[0]
     return (
       <div>
 	  	<br />
 	  	<br />
         <h1> Report </h1>
-		<div className="row">
-			<div className="column">
-			  <div className="card" style={{borderRadius: 10 }}>
-			    <h4>Hits</h4><br />
-			    <h2>{this.state.metrics["hits"]}</h2>
-			  </div>
-			</div>
-			<div className="column">
-			  <div className="card" style={{borderRadius: 10 }}>
-			    <h4>False Hits</h4><br />
-			    <h2>{this.state.metrics["false_hits"]}</h2>
-			  </div>
-			</div>
-			<div className="column">
-			  <div className="card" style={{borderRadius: 10 }}>
-			    <h4>Score</h4><br />
-			    <h2>{this.state.metrics["score"]}</h2>
-			  </div>
-			</div>
-		</div>
+    {this.state.detailedReport.map((activeReport, index) => {
+      return ( 
+        <div>
+        <h2>{activeReport["test_code"]}</h2>
         <div className="row">
-        {this.state.wordList.map((value, index) => {
-          return (
-            <div className="column col-md-3 col-sm-4" key={index}>
-			  {this.renderReportCard(index, value)}
+          <div className="column">
+            <div className="card" style={{borderRadius: 10 }}>
+              <h4>Hits</h4><br />
+              <h2>{activeReport["metrics"]["hits"]}</h2>
             </div>
-          )
-        })}
+          </div>
+          <div className="column">
+            <div className="card" style={{borderRadius: 10 }}>
+              <h4>False Hits</h4><br />
+              <h2>{activeReport["metrics"]["false_hits"]}</h2>
+            </div>
+          </div>
+          <div className="column">
+            <div className="card" style={{borderRadius: 10 }}>
+              <h4>Score</h4><br />
+              <h2>{activeReport["metrics"]["score"]}</h2>
+            </div>
+          </div>
+        </div>
+            <div className="row">
+            {activeReport["tokens"].map((value, index) => {
+              return (
+                <div className="column col-md-3 col-sm-4" key={index}>
+            {this.renderReportCard(activeReport["evaluated_responses"][index], value)}
+                </div>
+              )
+            })}
+          </div>
+          <div className='row'>
+            <button className='button back' onClick={() => {this.setState({activePage: 'teacherlanding1'})}}> &#8617; </button>
+          </div>
+      <br />
+      <br />
       </div>
-	    <div className='row'>
-	      <button className='button back' onClick={() => {this.setState({activePage: 'teacherlanding1'})}}> &#8617; </button>
-	    </div>
-	  <br />
-	  <br />
+      )
+    })}
       </div>
     );
   }
@@ -1116,8 +1142,7 @@ renderTeacherDashboard1() {
     );
   }
 
-  renderReportCard (index, value) {
-    var selection = this.state.selections[index];
+  renderReportCard (selection, value) {
   var bgColor;
   var isFake;
 	var textColor = "black";

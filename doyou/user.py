@@ -387,6 +387,11 @@ class Experiment():
             tests.append(self.vocab_tests[level]['testsets'][test_set])
         return tests
 
+    def get_tokens_with_code(self, test_code):
+        level = int('6' if test_code[5] == 'A' else test_code[5]) - 1
+        test_set = int(test_code[6:]) - 1
+        return self.vocab_tests[level]['testsets'][test_set]['tokens']
+        
     def save(self):
         exp = pickle.dumps(self)
         ack = DB.experiments.update_one({'_id': ObjectId("5e2b137cab748c8d228e4abb")}, {"$set": {"binary": exp}})
@@ -399,7 +404,7 @@ class Experiment():
         if 'binary' not in exp_entry:
             print("No experiment setup found creating default")
             experiment = Experiment()
-            experiment.add_experiment('101;201;301;201;101')
+            experiment.add_experiment("Exercise 1", '101;201;301;201;101')
         else:
             experiment = pickle.loads(exp_entry['binary'])
         return experiment
@@ -458,18 +463,24 @@ class Experiment():
                     level_name = "level " + (code[5] if code[5] != 'A' else '6')
                     score = test_res["metrics"]["score"]
                     if score > 0:
+                        test_res.update({"tokens": self.get_tokens_with_code(test_res["test_code"])})
                         # NOTE: It could be an option to take a mean instead of overwritting
                         self.consolidated[student_id][level_name][code] = score
+                        if self.consolidated[student_id]["reports"].get(level_name, []):
+                            self.consolidated[student_id]["reports"][level_name].append(test_res)
+                        else:
+                            self.consolidated[student_id]["reports"][level_name] = [test_res]
 
         # Cumulative
         for student_id, data in  self.consolidated.items():
             self.consolidated[student_id]["vocab"] = 0
-            for level, scores in list(data.items()):
+            for level, level_data in list(data.items()):
                 if "level" not in level:
                     continue
-                scores = list(scores.values())
+                scores = list(level_data.values())
                 self.consolidated[student_id]["cummulative"][level] = np.mean(scores)
                 self.consolidated[student_id]["distribution"][level] = len(scores)
+                self.consolidated[student_id]["test_cases"][level] = list(level_data.keys())
 
                 # Vocab estimation
                 # The score is for 100, convert to 1000
@@ -488,20 +499,28 @@ class Experiment():
 
     def pack_student_res(self, uid):
         scores = self.consolidated[uid]["cummulative"]
+        reports = self.consolidated[uid]["reports"]
         distribution = self.consolidated[uid]["distribution"]
+        test_cases = self.consolidated[uid]["test_cases"]
         
         res_scores = []
         res_dis = []
+        res_reports = []
+        res_testcases = []
         for level in ['1', '2', '3', '4', '5', '6']:
             level_name = "level " + level
             if level_name in scores:
                res_scores.append("%.2f" % (scores[level_name]))
                res_dis.append(distribution[level_name])
+               res_testcases.append(test_cases[level_name])
+               res_reports.append(reports[level_name])
             else:
                res_scores.append('-') 
                res_dis.append('')
+               res_reports.append([])
+               res_testcases.append([])
         
-        return {"scores": res_scores, "distribution": res_dis, "vocab": self.consolidated[uid]["vocab"]}
+        return {"scores": res_scores, "testcases": res_testcases, "reports": res_reports, "distribution": res_dis, "vocab": self.consolidated[uid]["vocab"]}
 
     def pack_consolidated(self, student_list):
         package = []
