@@ -133,7 +133,8 @@ class Student(User):
     def take_test(self):
         """
         """
-        if not self.active_exp:
+        exp = Experiment.load()
+        if not self.active_exp or self.active_exp.id != exp.active_id:
             self.active_exp = TestHandle(self)
         return self.active_exp
 
