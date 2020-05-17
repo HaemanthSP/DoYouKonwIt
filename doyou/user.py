@@ -213,6 +213,7 @@ class TestHandle:
         return result
 
     def move_on(self):
+        self.sync()
         self.tests[self.active_index] = self.active_test
         self.active_index += 1
         if self.active_index < len(self.tests):
@@ -221,14 +222,15 @@ class TestHandle:
         else:
             print("Finished all tests")
             self.student.close_exp(self.id)
-            self.close()
             self.active_test = None
 
-    def close(self):
+    def sync(self):
         """
         """
         results = []
         for test in self.tests:
+            if "result" not in test:
+                continue
             results.append({
                 "test_code": test['test_code'],
                 "evaluated_responses": test['evaluated_responses'],
