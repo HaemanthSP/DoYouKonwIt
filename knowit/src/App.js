@@ -843,7 +843,7 @@ renderScoreCell(result) {
       {/* {result.map((value, index) => { */}
         return(
           // <div className="scoreCell card" style={{width: (100 / result.length).toString() + "%", background:percentageToColor(value["metrics"]["score"])}}  onClick={() => {this.setState({wordList: this.state.tests[index]['tokens'], metrics:value['metrics'], selections:value['evaluated_responses'], activePage: 'report'})}}>
-          <div className="scoreCell card" style={{width: (100 / result["scores"].length).toString() + "%", background:percentageToColor(value)}} title={result["testcases"][index]} onClick={() => {this.setState({detailedReport:result['reports'][index], activePage: 'report'})}}>
+          <div className="scoreCell card" style={{width: (100 / result["scores"].length).toString() + "%", background:percentageToColor(value)}} title={result["testcases"][index]} onClick={() => {this.setState( this.state.role == 'Teacher' ? {detailedReport:result['reports'][index], activePage: 'report'}: {})}}>
             {value}
             <div className="subscript">{result["distribution"][index]}</div>
           </div>
