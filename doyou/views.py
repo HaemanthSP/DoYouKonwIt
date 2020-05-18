@@ -83,11 +83,12 @@ class SignUp(APIView):
 
         name = user.Name(firstname, middlename, lastname)
 
-        if '-' in dob:
-            pass_phrase = ''.join(dob.split('-')[::-1]) + firstname[:3].lower()
+        # if '-' in dob:
+            # pass_phrase = ''.join(dob.split('-')[::-1]) + firstname[:3].lower()
         # Handle for safari
-        elif '/' in dob:
-            pass_phrase = ''.join(dob.split('/')) + firstname[:3].lower()
+        # elif '/' in dob:
+            # pass_phrase = ''.join(dob.split('/')) + firstname[:3].lower()
+        pass_phrase = firstname[0].lower() + lastname[0].lower() + str(dob)
 
         print("Details:\n%s\n%s\n%s\n%s\n " % (firstname, lastname, email, pass_phrase))
         password = user.Password(pass_phrase)

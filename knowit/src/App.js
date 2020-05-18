@@ -14,8 +14,8 @@ const styles = theme => ({
     }
 });
 
-var HOST = '134.2.128.120/vocabulary-test/' 
-// var HOST = '127.0.0.1:8080' 
+// var HOST = '134.2.128.120/vocabulary-test/' 
+var HOST = '127.0.0.1:8080' 
 
 class App extends Component {
      constructor(props) {
@@ -48,6 +48,7 @@ class App extends Component {
 
             // UI Handling
             isLoading: false,
+
             activePage: "signup",
 
             // Login details
@@ -591,9 +592,22 @@ class App extends Component {
                         </FormControl>
 						 </Grid>
 			        </Grid>
+                    <br />
+                    <div className="card">
+                      Note: Password Generation Example 
+                    <br />
+                      First name: Sherlock
+                    <br />
+                      Last name: Holmes
+                    <br />
+                      Day of birth: 15 
+                    <br />
+                    <br />
+                      Then the password is <b>sh15</b>
+                    </div>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="dob" label="Date of Birth" type="date" fullWidth required onChange={this.handleChange}/>
+                            <TextField name="dob" label="Day of Birth (1-31)" type="number" inputProps={{ min: "1", max: "31", step: "1" }} fullWidth onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
                     <Grid container spacing={8} alignItems="flex-end" style={{display: "none"}}>
@@ -604,13 +618,6 @@ class App extends Component {
                     <Grid container justify="center" style={{ marginTop: '20px' }}>
                         <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Sign up</Button>
                     </Grid>
-                    <div className="card">
-                      Password: ddmmyyyyabc
-                    <br />
-                      (ddmmyyyy) Date of birth and (abc) first three letters of the name
-                    <br />
-                      for example: <br /> Walter White, 15/10/2004 <br /> <b>15102004wal</b>
-                    </div>
                 </div>
 			  </form>
             </Paper>
@@ -639,7 +646,7 @@ class App extends Component {
 			<div className='header'>
 				<div>
 					<div className='AppName'>DoYouKnowIt?</div>
-					<div className='username'>{this.state.firstName}</div>
+					<div className='username' onClick={() => {this.setState({activePage: "login"})}}>{this.state.firstName}</div>
 				</div>
 			</div>
 		</div>
@@ -1014,9 +1021,9 @@ renderTeacherDashboard1() {
 		<div className="canvas">
 			{this.renderHeader()}
 			<div className="content">
-        <div className="thankyou">Thank You !!!</div>
+        <div className="thankyou"> Thank you for the participation. Based on your interactions, your English vocabulary size is atleast</div>
         <div className="student_vocab"> {this.state.studentReport["vocab"]} words </div>
-        <div style={{textAlign:"center", marginTop:"5px", marginBottom:"30px"}}>(Your vocabulary size is estimated based on all your interactions with our system)</div>
+        {/* <div style={{textAlign:"center", marginTop:"5px", marginBottom:"30px"}}>(Your vocabulary size is estimated based on all your interactions with our system)</div> */}
         <div className="row" style={{marginLeft:"-25%"}}>
         <div className="col-lg-3 row">
         </div>
@@ -1033,6 +1040,11 @@ renderTeacherDashboard1() {
         <div className="col-lg-3 row">
         </div>
         {this.renderScoreCell(this.state.studentReport)}
+        </div>
+        <br />
+        <br />
+        <div className="row" style={{justifyContent: "center"}}>
+            <button className="button blue" onClick={() => {this.setState({activePage: "login"})}}>Logout</button>
         </div>
 			</div>
 		</div>
@@ -1128,8 +1140,12 @@ renderTeacherDashboard1() {
 	  	<br />
 	  	<br />
         <div className="scoreboard">
+          <div>
+				<div className="scoreFeedback">Your score is</div>
+        </div>
 			<div className="row">	
-				<div className="scorecard">{this.state.result["score"]}%</div>
+        <br />
+				<div className="scorecard">{this.state.result["score"]}</div>
       </div>
       <div>
 				<div className="scoreFeedback">{this.state.result["message"]}</div>
