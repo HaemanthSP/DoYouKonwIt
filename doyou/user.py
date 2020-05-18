@@ -134,7 +134,10 @@ class Student(User):
         """
         """
         exp = Experiment.load()
-        if not self.active_exp or self.active_exp.id != exp.active_id:
+        if not self.active_exp:
+            self.active_exp = TestHandle(self)
+        elif self.active_exp.id != exp.active_id:
+            self.close_exp(self.active_exp.id)
             self.active_exp = TestHandle(self)
         return self.active_exp
 
