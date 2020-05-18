@@ -113,8 +113,6 @@ class Login(APIView):
     def post(self, req):
         admin = user.User.load('5e2ebb45e414a94dc67fd993')
         req_json = json.loads(req.body.decode('utf-8'))
-        print("Login request")
-        print(req_json)
         firstname = req_json['firstname']
         lastname = req_json['lastname']
         middlename = req_json['middlename']
