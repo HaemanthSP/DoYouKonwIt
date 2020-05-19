@@ -161,14 +161,21 @@ class TestHandle:
         self.tests = exp.experiments[self.id]["tests"]
         self.active_index = 0
         self.active_test = self.tests[self.active_index]
+        self.active_test["start_time"] = datetime.datetime.now().timestamp()
 
     def update_response(self, test_code, responses):
         assert self.active_test['test_code'] == test_code
         timestamp = datetime.datetime.now().timestamp()
         self.active_test["responses"] = responses
-        self.logs.append({"time": timestamp,
+        self.logs.append({"end_time": timestamp,
                           "test_code": self.active_test['test_code'],
                           "response": responses})
+
+    def record_activity(self):
+        timestamp = datetime.datetime.now().timestamp()
+        self.logs.append({"time": timestamp,
+                          "exp_id": self.id,
+                          "test_data": self.active_test})
 
     def evaluate(self, test_code):
         assert self.active_test['test_code'] == test_code
@@ -218,11 +225,15 @@ class TestHandle:
 
     def move_on(self):
         self.sync()
+        self.active_test["end_time"] = datetime.datetime.now().timestamp()
         self.tests[self.active_index] = self.active_test
+        self.record_activity()
         self.active_index += 1
         if self.active_index < len(self.tests):
             print("Moving on to Next test")
             self.active_test = self.tests[self.active_index]
+            self.active_test["start_time"] = datetime.datetime.now().timestamp()
+        
         else:
             print("Finished all tests")
             self.student.close_exp(self.id)
