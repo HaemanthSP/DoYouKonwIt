@@ -14,8 +14,8 @@ const styles = theme => ({
     }
 });
 
-var HOST = '134.2.128.120/vocabulary-test/' 
-// var HOST = '127.0.0.1:8080' 
+// var HOST = '134.2.128.120/vocabulary-test/' 
+var HOST = '127.0.0.1:8080' 
 
 class App extends Component {
      constructor(props) {
@@ -1024,7 +1024,7 @@ renderTeacherDashboard1() {
         <div className="thankyou"> Thank you for the participation. Based on your interactions, your English vocabulary size is atleast</div>
         <div className="student_vocab"> {this.state.studentReport["vocab"]} words </div>
         {/* <div style={{textAlign:"center", marginTop:"5px", marginBottom:"30px"}}>(Your vocabulary size is estimated based on all your interactions with our system)</div> */}
-        <div className="row" style={{marginLeft:"-25%"}}>
+        <div className="student_page_report row" style={{marginLeft:"-25%"}}>
         <div className="col-lg-3 row">
         </div>
         <div className="col-lg-9 row">

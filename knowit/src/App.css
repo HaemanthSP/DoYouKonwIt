@@ -141,23 +141,145 @@
   .word {
 	font-size: 135px;
   }
+
+  .AppName {
+  float: left;
+  font-size: 2.5em;
+  font-family: "Open Sans", cursive;
+  color: yellowgreen;
+  background: radial-gradient(#ccff0066, transparent);
+  cursor: pointer;
+  }
+
+  .username {
+  float: right;
+  font-size: 1.25em;
+  cursor: pointer;
+  margin-top: 30px;
+  color: dimgrey;
+  }
+
+  .scorecard {
+    height: 250px;
+    border-style: solid;
+    width: 250px;
+    border-color: #dddddd;
+    display: flex;
+    border-width: 9px;
+    border-radius: 50%;
+    font-size: 72px;
+    font-family: "Open Sans", cursive;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 40px auto;
+    box-shadow: inset 8px 7px 20px 0px;
+  }
+
+.login_card {
+    margin-top: 80px;
+    padding: 5% 5%;
+    width: 40%;
+    margin-left: 25%;
+    align-items: center;
+    min-width: 400px;
+}
+
 }
 
 /* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
 @media screen and (max-width: 600px) {
   .button {
-    font-size: 15px;
-    margin: 10px 30px;
-    padding: 10px 35px;
+    font-size: 12px;
+    margin: 10px 20px;
+    /* padding: 10px 35px; */
     /* min-width: 150px; */
     border-radius: 10px;
   }
   .option {
-    margin: 10px 30px;
-    padding: 10px 35px;
+    /* margin: 10px 20px; */
+    width: 110px;
+    padding: 7px;
+
+    /* padding: 10px 35px; */
    }
   .word {
-	font-size: 72px;
+    font-size: 48px;
+    margin: 80px 0;
+    overflow: scroll;
+    /* margin-left: -5px; */
+  }
+
+  .AppName {
+    margin-top: 30px;
+    float: left;
+    font-size: 1.5em;
+    font-family: Open Sans,cursive;
+    color: #9acd32;
+    background: radial-gradient(rgba(204,255,0,.4),transparent);
+    cursor: pointer;
+  }
+
+  .username {
+    float: right;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 45px;
+    color: #696969;
+  }
+
+  .bar {
+    font-size: 13px;
+  }
+
+  .instruct {
+    font-size: 15px !important;
+  }
+
+  .scorecard {
+    height: 100px;
+    width: 100px;
+    display: flex;
+    border: 4px solid #ddd;
+    font-size: 30px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 40px auto;
+    box-shadow: inset 8px 7px 20px 0;
+  }
+
+  .scoreFeedback {
+    font-size: 24px !important;
+  }
+
+  .thankyou {
+    font-size: 15px !important;
+  }
+
+  .student_vocab {
+    font-size: 30px !important;
+  }
+
+  .student_page_report {
+    font-size: 12px;
+    margin-left: 5% !important;
+  }
+
+  .login_card {
+    margin-top: 80px;
+    padding: 10%;
+    width: 80%;
+    margin-left: 10%;
+    align-items: center;
+    min-width: 200px;
+    font-size: 15px;
+  }
+
+  .subscript {
+    font-size: x-small !important;
+    left: 85% !important;
+    bottom: 0% !important;
   }
 }
 
@@ -192,15 +314,6 @@
     display: inline-table;
 }
 
-.login_card {
-    margin-top: 80px;
-    padding: 5% 5%;
-    width: 40%;
-    margin-left: 25%;
-    align-items: center;
-    min-width: 400px;
-}
-
 .login_switch {
     /* margin-left: 30.7%; */
     /* float: right; */
@@ -227,23 +340,23 @@
   height: 100vh;
 }
 
-.AppName {
-  float: left;
-  font-size: 2.5em;
-  font-family: "Open Sans", cursive;
-  color: yellowgreen;
-  background: radial-gradient(#ccff0066, transparent);
-  cursor: pointer;
-}
-
-.username {
-  float: right;
-  font-size: 1.25em;
-  cursor: pointer;
-  margin-top: 30px;
-  color: dimgrey;
-}
-
+/* .AppName { */
+  /* float: left; */
+  /* font-size: 2.5em; */
+  /* font-family: "Open Sans", cursive; */
+  /* color: yellowgreen; */
+  /* background: radial-gradient(#ccff0066, transparent); */
+  /* cursor: pointer; */
+/* } */
+/*  */
+/* .username { */
+  /* float: right; */
+  /* font-size: 1.25em; */
+  /* cursor: pointer; */
+  /* margin-top: 30px; */
+  /* color: dimgrey; */
+/* } */
+/*  */
 .header {
   padding: 2%;
   height: 100px; 
@@ -256,7 +369,7 @@
   padding: 0%;
   margin-bottom: 40px;
   margin-top: 20px;
-  margin-left: 14px;
+  /* margin-left: 14px; */
 }
 
 .dashboardCard {
@@ -375,9 +488,10 @@ ul.checkout-bar li:nth-child(11):before {
 }
 ul.checkout-bar li:nth-child(12):before {
   content: "12";
+
 }
 
-@media all and (min-width: 800px) {
+@media all and (min-width: 600px) {
   .checkout-bar li.active div.bar {
     -webkit-animation: myanimation 3s 0;
     background-size: 35px 35px;
@@ -402,6 +516,15 @@ ul.checkout-bar li:nth-child(12):before {
     margin-bottom: 0px;
   }
 
+  ul.checkout-bar li:before {
+    height: 45px;
+    line-height: 45px;
+    position: absolute;
+	  left: 0%;
+    top: -45px;
+    width: 45px;
+    z-index: 99;
+  }
   ul.checkout-bar div.bar {
     -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
     box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
@@ -428,15 +551,6 @@ ul.checkout-bar li:nth-child(12):before {
     padding: 0;
     text-align: center;
   }
-  ul.checkout-bar li:before {
-    height: 45px;
-    line-height: 45px;
-    position: absolute;
-	left: 0%;
-    top: -45px;
-    width: 45px;
-    z-index: 99;
-  }
   ul.checkout-bar li.visited div.bar {
     background-size: 35px 35px;
     background-color: #57aed1;
@@ -453,6 +567,99 @@ ul.checkout-bar li:nth-child(12):before {
     width: 95% !important;
     z-index: 99;
   }
+
+}
+
+@media all and (max-width: 600px) {
+  .checkout-bar li.active div.bar {
+    -webkit-animation: myanimation 3s 0;
+    background-size: 35px 35px;
+    background-color: #8bc53f;
+    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+    -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+    box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+    content: "";
+    height: 10px;
+    /* width: 96%; */
+    left: 4%;
+	border-radius: 10px;
+    position: absolute;
+    top: -16px;
+    z-index: 0;
+    font-size: 9px;
+  }
+
+  .checkout-wrap {
+    margin: 70px auto;
+    margin-top: 50px;
+    margin-bottom: 0px;
+  }
+
+  ul.checkout-bar div.bar {
+    -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+    background-size: 35px 35px;
+    background-color: #EcEcEc;
+    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.4) 75%, transparent 75%, transparent);
+    -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.4) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.4) 75%, transparent 75%, transparent);
+    border-radius: 15px;
+    height: 10px;
+    margin: 0 auto;
+    padding: 0;
+    position: absolute;
+    /* width: 100% !important; */
+    top: -20px;
+    left: 10%;
+  }
+  ul.checkout-bar li.visited {
+    background: none;
+    font-size: 9px;
+    top: -14px;
+  }
+  ul.checkout-bar li {
+    display: inline-block;
+    margin: 30px 0 0;
+    padding: 0;
+    text-align: center;
+    font-size: 9px;
+    top: -14px;
+  }
+  ul.checkout-bar li:before {
+    height: 25px;
+    line-height: 21px;
+    position: absolute;
+    left: 0;
+    top: -25px;
+    width: 25px;
+    font-size: 8px;
+    z-index: 99;
+  }
+  ul.checkout-bar li.visited div.bar {
+    background-size: 35px 35px;
+    background-color: #57aed1;
+    background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+    -webkit-box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+    background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 0.2) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.2) 75%, transparent 75%, transparent);
+    box-shadow: inset 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+    content: "";
+    height: 15px;
+    left: 15%;
+    position: absolute;
+    top: -20px;
+	  border-radius: 10px;
+    width: 95% !important;
+    z-index: 99;
+  }
+
+.checkout-level-label {
+font-size: 10px;
+}
+
+.checkout-bar-empty {
+  height: 10px !important;
+}
 }
 
 
@@ -480,22 +687,6 @@ ul.checkout-bar li:nth-child(12):before {
     width: 100%
 }
 
-.scorecard {
-  height: 250px;
-  border-style: solid;
-  width: 250px;
-  border-color: #dddddd;
-  display: flex;
-  border-width: 9px;
-  border-radius: 50%;
-  font-size: 72px;
-  font-family: "Open Sans", cursive;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  margin: 40px auto;
-  box-shadow: inset 8px 7px 20px 0px;
-}
 
 .scoreFeedback {
   text-align: center;
