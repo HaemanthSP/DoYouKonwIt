@@ -16,6 +16,7 @@ const styles = theme => ({
 
 var HOST = '134.2.128.120/vocabulary-test/' 
 // var HOST = '127.0.0.1:8080' 
+// var HOST = '192.168.2.145:8080' 
 
 class App extends Component {
      constructor(props) {
@@ -1053,7 +1054,6 @@ renderTeacherDashboard1() {
 
   renderReport() {
     // let activeReport = this.state.detailedReport[this.state.ARI]
-    let activeReport = this.state.detailedReport[0]
     return (
       <div>
 	  	<br />
@@ -1063,6 +1063,7 @@ renderTeacherDashboard1() {
       return ( 
         <div>
         <h2>{activeReport["test_code"]}</h2>
+        <div className="duration">Duration: {typeof activeReport['metrics']['duration'] !== 'undefined' ? new Date(activeReport['metrics']['duration']* 1000).toISOString().substr(11, 8) : 'NA'}</div>
         <div className="row">
           <div className="column">
             <div className="card" style={{borderRadius: 10 }}>

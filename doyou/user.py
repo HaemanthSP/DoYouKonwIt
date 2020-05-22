@@ -139,6 +139,7 @@ class Student(User):
         elif self.active_exp.id != exp.active_id:
             self.close_exp(self.active_exp.id)
             self.active_exp = TestHandle(self)
+        self.active_exp.active_test["start_time"] = datetime.datetime.now().timestamp()
         return self.active_exp
 
     def close_exp(self, exp_id):
@@ -218,7 +219,9 @@ class TestHandle:
                 else:
                     message = 'Well done'
 
-        result = {"message": message, "hits": hits, "false_hits": false_hits, "score": score}
+        start_time = self.active_test["start_time"]
+        end_time = datetime.datetime.now().timestamp()
+        result = {"message": message, "hits": hits, "false_hits": false_hits, "score": score, "duration": int(end_time - start_time)}
         self.active_test["result"] = result
         self.move_on()
         return result
