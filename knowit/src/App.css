@@ -281,6 +281,10 @@
     left: 85% !important;
     bottom: 0% !important;
   }
+
+  .card.scoreCell {
+    padding: 5px !important;
+  }
 }
 
 .card {
