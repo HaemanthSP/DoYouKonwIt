@@ -14,9 +14,9 @@ const styles = theme => ({
     }
 });
 
-var HOST = '134.2.128.120/vocabulary-test/' 
+// var HOST = '134.2.128.120/vocabulary-test/' 
 // var HOST = '127.0.0.1:8080' 
-// var HOST = '192.168.2.145:8080' 
+var HOST = '192.168.0.17:8080' 
 
 class App extends Component {
      constructor(props) {
@@ -593,24 +593,24 @@ class App extends Component {
                         </FormControl>
 						 </Grid>
 			        </Grid>
-                    <br />
-                    <div className="card">
-                      Note: Password Generation Example 
-                    <br />
-                      First name: Sherlock
-                    <br />
-                      Last name: Holmes
-                    <br />
-                      Day of birth: 15 
-                    <br />
-                    <br />
-                      Then the password is <b>sh15</b>
-                    </div>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
                             <TextField name="dob" label="Day of Birth (1-31)" type="number" inputProps={{ min: "1", max: "31", step: "1" }} fullWidth onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
+                    <br />
+                    <div className="alert alert-info" style={{fontSize: "12px"}}>
+                      Note: We generate a password for you based on the first letter of you first and family name and the day of birth 
+                    <br />
+                      First name: <strong>J</strong>ack
+                    <br />
+                      Last name: <strong>S</strong>parrow
+                    <br />
+                      Day of birth: <strong>15</strong> 
+                    <br />
+                    <br />
+                      Password generated is: <strong>js15</strong>
+                    </div>
                     <Grid container spacing={8} alignItems="flex-end" style={{display: "none"}}>
                         <Grid item md={true} sm={true} xs={true}>
                             <TextField name="email" label="E-mail" type="email" fullWidth onChange={this.handleChange} />
@@ -844,7 +844,7 @@ renderScoreCell(result) {
       {/* {result.map((value, index) => { */}
         return(
           // <div className="scoreCell card" style={{width: (100 / result.length).toString() + "%", background:percentageToColor(value["metrics"]["score"])}}  onClick={() => {this.setState({wordList: this.state.tests[index]['tokens'], metrics:value['metrics'], selections:value['evaluated_responses'], activePage: 'report'})}}>
-          <div className="scoreCell card" style={{width: (100 / result["scores"].length).toString() + "%", background:percentageToColor(value)}} title={result["testcases"][index]} onClick={() => {this.setState( this.state.role == 'Teacher' ? {detailedReport:result['reports'][index], activePage: 'report'}: {})}}>
+          <div className="scoreCell card" style={{width: (100 / result["scores"].length).toString() + "%", background:percentageToColor(value), cursor: (this.state.role === 'student') ? "default" : "pointer" }} title={result["testcases"][index]} onClick={() => {this.setState( this.state.role == 'Teacher' ? {detailedReport:result['reports'][index], activePage: 'report'}: {})}}>
             {value}
             <div className="subscript">{result["distribution"][index]}</div>
           </div>
@@ -885,7 +885,7 @@ renderResultTableHeader() {
         <div className="col-lg-9 row">
          {['1','2','3','4','5','6'].map((value, index) => {
            return(
-              <div className="scoreCell card" style={{width: (100 / 6).toString() + "%"}}>
+              <div className="scoreCell card" style={{width: (100 / 6).toString() + "%", cursor: "default"}}>
                {value}&#9734;
              </div>
            )
@@ -1004,12 +1004,12 @@ renderTeacherDashboard1() {
 		<div className="canvas">
 			{this.renderHeader()}
 			<div className="content">
-        <div className="instruct"> <b> Read through the list of words carefully. For each word: </b> <br /> <br />
-                                   if you know what it means, click 'y' key or <button className="button option green"> known (y) </button> (for YES)  <br /> <br />
-                                   if you don't know what it means, or if you aren't sure, click 'n' or click <button className="button option grey"> unknown (n) </button> key (for NO).</div>
-	      <div>
+        <div className="instruct"> You will be presented with a list of words. For each words <br /><br /> 
+                                   if you know what it means,<br /> click on <button style={{cursor: "default"}} className="button option green"> known (y) </button> or type <strong>y</strong>  <br /> <br />
+                                   if you don't know what it means, or if you aren't sure, <br /> click on <button style={{cursor: "default"}} className="button option grey"> unknown (n) </button> or type <strong>n</strong></div>
+	      <div style={{margin:"40px auto", display: "table"}}>
            <br />
-           <button style={{borderRadius: 10}} style={{borderRadius: 10, margin:"40px auto"}} onClick={() => {this.setState({activePage: 'activity'})}} > Continue </button>
+           <button class="button" style={{borderRadius: 10}} onClick={() => {this.setState({activePage: 'activity'})}} > Continue </button>
         </div>
 			</div>
       
@@ -1022,7 +1022,7 @@ renderTeacherDashboard1() {
 		<div className="canvas">
 			{this.renderHeader()}
 			<div className="content">
-        <div className="thankyou"> Thank you for the participation. Based on your interactions, your English vocabulary size is atleast</div>
+        <div className="thankyou"> Thank you for participating. Based on your interactions, your English vocabulary size is at least</div>
         <div className="student_vocab"> {this.state.studentReport["vocab"]} words </div>
         {/* <div style={{textAlign:"center", marginTop:"5px", marginBottom:"30px"}}>(Your vocabulary size is estimated based on all your interactions with our system)</div> */}
         <div className="student_page_report row" style={{marginLeft:"-25%"}}>
@@ -1031,7 +1031,7 @@ renderTeacherDashboard1() {
         <div className="col-lg-9 row">
           {['1','2','3','4','5','6'].map((value, index) => {
            return(
-             <div className="scoreCell card" style={{width: (100 / 6).toString() + "%"}}>
+             <div className="scoreCell card" style={{width: (100 / 6).toString() + "%", cursor: "default"}}>
                {value}&#9734;
              </div>
            )
@@ -1045,7 +1045,7 @@ renderTeacherDashboard1() {
         <br />
         <br />
         <div className="row" style={{justifyContent: "center"}}>
-            <button className="button blue" onClick={() => {this.setState({activePage: "login"})}}>Logout</button>
+            <button className="button blue" onClick={() => {this.setState({activePage: "login", message: ""})}}>Logout</button>
         </div>
 			</div>
 		</div>
