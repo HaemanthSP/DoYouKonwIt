@@ -177,10 +177,11 @@
   }
 
 .login_card {
-    margin-top: 80px;
+    /* margin-top: 80px; */
     padding: 5% 5%;
     width: 40%;
-    margin-left: 25%;
+    /* margin-left: 25%; */
+    margin: auto;
     align-items: center;
     min-width: 400px;
 }
@@ -267,13 +268,14 @@
   }
 
   .login_card {
-    margin-top: 80px;
+    /* margin-top: 80px; */
     padding: 10%;
     width: 80%;
-    margin-left: 10%;
+    /* margin-left: 10%; */
     align-items: center;
     min-width: 200px;
     font-size: 15px;
+    margin: auto;
   }
 
   .subscript {

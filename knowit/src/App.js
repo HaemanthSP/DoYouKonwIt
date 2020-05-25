@@ -498,6 +498,11 @@ class App extends Component {
   renderLogin() {
         const { classes } = this.props;
     return ( 
+
+      <div>
+       <div style={{margin: "40px auto", fontSize:"1.75em", display:"table"}}>
+         <div className='AppName'>DoYouKnowIt?</div>
+       </div>
 			 <Paper className="login_card">
 			   <div className="switch_container">
 			     <div className="login_switch" style={{background: "#47d836"}} onClick={() => {this.setState({activePage: 'signup', message:""})}}>
@@ -537,11 +542,16 @@ class App extends Component {
                 </div>
 			  </form>
             </Paper>
+        </div>
     );
   }
 
   renderSignup() {
 	return (
+      <div>
+       <div style={{margin: "40px auto", fontSize:"1.75em", display:"table"}}>
+         <div className='AppName'>DoYouKnowIt?</div>
+       </div>
 			 <Paper className="login_card">
 				<div className="switch_container">
 					  <div className="login_switch" onClick={() => {this.setState({activePage: 'login', message: ""})}}>
@@ -595,12 +605,15 @@ class App extends Component {
 			        </Grid>
                     <Grid container spacing={8} alignItems="flex-end">
                         <Grid item md={true} sm={true} xs={true}>
-                            <TextField name="dob" label="Day of Birth (1-31)" type="number" inputProps={{ min: "1", max: "31", step: "1" }} fullWidth onChange={this.handleChange}/>
+                            <TextField name="dob" label="Day of Birth (1-31)" type="number" inputProps={{ min: "1", max: "31", step: "1" }} fullWidth required onChange={this.handleChange}/>
                         </Grid>
                     </Grid>
                     <br />
                     <div className="alert alert-info" style={{fontSize: "12px"}}>
-                      Note: We generate a password for you based on the first letter of you first and family name and the day of birth 
+                      <b>Remember!</b>: <br /> We generate a password for you based on the first letter of you first and family name and the day of birth 
+                    <br />
+                    <br />
+                    For example:
                     <br />
                       First name: <strong>J</strong>ack
                     <br />
@@ -622,6 +635,7 @@ class App extends Component {
                 </div>
 			  </form>
             </Paper>
+        </div>
 	);
   }
 
