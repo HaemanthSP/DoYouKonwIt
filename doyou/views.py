@@ -305,10 +305,12 @@ class GetStudentReport(APIView):
         student = admin.get_user(name)
         exp = user.Experiment.load()
         exp.consolidate_experiments()
-        result = exp.pack_student_res(student.uid)
+
+        result = {}
+        if student.uid in exp.consolidated:
+            result = exp.pack_student_res(student.uid)
 
         data = {"result": result, 'message': "Success"}
-        print(data)
         return Response(data=data, status=status.HTTP_200_OK)
 
 

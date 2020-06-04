@@ -5,8 +5,9 @@ import datetime
 import numpy as np
 
 from bson import ObjectId
-from pymongo import MongoClient
 from zipfile import ZipFile
+from pymongo import MongoClient
+from xml.etree import ElementTree
 from collections import defaultdict
 
 # Setup db handle
@@ -458,34 +459,52 @@ class Experiment():
     def _get_book_exp_overlap(self, exp):
         tokens = [t for test in exp["tests"] for t in test["tokens"]]
         tokens = set(tokens)
-        book_tokens = set(['hierograph', 'army', 'add', 'red', 'blue', 'girl', 'cage', 'actor', 'bird', 'new', 'dance'])
-        print("For Experiment")
-        print(tokens.intersection(book_tokens))
+        # book_tokens = set(['hierograph', 'army', 'add', 'red', 'blue', 'girl', 'cage', 'actor', 'bird', 'new', 'dance'])
+        book_tokens = Book.load().vocablist
         return tokens.intersection(book_tokens)
 
-    def _get_book_result_overlap(self, tests, result):
-        tokens = set()
-        for ix, test in enumerate(tests):
-            response = result[ix]["evaluated_responses"]
-            tokens.update(set([t for idx, t in enumerate(test["tokens"])
-                               if response[idx] == "yes"]))
+    def _get_book_result_overlap(self, tests, results):
+        overlap_results = []
+        vocablist = Book.load().vocablist
+        for test, result in zip(tests, results):
+            true_tokens = set([t for idx, t in enumerate(test["tokens"], 1)
+                               if idx not in test["improper_Ids"]])
+            book_tokens = true_tokens.intersection(vocablist) 
+            oov_tokens = true_tokens.difference(book_tokens)
+
+            known_tokens = set([t for idx, t in enumerate(test["tokens"])
+                               if result["evaluated_responses"][idx] == "yes"])
+            unknown_tokens = true_tokens.difference(known_tokens)
             
-        book_tokens = set(['hierograph', 'army', 'add', 'red', 'blue', 'girl', 'cage', 'actor', 'bird', 'new', 'dance'])
-        print(tokens.intersection(book_tokens))
-        return tokens.intersection(book_tokens)
+            overlap_results.append({
+             "true_tokens": list(true_tokens),
+             "book_tokens": list(book_tokens),
+             "oov_tokens": list(oov_tokens),
+             "known_tokens": list(known_tokens),
+             "unknown_tokens": list(unknown_tokens),
+             "book_score": "%.1f" % ((len(book_tokens.intersection(known_tokens))/len(book_tokens)+0.001)*100),
+             "oov_score": "%.1f" % ((len(oov_tokens.intersection(known_tokens))/len(oov_tokens)+0.001)*100)
+             })
+        # book_tokens = set(['hierograph', 'army', 'add', 'red', 'blue', 'girl', 'cage', 'actor', 'bird', 'new', 'dance'])
+        return overlap_results
 
     def consolidate_experiments(self):
+        vocablist = Book.load().vocablist
         self.consolidated = defaultdict(lambda: defaultdict(dict))
         for experiment in self.experiments.values():
             for student_id, result in experiment["results"].items():
-                for test_res in result:
+                overlap_results = self._get_book_result_overlap(experiment["tests"], result)
+                for test_res, overlap_result in zip(result, overlap_results):
                     code = test_res["test_code"]
                     level_name = "level " + (code[5] if code[5] != 'A' else '6')
                     score = test_res["metrics"]["score"]
                     if score > 0:
-                        test_res.update({"tokens": self.get_tokens_with_code(test_res["test_code"])})
-                        # NOTE: It could be an option to take a mean instead of overwritting
-                        self.consolidated[student_id][level_name][code] = score
+                        tokens = self.get_tokens_with_code(code)
+                        test_res.update({"tokens": tokens,
+                                         "book_ids":[t in vocablist for t in tokens ],
+                                         "overlap_result": overlap_result})
+                                           
+                        self.consolidated[student_id][level_name][code] = np.mean([score, self.consolidated[student_id][level_name].get(code, score)])
                         if self.consolidated[student_id]["reports"].get(level_name, []):
                             self.consolidated[student_id]["reports"][level_name].append(test_res)
                         else:
@@ -560,3 +579,36 @@ class Experiment():
 
         package = sorted(package, key=lambda x: x["name"])
         return package
+
+
+class Book():
+    def __init__(self, name, filepath):
+        self.vocab = self.load_vocab(filepath)
+        self.vocablist = set(self.vocab.keys())
+        self.name = name
+        self.save()
+    
+    @staticmethod
+    def load_vocab(filepath):
+        root = ElementTree.parse(filepath).getroot()
+
+        # convert xml subtree into dictionary
+        entries = [{item.tag: item.text for item in child} for child in root.iter('entry')]
+        return {entry["Abgleichwort"]: entry for entry in entries}
+
+    def save(self):
+        book = pickle.dumps(self)
+        ack = DB.books.update_one({'_id': ObjectId("5ed928e155826b51b3093607")}, {"$set": {"binary": book}})
+        if ack.matched_count != 1:
+            print("Warning: no matching entries found to save the book")
+
+    @staticmethod
+    def load():
+        book_entry = DB.books.find_one({'_id': ObjectId("5ed928e155826b51b3093607")})
+        # if 'binary' not in book_entry:
+        if False:
+            print("No Book found")
+            book = Book("greenline", './data/green_line/GL_BW_unverschluesselt.xml')
+        else:
+            book = pickle.loads(book_entry['binary'])
+        return book
