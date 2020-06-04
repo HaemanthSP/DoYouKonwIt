@@ -884,3 +884,8 @@ section {
   color: yellowgreen;
   font-weight: bold;
 }
+
+.book_word {
+  position: absolute;
+  margin: -32px 0px 0px 10px;
+}

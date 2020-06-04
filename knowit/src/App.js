@@ -14,8 +14,8 @@ const styles = theme => ({
     }
 });
 
-var HOST = '134.2.128.120/vocabulary-test/' 
-// var HOST = '127.0.0.1:8080' 
+// var HOST = '134.2.128.120/vocabulary-test/' 
+var HOST = '127.0.0.1:8080' 
 // var HOST = '192.168.0.17:8080' 
 
 class App extends Component {
@@ -1103,6 +1103,7 @@ renderTeacherDashboard1() {
               return (
                 <div className="column col-md-3 col-sm-4" key={index}>
             {this.renderReportCard(activeReport["evaluated_responses"][index], value)}
+            <div className="book_word" style={{display: activeReport["book_ids"][index]? "inherit": "none"}}> &#128214;</div>
                 </div>
               )
             })}
