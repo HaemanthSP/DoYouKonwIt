@@ -1044,8 +1044,10 @@ renderTeacherDashboard1() {
 			<div className="content">
         <div className="thankyou"> Thank you for participating. Based on your interactions, your English vocabulary size is at least</div>
         <div className="student_vocab"> {this.state.studentReport["vocab"]} words </div>
-        <div className="thankyou" style={{color: "blue"}}> {this.state.studentReport["book_overlap"]} % </div>
-        <div className="thankyou"> of your vocabulary knowledge is from book. </div>
+        
+        <div className="thankyou"> 
+        <b className="thankyou" style={{color: "blue"}}> {this.state.studentReport["book_overlap"]} % </b>
+        of your vocabulary knowledge is from book. </div>
         {/* <div style={{textAlign:"center", marginTop:"5px", marginBottom:"30px"}}>(Your vocabulary size is estimated based on all your interactions with our system)</div> */}
         <div className="student_page_report row" style={{marginLeft: "-40%", marginTop: "40px"}}>
         <div className="col-lg-4 row">
