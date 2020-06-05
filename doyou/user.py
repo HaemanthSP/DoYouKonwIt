@@ -613,8 +613,7 @@ class Book():
     @staticmethod
     def load():
         book_entry = DB.books.find_one({'_id': ObjectId("5ed928e155826b51b3093607")})
-        # if 'binary' not in book_entry:
-        if False:
+        if 'binary' not in book_entry:
             print("No Book found")
             book = Book("greenline", './data/green_line/GL_BW_unverschluesselt.xml')
         else:
