@@ -480,10 +480,11 @@ class Experiment():
              "true_tokens": list(true_tokens),
              "book_tokens": list(book_tokens),
              "oov_tokens": list(oov_tokens),
-             "known_tokens": list(known_tokens),
+             "known_tokens": set(known_tokens),
              "unknown_tokens": list(unknown_tokens),
-             "book_score": "%.1f" % ((len(book_tokens.intersection(known_tokens))/len(book_tokens)+0.001)*100),
-             "oov_score": "%.1f" % ((len(oov_tokens.intersection(known_tokens))/len(oov_tokens)+0.001)*100)
+             "known_form_book": list(book_tokens.intersection(known_tokens)),
+             "book_score": "%.1f" % ((len(book_tokens.intersection(known_tokens))/(len(book_tokens)+0.001))*100),
+             "oov_score": "%.1f" % ((len(oov_tokens.intersection(known_tokens))/(len(oov_tokens)+0.001))*100)
              })
         # book_tokens = set(['hierograph', 'army', 'add', 'red', 'blue', 'girl', 'cage', 'actor', 'bird', 'new', 'dance'])
         return overlap_results
@@ -510,6 +511,11 @@ class Experiment():
                         else:
                             self.consolidated[student_id]["reports"][level_name] = [test_res]
 
+                        if self.consolidated[student_id]["known_words"]:
+                            self.consolidated[student_id]["known_words"].update(overlap_result["known_tokens"])
+                        else:
+                            self.consolidated[student_id]["known_words"] = overlap_result["known_tokens"]
+
         # Cumulative
         for student_id, data in  self.consolidated.items():
             self.consolidated[student_id]["vocab"] = 0
@@ -524,6 +530,8 @@ class Experiment():
                 # Vocab estimation
                 # The score is for 100, convert to 1000
                 self.consolidated[student_id]["vocab"] += int(np.mean(scores) * 10)
+            known_words = self.consolidated[student_id]["known_words"]
+            self.consolidated[student_id]["book_overlap"] = "%.1f" % (len(known_words.intersection(vocablist))/(len(known_words)+0.001) * 100)
 
         self.consolidated = dict(self.consolidated)
         self.save()
@@ -565,7 +573,7 @@ class Experiment():
                res_reports.append([])
                res_testcases.append([])
         
-        return {"scores": res_scores, "testcases": res_testcases, "reports": res_reports, "distribution": res_dis, "vocab": self.consolidated[uid]["vocab"]}
+        return {"scores": res_scores, "testcases": res_testcases, "reports": res_reports, "distribution": res_dis, "vocab": self.consolidated[uid]["vocab"], "book_overlap": self.consolidated[uid]["book_overlap"] }
 
     def pack_consolidated(self, student_list):
         package = []

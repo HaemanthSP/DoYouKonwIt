@@ -143,7 +143,6 @@ class GetTeacherReport(APIView):
         firstname = req_json['firstname']
         lastname = req_json['lastname']
         middlename = req_json['middlename']
-        print(req_json)
         # password = req_json['password']
 
         name = user.Name(firstname, middlename, lastname)
@@ -168,7 +167,6 @@ class GetConsolidatedTeacherReport(APIView):
         firstname = req_json['firstname']
         lastname = req_json['lastname']
         middlename = req_json['middlename']
-        print(req_json)
         # password = req_json['password']
 
         name = user.Name(firstname, middlename, lastname)
@@ -181,7 +179,6 @@ class GetConsolidatedTeacherReport(APIView):
         exp = user.Experiment.load()
         exp.consolidate_experiments()
         teacher_report = exp.pack_consolidated(student_list)
-        print(teacher_report) 
 
         data = {"teacher_report": teacher_report, "message": "Successfully collected the report"}
 
@@ -310,6 +307,8 @@ class GetStudentReport(APIView):
         if student.uid in exp.consolidated:
             result = exp.pack_student_res(student.uid)
 
+        print(result)
+
         data = {"result": result, 'message': "Success"}
         return Response(data=data, status=status.HTTP_200_OK)
 
@@ -403,5 +402,4 @@ class UserList(APIView):
         users = user.User.get_user_list(query)
         data = {"user_list": users}
         print("User list")
-        print(data)
         return Response(data=data, status=status.HTTP_200_OK)

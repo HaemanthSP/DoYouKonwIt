@@ -853,7 +853,7 @@ renderScoreCell(result) {
     return colors[Math.floor(percentage/10)];
   }
   return (
-    <div className="col-lg-9 row">
+    <div className="col-lg-8 row">
       {result["scores"].map((value, index) => {
       {/* {result.map((value, index) => { */}
         return(
@@ -880,6 +880,9 @@ renderResultTableEntry() {
                  {value["name"]}
                  <div className="vocab"> {value["result"]["vocab"]} </div>
               </div>
+              <div className="scoreRow col-lg-1 card">
+                 <div className="vocab"> {value["result"]["book_overlap"]} </div>
+              </div>
               {this.renderScoreCell(value["result"])}
             </div>
           )
@@ -896,7 +899,10 @@ renderResultTableHeader() {
            Name
            <div className="vocab"> vocab size </div>
         </div>
-        <div className="col-lg-9 row">
+        <div className="scoreRow col-lg-1 card">
+           <div className="vocab"> &#128214; % </div>
+        </div>
+        <div className="col-lg-8 row">
          {['1','2','3','4','5','6'].map((value, index) => {
            return(
               <div className="scoreCell card" style={{width: (100 / 6).toString() + "%", cursor: "default"}}>
@@ -1038,11 +1044,13 @@ renderTeacherDashboard1() {
 			<div className="content">
         <div className="thankyou"> Thank you for participating. Based on your interactions, your English vocabulary size is at least</div>
         <div className="student_vocab"> {this.state.studentReport["vocab"]} words </div>
+        <div className="thankyou" style={{color: "blue"}}> {this.state.studentReport["book_overlap"]} % </div>
+        <div className="thankyou"> of your vocabulary knowledge is from book. </div>
         {/* <div style={{textAlign:"center", marginTop:"5px", marginBottom:"30px"}}>(Your vocabulary size is estimated based on all your interactions with our system)</div> */}
-        <div className="student_page_report row" style={{marginLeft:"-25%"}}>
-        <div className="col-lg-3 row">
+        <div className="student_page_report row" style={{marginLeft: "-40%", marginTop: "40px"}}>
+        <div className="col-lg-4 row">
         </div>
-        <div className="col-lg-9 row">
+        <div className="col-lg-8 row">
           {['1','2','3','4','5','6'].map((value, index) => {
            return(
              <div className="scoreCell card" style={{width: (100 / 6).toString() + "%", cursor: "default"}}>
@@ -1052,7 +1060,7 @@ renderTeacherDashboard1() {
           })
           }
          </div>
-        <div className="col-lg-3 row">
+        <div className="col-lg-4 row">
         </div>
         {this.renderScoreCell(this.state.studentReport)}
         </div>
@@ -1095,6 +1103,18 @@ renderTeacherDashboard1() {
             <div className="card" style={{borderRadius: 10 }}>
               <h4>Score</h4><br />
               <h2>{activeReport["metrics"]["score"]}</h2>
+            </div>
+          </div>
+          <div className="column">
+            <div className="card" style={{borderRadius: 10 }}>
+              <h4>Score on Book</h4><br />
+              <h2>{activeReport["overlap_result"]["book_score"]}</h2>
+            </div>
+          </div>
+          <div className="column">
+            <div className="card" style={{borderRadius: 10 }}>
+              <h4>Score on out of book</h4><br />
+              <h2>{activeReport["overlap_result"]["oov_score"]}</h2>
             </div>
           </div>
         </div>
