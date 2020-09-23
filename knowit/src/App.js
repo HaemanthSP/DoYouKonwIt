@@ -610,7 +610,7 @@ class App extends Component {
                     </Grid>
                     <br />
                     <div className="alert alert-info" style={{fontSize: "12px"}}>
-                      <b>Remember!</b>: <br /> We generate a password for you based on the first letter of you first and family name and the day of birth 
+                      <b>Remember!</b>: <br /> We generate a password for you based on the first letter of your first name, the first letter of your last name and the day of birth.
                     <br />
                     <br />
                     For example:
@@ -1109,13 +1109,13 @@ renderTeacherDashboard1() {
           </div>
           <div className="column">
             <div className="card" style={{borderRadius: 10 }}>
-              <h4>Score on Book</h4><br />
+              <h4>Score on Book(%)</h4><br />
               <h2>{activeReport["overlap_result"]["book_score"]}</h2>
             </div>
           </div>
           <div className="column">
             <div className="card" style={{borderRadius: 10 }}>
-              <h4>Score on out of book</h4><br />
+              <h4>Score on out of book(%)</h4><br />
               <h2>{activeReport["overlap_result"]["oov_score"]}</h2>
             </div>
           </div>

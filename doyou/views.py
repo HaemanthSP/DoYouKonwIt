@@ -103,7 +103,7 @@ class SignUp(APIView):
             teacher.add_student(student.uid)
         else:
             is_valid = False
-            message = "Sorry, your already has an account, Please Login"
+            message = "You already have an account"
         print("Message:", message)
         data = {"isValid": is_valid, "message": message, "password": pass_phrase}
         return Response(data=data, status=status.HTTP_200_OK)
