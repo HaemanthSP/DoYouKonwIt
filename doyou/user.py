@@ -11,7 +11,7 @@ from xml.etree import ElementTree
 from collections import defaultdict
 
 # Setup db handle
-DB = MongoClient('mongodb://127.0.0.1:27017/')["prototype"]
+DB = MongoClient('mongodb://127.0.0.1:27017/')["deploy"]
 
 # TODO: Add methods for initial setup like creating admin, indexer and experiments
 # TODO: A verification routine for admin

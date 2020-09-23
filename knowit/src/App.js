@@ -727,46 +727,46 @@ class App extends Component {
 			     </form>
            </div>]
           ,
-          ["Export",
-          <div>
-      <div className='row'>
-			  <form onSubmit={this.download}>
-					<Grid container spacing={8} alignItems="flex-end">
-                        <Grid item md={true} sm={true} xs={true}>
-						<FormControl fullWidth required>	
-							<InputLabel id="teachers">Teacher</InputLabel>
-							<Select labelId="teachers" name="teacher" value={this.state.teacher} onChange={this.handleChange}>
-							  <MenuItem value=""><em>None</em></MenuItem>
-							  <MenuItem value="5e2ebbd9e414a94dc67fd995">Bleicher</MenuItem>
-							  <MenuItem value="5e3454f8cc0b53337bc5fa13">Meurers</MenuItem>
-							  <MenuItem value="5e34554acc0b53337bc5fa14">Deeg</MenuItem>
-							  <MenuItem value="5e2ebbaae414a94dc67fd994">Goedicke</MenuItem>
-							</Select>
-            </FormControl>
-					</Grid>
-			   </Grid>
-					<Grid container spacing={8} alignItems="flex-end">
-                        <Grid item md={true} sm={true} xs={true}>
-						<FormControl fullWidth required>	
-							<InputLabel id="experiment">Experiment</InputLabel>
-							<Select labelId="experiment" name="expId" value={this.state.expId} fullWidth onChange={this.handleChange}>
-							  <MenuItem value=""><em>None</em></MenuItem>
-          	    {this.state.experiments.map((value, index) => {
-                  return (
-							    <MenuItem value={value[0]}>{value[1]}</MenuItem>
-               	)
-          	    })}
-							</Select>
-            </FormControl>
-					</Grid>
-			   </Grid>
-          <Grid container justify="center" style={{ marginTop: '20px' }}>
-              <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Download</Button>
-          </Grid>
-			  </form>
-      </div>
-			</div>
-    ],
+      //     ["Export",
+      //     <div>
+      // <div className='row'>
+			//   <form onSubmit={this.download}>
+			// 		<Grid container spacing={8} alignItems="flex-end">
+      //                   <Grid item md={true} sm={true} xs={true}>
+			// 			<FormControl fullWidth required>	
+			// 				<InputLabel id="teachers">Teacher</InputLabel>
+			// 				<Select labelId="teachers" name="teacher" value={this.state.teacher} onChange={this.handleChange}>
+			// 				  <MenuItem value=""><em>None</em></MenuItem>
+			// 				  <MenuItem value="5e2ebbd9e414a94dc67fd995">Bleicher</MenuItem>
+			// 				  <MenuItem value="5e3454f8cc0b53337bc5fa13">Meurers</MenuItem>
+			// 				  <MenuItem value="5e34554acc0b53337bc5fa14">Deeg</MenuItem>
+			// 				  <MenuItem value="5e2ebbaae414a94dc67fd994">Goedicke</MenuItem>
+			// 				</Select>
+      //       </FormControl>
+			// 		</Grid>
+			//    </Grid>
+			// 		<Grid container spacing={8} alignItems="flex-end">
+      //                   <Grid item md={true} sm={true} xs={true}>
+			// 			<FormControl fullWidth required>	
+			// 				<InputLabel id="experiment">Experiment</InputLabel>
+			// 				<Select labelId="experiment" name="expId" value={this.state.expId} fullWidth onChange={this.handleChange}>
+			// 				  <MenuItem value=""><em>None</em></MenuItem>
+      //     	    {this.state.experiments.map((value, index) => {
+      //             return (
+			// 				    <MenuItem value={value[0]}>{value[1]}</MenuItem>
+      //          	)
+      //     	    })}
+			// 				</Select>
+      //       </FormControl>
+			// 		</Grid>
+			//    </Grid>
+      //     <Grid container justify="center" style={{ marginTop: '20px' }}>
+      //         <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Download</Button>
+      //     </Grid>
+			//   </form>
+      // </div>
+			// </div>
+    // ],
           ["Users",
            <div> 
              {this.state.userList.map((value, index) => {
@@ -799,7 +799,7 @@ class App extends Component {
                         </Grid>
                     </Grid>
                     <Grid container justify="center" style={{ marginTop: '25px' }}>
-                        <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Login</Button>
+                        <Button type="submit" variant="outlined" color="primary" style={{ textTransform: "none" }}>Create</Button>
                     </Grid>
                 </div>
 			        </form>
