@@ -8,7 +8,7 @@ cymem==2.0.3
 decorator==4.4.1
 Django==2.2.7
 django-cors-headers==3.2.0
-djangorestframework==3.10.3
+djangorestframework==3.11.2
 idna==2.8
 importlib-metadata==0.23
 ipython==7.9.0
